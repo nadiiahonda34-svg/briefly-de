@@ -1,49 +1,553 @@
-<script>
-document.querySelectorAll('.cat').forEach(b => b.onclick = () => {
-  document.querySelectorAll('.cat').forEach(x => x.classList.remove('active'));
-  b.classList.add('active');
-});
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-async function demo() {
-  const situation = document.getElementById('situation').value.trim();
-  const name = document.getElementById('name').value.trim();
-  const tone = document.getElementById('tone').value;
-  const result = document.getElementById('result');
+  <title>Briefly DE — немецкое письмо за 2 минуты</title>
 
-  if (!situation) {
-    alert('Сначала опишите ситуацию.');
-    return;
-  }
-
-  result.style.display = 'block';
-  result.textContent = 'Создаю письмо...';
-
-  try {
-    const response = await fetch(
-      'https://rapid-term-dbe0.nadiiahonda34.workers.dev/',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: situation,
-          name: name || 'Друг',
-          tone: tone
-        })
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || 'Ошибка сервера');
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --accent: #3157d5;
+      --line: #dce2ee;
+      --success: #16803c;
+      --error: #c62828;
     }
 
-    result.textContent = data.letter;
+    * {
+      box-sizing: border-box;
+    }
 
-  } catch (error) {
-    result.textContent = 'Ошибка: ' + error.message;
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                   "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 40px 18px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      font-size: 38px;
+      line-height: 1.1;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 8px 30px rgba(20, 30, 60, 0.06);
+    }
+
+    .section-title {
+      font-weight: 700;
+      margin: 4px 0 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .cat {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 14px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 650;
+      font-size: 15px;
+    }
+
+    .cat:hover {
+      border-color: var(--accent);
+    }
+
+    .cat.active {
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      background: #f6f8ff;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    textarea,
+    input,
+    select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 13px;
+      font: inherit;
+      background: white;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    textarea:focus,
+    input:focus,
+    select:focus {
+      outline: 2px solid rgba(49, 87, 213, 0.18);
+      border-color: var(--accent);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .generate {
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--accent);
+      color: white;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .generate:hover {
+      opacity: 0.94;
+    }
+
+    .generate:disabled {
+      opacity: 0.55;
+      cursor: wait;
+    }
+
+    .status {
+      display: none;
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .status.error {
+      display: block;
+      background: #fff1f1;
+      color: var(--error);
+      border: 1px solid #ffcaca;
+    }
+
+    .result {
+      display: none;
+      white-space: pre-wrap;
+      margin-top: 22px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fafbfe;
+      line-height: 1.65;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .copy {
+      display: none;
+      margin-top: 10px;
+      padding: 10px 15px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: white;
+      cursor: pointer;
+      font-weight: 650;
+    }
+
+    .copy.show {
+      display: inline-block;
+    }
+
+    .note {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 650px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="logo">Briefly DE 🇩🇪</div>
+
+    <h1>Немецкое письмо за 2 минуты</h1>
+
+    <div class="subtitle">
+      Опишите ситуацию своими словами — Briefly составит готовое письмо на немецком.
+    </div>
+  </div>
+
+  <div class="card">
+
+    <div class="section-title">
+      Кому вы пишете?
+    </div>
+
+    <div class="grid" id="categories">
+
+      <button type="button" class="cat active" data-recipient="Работодатель">
+        💼 Работодатель
+      </button>
+
+      <button type="button" class="cat" data-recipient="Арендодатель">
+        🏠 Арендодатель
+      </button>
+
+      <button type="button" class="cat" data-recipient="Ведомство">
+        🏛️ Ведомство
+      </button>
+
+      <button type="button" class="cat" data-recipient="Страховая компания">
+        🩺 Страховая
+      </button>
+
+      <button type="button" class="cat" data-recipient="Магазин">
+        🛒 Магазин
+      </button>
+
+      <button type="button" class="cat" data-recipient="Другое">
+        ✍️ Другое
+      </button>
+
+    </div>
+
+    <label for="situation">
+      Что вы хотите сообщить?
+    </label>
+
+    <textarea
+      id="situation"
+      placeholder="Например: я заболела и сегодня не смогу прийти на работу. Хочу сообщить начальнику и извиниться."
+    ></textarea>
+
+    <div class="row">
+
+      <div>
+        <label for="tone">Тон</label>
+
+        <select id="tone">
+          <option value="Вежливый">Вежливый</option>
+          <option value="Официальный">Официальный</option>
+          <option value="Настойчивый">Настойчивый</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="name">Ваше имя</label>
+
+        <input
+          id="name"
+          type="text"
+          placeholder="Например: Анна"
+        >
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="generate"
+      id="generate"
+    >
+      Создать письмо
+    </button>
+
+    <div id="status" class="status"></div>
+
+    <div id="result" class="result"></div>
+
+    <button
+      type="button"
+      id="copy"
+      class="copy"
+    >
+      📋 Скопировать письмо
+    </button>
+
+  </div>
+
+  <div class="note">
+    Проверьте имена, даты и другие важные данные перед отправкой письма.
+  </div>
+
+</div>
+
+
+<script>
+
+  const WORKER_URL =
+    "https://rapid-term-dbe0.nadiiahonda34.workers.dev/";
+
+  let recipient = "Работодатель";
+
+
+  const categoryButtons =
+    document.querySelectorAll(".cat");
+
+  const situationInput =
+    document.getElementById("situation");
+
+  const toneInput =
+    document.getElementById("tone");
+
+  const nameInput =
+    document.getElementById("name");
+
+  const generateButton =
+    document.getElementById("generate");
+
+  const result =
+    document.getElementById("result");
+
+  const statusBox =
+    document.getElementById("status");
+
+  const copyButton =
+    document.getElementById("copy");
+
+
+  categoryButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      categoryButtons.forEach(item => {
+        item.classList.remove("active");
+      });
+
+      button.classList.add("active");
+
+      recipient =
+        button.dataset.recipient;
+    });
+
+  });
+
+
+  generateButton.addEventListener(
+    "click",
+    generateLetter
+  );
+
+
+  async function generateLetter() {
+
+    const situation =
+      situationInput.value.trim();
+
+    const name =
+      nameInput.value.trim();
+
+    const tone =
+      toneInput.value;
+
+
+    if (!situation) {
+
+      showError(
+        "Сначала опишите, какое письмо вам нужно."
+      );
+
+      situationInput.focus();
+
+      return;
+    }
+
+
+    statusBox.className = "status";
+    statusBox.textContent = "";
+
+    result.classList.remove("show");
+
+    copyButton.classList.remove("show");
+
+    generateButton.disabled = true;
+
+    generateButton.textContent =
+      "Создаю письмо...";
+
+
+    try {
+
+      const response = await fetch(
+        WORKER_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+            recipient: recipient,
+            message: situation,
+            name: name || "Без имени",
+            tone: tone
+          })
+        }
+      );
+
+
+      let data;
+
+      try {
+
+        data = await response.json();
+
+      } catch (jsonError) {
+
+        throw new Error(
+          "Сервер вернул неправильный ответ."
+        );
+      }
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          data.details ||
+          "Ошибка сервера."
+        );
+      }
+
+
+      if (!data.letter) {
+
+        throw new Error(
+          "Письмо не получено от сервера."
+        );
+      }
+
+
+      result.textContent =
+        data.letter;
+
+      result.classList.add("show");
+
+      copyButton.classList.add("show");
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      showError(
+        "Не удалось создать письмо: " +
+        error.message
+      );
+
+    } finally {
+
+      generateButton.disabled = false;
+
+      generateButton.textContent =
+        "Создать письмо";
+    }
   }
-}
+
+
+  function showError(message) {
+
+    statusBox.textContent = message;
+
+    statusBox.className =
+      "status error";
+  }
+
+
+  copyButton.addEventListener(
+    "click",
+    async () => {
+
+      try {
+
+        await navigator.clipboard.writeText(
+          result.textContent
+        );
+
+        copyButton.textContent =
+          "✓ Скопировано";
+
+        setTimeout(() => {
+
+          copyButton.textContent =
+            "📋 Скопировать письмо";
+
+        }, 1500);
+
+      } catch (error) {
+
+        alert(
+          "Не удалось автоматически скопировать письмо."
+        );
+      }
+    }
+  );
+
 </script>
+
+</body>
+</html>
