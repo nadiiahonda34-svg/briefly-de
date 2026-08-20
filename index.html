@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Briefly — AI-помощник для писем</title>
+<title>Briefly — AI Letter Assistant</title>
 
 <style>
-:root {
+:root{
   --bg:#f5f7fb;
-  --card:#ffffff;
+  --card:#fff;
   --text:#172033;
   --muted:#667085;
   --accent:#3157d5;
@@ -17,43 +17,59 @@
   --error:#b42318;
 }
 
-* { box-sizing:border-box; }
+*{box-sizing:border-box}
 
-body {
+body{
   margin:0;
   font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   background:var(--bg);
   color:var(--text);
 }
 
-.wrap {
+.wrap{
   max-width:900px;
   margin:auto;
-  padding:40px 18px;
+  padding:25px 18px 40px;
 }
 
-.hero {
+.top{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:15px;
+}
+
+.language-select{
+  width:auto;
+  min-width:155px;
+  padding:9px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:white;
+  font:inherit;
+}
+
+.hero{
   text-align:center;
   margin-bottom:28px;
 }
 
-.logo {
-  font-size:24px;
+.logo{
+  font-size:25px;
   font-weight:900;
   color:var(--accent);
 }
 
-h1 {
+h1{
   font-size:38px;
   margin:14px 0 8px;
 }
 
-.subtitle {
+.subtitle{
   color:var(--muted);
   font-size:17px;
 }
 
-.card {
+.card{
   background:var(--card);
   border:1px solid var(--line);
   border-radius:18px;
@@ -61,19 +77,19 @@ h1 {
   box-shadow:0 8px 30px rgba(20,35,70,.06);
 }
 
-label {
+label{
   display:block;
   font-weight:700;
   margin:18px 0 8px;
 }
 
-.modes {
+.modes{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:10px;
 }
 
-.mode {
+.mode{
   border:1px solid var(--line);
   background:white;
   border-radius:12px;
@@ -82,21 +98,19 @@ label {
   font-weight:700;
 }
 
-.mode.active {
+.mode.active{
   border:2px solid var(--accent);
   background:#f3f6ff;
   color:var(--accent);
 }
 
-.languages {
+.languages{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:14px;
 }
 
-select,
-input,
-textarea {
+select,input,textarea{
   width:100%;
   border:1px solid var(--line);
   border-radius:11px;
@@ -105,18 +119,18 @@ textarea {
   background:white;
 }
 
-textarea {
+textarea{
   min-height:150px;
   resize:vertical;
 }
 
-.categories {
+.categories{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:9px;
 }
 
-.cat {
+.cat{
   border:1px solid var(--line);
   background:white;
   border-radius:10px;
@@ -124,19 +138,19 @@ textarea {
   cursor:pointer;
 }
 
-.cat.active {
+.cat.active{
   border:2px solid var(--accent);
   color:var(--accent);
   background:#f3f6ff;
 }
 
-.row {
+.row{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:14px;
 }
 
-.generate {
+.generate{
   width:100%;
   margin-top:22px;
   padding:16px;
@@ -149,12 +163,12 @@ textarea {
   cursor:pointer;
 }
 
-.generate:disabled {
+.generate:disabled{
   opacity:.55;
   cursor:wait;
 }
 
-.result {
+.result{
   display:none;
   margin-top:22px;
   padding:20px;
@@ -165,16 +179,14 @@ textarea {
   line-height:1.6;
 }
 
-.result.show {
-  display:block;
-}
+.result.show{display:block}
 
-.error {
+.error{
   margin-top:16px;
   color:var(--error);
 }
 
-.copy {
+.copy{
   display:none;
   margin-top:10px;
   padding:10px 15px;
@@ -184,29 +196,19 @@ textarea {
   cursor:pointer;
 }
 
-.copy.show {
-  display:inline-block;
-}
+.copy.show{display:inline-block}
 
-.note {
+.note{
   text-align:center;
   color:var(--muted);
   font-size:13px;
   margin-top:18px;
 }
 
-@media(max-width:650px) {
-  h1 { font-size:30px; }
-
-  .modes,
-  .categories {
-    grid-template-columns:1fr;
-  }
-
-  .languages,
-  .row {
-    grid-template-columns:1fr;
-  }
+@media(max-width:650px){
+  h1{font-size:30px}
+  .modes,.categories{grid-template-columns:1fr}
+  .languages,.row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -215,183 +217,108 @@ textarea {
 
 <div class="wrap">
 
-<div class="hero">
-  <div class="logo">Briefly ✨</div>
-
-  <h1>Письма без языкового барьера</h1>
-
-  <div class="subtitle">
-    Создавайте, отвечайте и разбирайте письма с помощью AI.
-  </div>
+<div class="top">
+<select id="uiLanguage" class="language-select">
+  <option value="de">Deutsch</option>
+  <option value="en">English</option>
+  <option value="ru" selected>Русский</option>
+  <option value="uk">Українська</option>
+  <option value="pl">Polski</option>
+</select>
 </div>
 
+<div class="hero">
+  <div class="logo">Briefly ✨</div>
+  <h1 id="title"></h1>
+  <div id="subtitle" class="subtitle"></div>
+</div>
 
 <div class="card">
 
-<label>Что нужно сделать?</label>
+<label id="actionLabel"></label>
 
 <div class="modes">
-
-<button
-  class="mode active"
-  data-mode="create">
-  ✍️ Создать письмо
-</button>
-
-<button
-  class="mode"
-  data-mode="reply">
-  ↩️ Ответить на письмо
-</button>
-
-<button
-  class="mode"
-  data-mode="explain">
-  💡 Объяснить письмо
-</button>
-
+<button class="mode active" data-mode="create" id="createMode"></button>
+<button class="mode" data-mode="reply" id="replyMode"></button>
+<button class="mode" data-mode="explain" id="explainMode"></button>
 </div>
-
 
 <div class="languages">
 
 <div>
-<label for="sourceLanguage">
-Я пишу / письмо написано на
-</label>
-
-<select id="sourceLanguage">
-<option>Автоматически</option>
-<option>Русский</option>
-<option>Украинский</option>
-<option>Немецкий</option>
-<option>Английский</option>
-<option>Польский</option>
-<option>Французский</option>
-<option>Испанский</option>
-<option>Итальянский</option>
-</select>
+<label id="sourceLabel"></label>
+<select id="sourceLanguage"></select>
 </div>
-
 
 <div>
-<label for="targetLanguage">
-Получить результат на
-</label>
-
-<select id="targetLanguage">
-<option>Немецкий</option>
-<option>Русский</option>
-<option>Украинский</option>
-<option>Английский</option>
-<option>Польский</option>
-<option>Французский</option>
-<option>Испанский</option>
-<option>Итальянский</option>
-</select>
+<label id="targetLabel"></label>
+<select id="targetLanguage"></select>
 </div>
 
 </div>
-
 
 <div id="recipientBlock">
 
-<label>Кому пишем?</label>
+<label id="recipientLabel"></label>
 
 <div class="categories">
 
 <button class="cat active"
-data-recipient="Работодатель">
-💼 Работодатель
-</button>
+data-recipient="Работодатель"
+data-key="employer"></button>
 
 <button class="cat"
-data-recipient="Арендодатель">
-🏠 Арендодатель
-</button>
+data-recipient="Арендодатель"
+data-key="landlord"></button>
 
 <button class="cat"
-data-recipient="Ведомство">
-🏛️ Ведомство
-</button>
+data-recipient="Ведомство"
+data-key="authority"></button>
 
 <button class="cat"
-data-recipient="Страховая компания">
-🩺 Страховая
-</button>
+data-recipient="Страховая компания"
+data-key="insurance"></button>
 
 <button class="cat"
-data-recipient="Магазин">
-🛒 Магазин
-</button>
+data-recipient="Магазин"
+data-key="shop"></button>
 
 <button class="cat"
-data-recipient="Другое">
-✍️ Другое
-</button>
+data-recipient="Другое"
+data-key="other"></button>
 
 </div>
 </div>
 
+<label id="textLabel" for="text"></label>
 
-<label id="textLabel" for="text">
-Что вы хотите сообщить?
-</label>
-
-<textarea
-id="text"
-placeholder="Например: хочу попросить работодателя дать мне отпуск с 12 по 19 сентября.">
-</textarea>
-
+<textarea id="text"></textarea>
 
 <div class="row">
 
 <div>
-<label for="tone">Тон</label>
-
-<select id="tone">
-<option>Вежливый</option>
-<option>Официальный</option>
-<option>Дружелюбный</option>
-<option>Настойчивый</option>
-<option>Краткий</option>
-</select>
+<label id="toneLabel" for="tone"></label>
+<select id="tone"></select>
 </div>
-
 
 <div>
-<label for="name">Ваше имя</label>
-
-<input
-id="name"
-placeholder="Например: Анна">
+<label id="nameLabel" for="name"></label>
+<input id="name">
 </div>
 
 </div>
 
-
-<button
-id="generate"
-class="generate">
-Создать письмо
-</button>
+<button id="generate" class="generate"></button>
 
 <div id="error" class="error"></div>
 
 <div id="result" class="result"></div>
 
-<button
-id="copy"
-class="copy">
-📋 Скопировать
-</button>
+<button id="copy" class="copy"></button>
 
 </div>
 
-
-<div class="note">
-AI может ошибаться. Проверяйте имена, даты, суммы и важные сведения перед отправкой.
-</div>
+<div id="note" class="note"></div>
 
 </div>
 
@@ -401,290 +328,413 @@ AI может ошибаться. Проверяйте имена, даты, с�
 const WORKER_URL =
 "https://rapid-term-dbe0.nadiiahonda34.workers.dev/";
 
-let mode = "create";
-let recipient = "Работодатель";
-
-
-const modeButtons =
-document.querySelectorAll(".mode");
-
-const categoryButtons =
-document.querySelectorAll(".cat");
-
-const recipientBlock =
-document.getElementById("recipientBlock");
-
-const textLabel =
-document.getElementById("textLabel");
-
-const text =
-document.getElementById("text");
-
-const sourceLanguage =
-document.getElementById("sourceLanguage");
-
-const targetLanguage =
-document.getElementById("targetLanguage");
-
-const tone =
-document.getElementById("tone");
-
-const name =
-document.getElementById("name");
-
-const generate =
-document.getElementById("generate");
-
-const result =
-document.getElementById("result");
-
-const errorBox =
-document.getElementById("error");
-
-const copy =
-document.getElementById("copy");
-
-
-modeButtons.forEach(button => {
-
-button.addEventListener("click", () => {
-
-modeButtons.forEach(x =>
-x.classList.remove("active"));
-
-button.classList.add("active");
-
-mode = button.dataset.mode;
-
-updateMode();
-
-});
-
-});
-
-
-categoryButtons.forEach(button => {
-
-button.addEventListener("click", () => {
-
-categoryButtons.forEach(x =>
-x.classList.remove("active"));
-
-button.classList.add("active");
-
-recipient =
-button.dataset.recipient;
-
-});
-
-});
-
-
-function updateMode() {
-
-result.classList.remove("show");
-copy.classList.remove("show");
-errorBox.textContent = "";
-
-if (mode === "create") {
-
-recipientBlock.style.display = "block";
-
-textLabel.textContent =
-"Что вы хотите сообщить?";
-
-text.placeholder =
-"Например: хочу попросить работодателя дать мне отпуск с 12 по 19 сентября.";
-
-generate.textContent =
-"Создать письмо";
-
-}
-
-if (mode === "reply") {
-
-recipientBlock.style.display = "none";
-
-textLabel.textContent =
-"Вставьте полученное письмо";
-
-text.placeholder =
-"Вставьте сюда письмо, на которое хотите ответить...";
-
-generate.textContent =
-"Подготовить ответ";
-
-}
-
-if (mode === "explain") {
-
-recipientBlock.style.display = "none";
-
-textLabel.textContent =
-"Вставьте письмо";
-
-text.placeholder =
-"Вставьте сюда письмо, которое хотите понять...";
-
-generate.textContent =
-"Объяснить письмо";
-
-}
-
-}
-
-
-generate.addEventListener(
-"click",
-async () => {
-
-const inputText =
-text.value.trim();
-
-if (!inputText) {
-
-errorBox.textContent =
-"Введите текст.";
-
-return;
-}
-
-errorBox.textContent = "";
-
-result.classList.remove("show");
-copy.classList.remove("show");
-
-generate.disabled = true;
-
-const oldButtonText =
-generate.textContent;
-
-generate.textContent =
-"AI работает...";
-
-
-try {
-
-const response =
-await fetch(WORKER_URL, {
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
+const languages = {
+  auto:"Автоматически",
+  de:"Немецкий",
+  en:"Английский",
+  ru:"Русский",
+  uk:"Украинский",
+  pl:"Польский",
+  fr:"Французский",
+  es:"Испанский",
+  it:"Итальянский"
+};
+
+const translations = {
+
+ru:{
+ title:"Письма без языкового барьера",
+ subtitle:"Создавайте, отвечайте и разбирайте письма с помощью AI.",
+ action:"Что нужно сделать?",
+ create:"✍️ Создать письмо",
+ reply:"↩️ Ответить на письмо",
+ explain:"💡 Объяснить письмо",
+ source:"Я пишу / письмо написано на",
+ target:"Получить результат на",
+ recipient:"Кому пишем?",
+ employer:"💼 Работодатель",
+ landlord:"🏠 Арендодатель",
+ authority:"🏛️ Ведомство",
+ insurance:"🩺 Страховая",
+ shop:"🛒 Магазин",
+ other:"✍️ Другое",
+ textCreate:"Что вы хотите сообщить?",
+ textReply:"Вставьте полученное письмо",
+ textExplain:"Вставьте письмо",
+ placeholderCreate:"Например: хочу попросить работодателя дать мне отпуск с 12 по 19 сентября.",
+ placeholderReply:"Вставьте сюда письмо, на которое хотите ответить...",
+ placeholderExplain:"Вставьте сюда письмо, которое хотите понять...",
+ tone:"Тон",
+ name:"Ваше имя",
+ namePlaceholder:"Например: Анна",
+ buttonCreate:"Создать письмо",
+ buttonReply:"Подготовить ответ",
+ buttonExplain:"Объяснить письмо",
+ working:"AI работает...",
+ copy:"📋 Скопировать",
+ copied:"✓ Скопировано",
+ empty:"Введите текст.",
+ error:"Не удалось выполнить запрос: ",
+ note:"AI может ошибаться. Проверяйте имена, даты, суммы и важные сведения перед отправкой."
 },
 
-body:JSON.stringify({
+de:{
+ title:"Briefe ohne Sprachbarrieren",
+ subtitle:"Erstellen, beantworten und verstehen Sie Briefe mit AI.",
+ action:"Was möchten Sie tun?",
+ create:"✍️ Brief erstellen",
+ reply:"↩️ Auf Brief antworten",
+ explain:"💡 Brief erklären",
+ source:"Ich schreibe / der Brief ist auf",
+ target:"Ergebnis auf",
+ recipient:"An wen schreiben Sie?",
+ employer:"💼 Arbeitgeber",
+ landlord:"🏠 Vermieter",
+ authority:"🏛️ Behörde",
+ insurance:"🩺 Versicherung",
+ shop:"🛒 Geschäft",
+ other:"✍️ Andere",
+ textCreate:"Was möchten Sie mitteilen?",
+ textReply:"Erhaltenen Brief einfügen",
+ textExplain:"Brief einfügen",
+ placeholderCreate:"Zum Beispiel: Ich möchte meinen Arbeitgeber um Urlaub bitten.",
+ placeholderReply:"Fügen Sie hier den Brief ein, auf den Sie antworten möchten...",
+ placeholderExplain:"Fügen Sie hier den Brief ein, den Sie verstehen möchten...",
+ tone:"Ton",
+ name:"Ihr Name",
+ namePlaceholder:"Zum Beispiel: Anna",
+ buttonCreate:"Brief erstellen",
+ buttonReply:"Antwort erstellen",
+ buttonExplain:"Brief erklären",
+ working:"AI arbeitet...",
+ copy:"📋 Kopieren",
+ copied:"✓ Kopiert",
+ empty:"Bitte geben Sie einen Text ein.",
+ error:"Anfrage fehlgeschlagen: ",
+ note:"AI kann Fehler machen. Prüfen Sie Namen, Daten, Beträge und wichtige Angaben vor dem Versenden."
+},
 
-mode:mode,
+en:{
+ title:"Letters without language barriers",
+ subtitle:"Create, reply to and understand letters with AI.",
+ action:"What would you like to do?",
+ create:"✍️ Create a letter",
+ reply:"↩️ Reply to a letter",
+ explain:"💡 Explain a letter",
+ source:"I write / the letter is in",
+ target:"Get the result in",
+ recipient:"Who are you writing to?",
+ employer:"💼 Employer",
+ landlord:"🏠 Landlord",
+ authority:"🏛️ Authority",
+ insurance:"🩺 Insurance",
+ shop:"🛒 Shop",
+ other:"✍️ Other",
+ textCreate:"What would you like to say?",
+ textReply:"Paste the letter you received",
+ textExplain:"Paste the letter",
+ placeholderCreate:"For example: I would like to ask my employer for vacation.",
+ placeholderReply:"Paste the letter you want to reply to...",
+ placeholderExplain:"Paste the letter you want explained...",
+ tone:"Tone",
+ name:"Your name",
+ namePlaceholder:"For example: Anna",
+ buttonCreate:"Create letter",
+ buttonReply:"Create reply",
+ buttonExplain:"Explain letter",
+ working:"AI is working...",
+ copy:"📋 Copy",
+ copied:"✓ Copied",
+ empty:"Please enter some text.",
+ error:"Request failed: ",
+ note:"AI can make mistakes. Check names, dates, amounts and important information before sending."
+},
 
-text:inputText,
+uk:{
+ title:"Листи без мовних бар'єрів",
+ subtitle:"Створюйте, відповідайте та розбирайте листи за допомогою AI.",
+ action:"Що потрібно зробити?",
+ create:"✍️ Створити лист",
+ reply:"↩️ Відповісти на лист",
+ explain:"💡 Пояснити лист",
+ source:"Я пишу / лист написаний",
+ target:"Отримати результат",
+ recipient:"Кому пишемо?",
+ employer:"💼 Роботодавець",
+ landlord:"🏠 Орендодавець",
+ authority:"🏛️ Установа",
+ insurance:"🩺 Страхова",
+ shop:"🛒 Магазин",
+ other:"✍️ Інше",
+ textCreate:"Що ви хочете повідомити?",
+ textReply:"Вставте отриманий лист",
+ textExplain:"Вставте лист",
+ placeholderCreate:"Наприклад: хочу попросити роботодавця надати мені відпустку.",
+ placeholderReply:"Вставте лист, на який хочете відповісти...",
+ placeholderExplain:"Вставте лист, який хочете зрозуміти...",
+ tone:"Тон",
+ name:"Ваше ім'я",
+ namePlaceholder:"Наприклад: Анна",
+ buttonCreate:"Створити лист",
+ buttonReply:"Підготувати відповідь",
+ buttonExplain:"Пояснити лист",
+ working:"AI працює...",
+ copy:"📋 Копіювати",
+ copied:"✓ Скопійовано",
+ empty:"Введіть текст.",
+ error:"Не вдалося виконати запит: ",
+ note:"AI може помилятися. Перевіряйте імена, дати, суми та важливі дані перед відправленням."
+},
 
-sourceLanguage:
-sourceLanguage.value,
+pl:{
+ title:"Listy bez barier językowych",
+ subtitle:"Twórz, odpowiadaj i wyjaśniaj listy za pomocą AI.",
+ action:"Co chcesz zrobić?",
+ create:"✍️ Utwórz list",
+ reply:"↩️ Odpowiedz na list",
+ explain:"💡 Wyjaśnij list",
+ source:"Piszę / list jest w języku",
+ target:"Język wyniku",
+ recipient:"Do kogo piszesz?",
+ employer:"💼 Pracodawca",
+ landlord:"🏠 Wynajmujący",
+ authority:"🏛️ Urząd",
+ insurance:"🩺 Ubezpieczyciel",
+ shop:"🛒 Sklep",
+ other:"✍️ Inne",
+ textCreate:"Co chcesz przekazać?",
+ textReply:"Wklej otrzymany list",
+ textExplain:"Wklej list",
+ placeholderCreate:"Na przykład: chcę poprosić pracodawcę o urlop.",
+ placeholderReply:"Wklej list, na który chcesz odpowiedzieć...",
+ placeholderExplain:"Wklej list, który chcesz zrozumieć...",
+ tone:"Ton",
+ name:"Twoje imię",
+ namePlaceholder:"Na przykład: Anna",
+ buttonCreate:"Utwórz list",
+ buttonReply:"Przygotuj odpowiedź",
+ buttonExplain:"Wyjaśnij list",
+ working:"AI pracuje...",
+ copy:"📋 Kopiuj",
+ copied:"✓ Skopiowano",
+ empty:"Wpisz tekst.",
+ error:"Nie udało się wykonać żądania: ",
+ note:"AI może popełniać błędy. Sprawdź imiona, daty, kwoty i ważne informacje przed wysłaniem."
+}
 
-targetLanguage:
-targetLanguage.value,
+};
 
-recipient:recipient,
+let uiLang="ru";
+let mode="create";
+let recipient="Работодатель";
 
-tone:tone.value,
+const $ = id => document.getElementById(id);
 
-name:name.value.trim()
+const modeButtons=document.querySelectorAll(".mode");
+const categoryButtons=document.querySelectorAll(".cat");
 
-})
+function fillLanguageSelects(){
+
+ const source=$("sourceLanguage");
+ const target=$("targetLanguage");
+
+ source.innerHTML="";
+ target.innerHTML="";
+
+ Object.entries(languages).forEach(([key,value])=>{
+   const option=document.createElement("option");
+   option.value=value;
+   option.textContent=value;
+   source.appendChild(option);
+ });
+
+ Object.entries(languages).forEach(([key,value])=>{
+   if(key==="auto") return;
+   const option=document.createElement("option");
+   option.value=value;
+   option.textContent=value;
+   target.appendChild(option);
+ });
+
+ source.value="Автоматически";
+ target.value="Немецкий";
+}
+
+function updateInterface(){
+
+ const t=translations[uiLang];
+
+ document.documentElement.lang=uiLang;
+
+ $("title").textContent=t.title;
+ $("subtitle").textContent=t.subtitle;
+ $("actionLabel").textContent=t.action;
+
+ $("createMode").textContent=t.create;
+ $("replyMode").textContent=t.reply;
+ $("explainMode").textContent=t.explain;
+
+ $("sourceLabel").textContent=t.source;
+ $("targetLabel").textContent=t.target;
+ $("recipientLabel").textContent=t.recipient;
+
+ categoryButtons.forEach(button=>{
+   button.textContent=t[button.dataset.key];
+ });
+
+ $("toneLabel").textContent=t.tone;
+ $("nameLabel").textContent=t.name;
+ $("name").placeholder=t.namePlaceholder;
+
+ $("copy").textContent=t.copy;
+ $("note").textContent=t.note;
+
+ updateMode();
+}
+
+function updateMode(){
+
+ const t=translations[uiLang];
+
+ $("result").classList.remove("show");
+ $("copy").classList.remove("show");
+ $("error").textContent="";
+
+ if(mode==="create"){
+   $("recipientBlock").style.display="block";
+   $("textLabel").textContent=t.textCreate;
+   $("text").placeholder=t.placeholderCreate;
+   $("generate").textContent=t.buttonCreate;
+ }
+
+ if(mode==="reply"){
+   $("recipientBlock").style.display="none";
+   $("textLabel").textContent=t.textReply;
+   $("text").placeholder=t.placeholderReply;
+   $("generate").textContent=t.buttonReply;
+ }
+
+ if(mode==="explain"){
+   $("recipientBlock").style.display="none";
+   $("textLabel").textContent=t.textExplain;
+   $("text").placeholder=t.placeholderExplain;
+   $("generate").textContent=t.buttonExplain;
+ }
+}
+
+$("uiLanguage").addEventListener("change",e=>{
+ uiLang=e.target.value;
+ updateInterface();
+});
+
+modeButtons.forEach(button=>{
+ button.addEventListener("click",()=>{
+   modeButtons.forEach(x=>x.classList.remove("active"));
+   button.classList.add("active");
+   mode=button.dataset.mode;
+   updateMode();
+ });
+});
+
+categoryButtons.forEach(button=>{
+ button.addEventListener("click",()=>{
+   categoryButtons.forEach(x=>x.classList.remove("active"));
+   button.classList.add("active");
+   recipient=button.dataset.recipient;
+ });
+});
+
+$("generate").addEventListener("click",async()=>{
+
+ const t=translations[uiLang];
+ const input=$("text").value.trim();
+
+ if(!input){
+   $("error").textContent=t.empty;
+   return;
+ }
+
+ $("error").textContent="";
+ $("result").classList.remove("show");
+ $("copy").classList.remove("show");
+
+ $("generate").disabled=true;
+ const oldText=$("generate").textContent;
+ $("generate").textContent=t.working;
+
+ try{
+
+   const response=await fetch(WORKER_URL,{
+     method:"POST",
+     headers:{
+       "Content-Type":"application/json"
+     },
+     body:JSON.stringify({
+       mode,
+       text:input,
+       sourceLanguage:$("sourceLanguage").value,
+       targetLanguage:$("targetLanguage").value,
+       recipient,
+       tone:$("tone").value,
+       name:$("name").value.trim()
+     })
+   });
+
+   const data=await response.json();
+
+   if(!response.ok){
+     throw new Error(
+       data.details ||
+       data.error ||
+       "Server error"
+     );
+   }
+
+   const output=data.result || data.letter;
+
+   if(!output){
+     throw new Error("No result");
+   }
+
+   $("result").textContent=output;
+   $("result").classList.add("show");
+   $("copy").classList.add("show");
+
+ }catch(err){
+
+   $("error").textContent=
+     t.error+err.message;
+
+ }
+
+ $("generate").disabled=false;
+ $("generate").textContent=oldText;
 
 });
 
+$("copy").addEventListener("click",async()=>{
 
-const data =
-await response.json();
+ const t=translations[uiLang];
 
+ try{
+   await navigator.clipboard.writeText(
+     $("result").textContent
+   );
 
-if (!response.ok) {
+   $("copy").textContent=t.copied;
 
-throw new Error(
-data.details ||
-data.error ||
-"Ошибка сервера"
-);
+   setTimeout(()=>{
+     $("copy").textContent=t.copy;
+   },1500);
 
-}
-
-
-const output =
-data.result ||
-data.letter;
-
-
-if (!output) {
-
-throw new Error(
-"AI не вернул результат."
-);
-
-}
-
-
-result.textContent =
-output;
-
-result.classList.add("show");
-
-copy.classList.add("show");
-
-
-} catch(err) {
-
-console.error(err);
-
-errorBox.textContent =
-"Не удалось выполнить запрос: " +
-err.message;
-
-}
-
-
-generate.disabled = false;
-
-generate.textContent =
-oldButtonText;
+ }catch{
+   alert(t.error);
+ }
 
 });
 
-
-copy.addEventListener(
-"click",
-async () => {
-
-try {
-
-await navigator.clipboard.writeText(
-result.textContent
-);
-
-copy.textContent =
-"✓ Скопировано";
-
-setTimeout(() => {
-
-copy.textContent =
-"📋 Скопировать";
-
-},1500);
-
-} catch {
-
-alert(
-"Не удалось скопировать текст."
-);
-
-}
-
-});
-
-
-updateMode();
+fillLanguageSelects();
+updateInterface();
 
 </script>
 
