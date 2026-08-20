@@ -291,7 +291,6 @@ data-key="other"></button>
 </div>
 
 <label id="textLabel" for="text"></label>
-
 <textarea id="text"></textarea>
 
 <div class="row">
@@ -311,9 +310,7 @@ data-key="other"></button>
 <button id="generate" class="generate"></button>
 
 <div id="error" class="error"></div>
-
 <div id="result" class="result"></div>
-
 <button id="copy" class="copy"></button>
 
 </div>
@@ -322,11 +319,7 @@ data-key="other"></button>
 
 </div>
 
-
 <script>
-
-const WORKER_URL =
-"https://rapid-term-dbe0.nadiiahonda34.workers.dev/";
 
 const languages = {
   auto:"Автоматически",
@@ -528,6 +521,8 @@ let uiLang="ru";
 let mode="create";
 let recipient="Работодатель";
 
+const WORKER_URL="https://rapid-term-dbe0.nadiiahonda34.workers.dev/";
+
 const $ = id => document.getElementById(id);
 
 const modeButtons=document.querySelectorAll(".mode");
@@ -558,6 +553,22 @@ function fillLanguageSelects(){
 
  source.value="Автоматически";
  target.value="Немецкий";
+
+ const tones=[
+   "Официальный",
+   "Вежливый",
+   "Дружелюбный",
+   "Краткий"
+ ];
+
+ $("tone").innerHTML="";
+
+ tones.forEach(value=>{
+   const option=document.createElement("option");
+   option.value=value;
+   option.textContent=value;
+   $("tone").appendChild(option);
+ });
 }
 
 function updateInterface(){
@@ -671,6 +682,7 @@ $("generate").addEventListener("click",async()=>{
      },
      body:JSON.stringify({
        mode,
+       situation:input,
        text:input,
        sourceLanguage:$("sourceLanguage").value,
        targetLanguage:$("targetLanguage").value,
@@ -680,17 +692,31 @@ $("generate").addEventListener("click",async()=>{
      })
    });
 
-   const data=await response.json();
+   const raw=await response.text();
+
+   let data={};
+
+   try{
+     data=raw ? JSON.parse(raw) : {};
+   }catch{
+     throw new Error(
+       raw || "Server returned an invalid response"
+     );
+   }
 
    if(!response.ok){
      throw new Error(
        data.details ||
        data.error ||
-       "Server error"
+       `Server error (${response.status})`
      );
    }
 
-   const output=data.result || data.letter;
+   const output=
+     data.result ||
+     data.letter ||
+     data.output ||
+     data.text;
 
    if(!output){
      throw new Error("No result");
