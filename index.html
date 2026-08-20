@@ -574,7 +574,7 @@ function fillLanguageSelects(){
 
  Object.entries(languages).forEach(([key,value])=>{
    const option=document.createElement("option");
-   option.value=value;
+   option.value=key;
    option.textContent=value;
    source.appendChild(option);
  });
@@ -582,7 +582,7 @@ function fillLanguageSelects(){
  Object.entries(languages).forEach(([key,value])=>{
    if(key==="auto") return;
    const option=document.createElement("option");
-   option.value=value;
+   option.value=key;
    option.textContent=value;
    target.appendChild(option);
  });
