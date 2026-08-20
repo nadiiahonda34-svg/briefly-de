@@ -1,64 +1,49 @@
-<!doctype html>
-<html lang="ru">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Briefly DE — немецкое письмо за 2 минуты</title>
-<style>
-:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#667085;--accent:#3157d5;--line:#dce2ee}
-*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-.wrap{max-width:920px;margin:auto;padding:40px 18px}.hero{text-align:center;margin-bottom:26px}
-.logo{font-weight:800;font-size:22px}.logo span{color:var(--accent)} h1{font-size:38px;line-height:1.08;margin:18px 0 10px}
-.sub{color:var(--muted);font-size:17px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 8px 30px rgba(20,35,70,.06)}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0 22px}
-.cat{border:1px solid var(--line);background:white;padding:13px;border-radius:12px;cursor:pointer;font-weight:650}
-.cat.active{border:2px solid var(--accent);color:var(--accent);background:#f4f7ff}
-label{display:block;font-weight:700;margin:16px 0 7px}textarea,input,select{width:100%;padding:13px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
-textarea{min-height:120px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-button.generate{width:100%;margin-top:20px;padding:15px;border:0;border-radius:12px;background:var(--accent);color:white;font-size:16px;font-weight:800;cursor:pointer}
-.result{display:none;margin-top:22px;padding:20px;border-radius:14px;background:#f8faff;border:1px solid #d9e1ff;white-space:pre-wrap;line-height:1.55}
-.note{font-size:13px;color:var(--muted);margin-top:12px;text-align:center}
-@media(max-width:650px){.grid{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr}h1{font-size:30px}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="hero">
-    <div class="logo">Briefly <span>DE</span></div>
-    <h1>Немецкое письмо за 2 минуты</h1>
-    <div class="sub">Опишите ситуацию по-русски — получите аккуратный черновик письма на немецком.</div>
-  </div>
-  <div class="card">
-    <label>Кому пишем?</label>
-    <div class="grid" id="cats">
-      <button class="cat active">💼 Работодатель</button>
-      <button class="cat">🏠 Арендодатель</button>
-      <button class="cat">🏛️ Ведомство</button>
-      <button class="cat">🩺 Страховая</button>
-      <button class="cat">🛒 Магазин</button>
-      <button class="cat">✍️ Другое</button>
-    </div>
-    <label for="situation">Что вы хотите сообщить?</label>
-    <textarea id="situation" placeholder="Например: хочу попросить отпуск с 12 по 19 сентября..."></textarea>
-    <div class="row">
-      <div><label for="tone">Тон</label><select id="tone"><option>Вежливый</option><option>Официальный</option><option>Настойчивый</option></select></div>
-      <div><label for="name">Ваше имя</label><input id="name" placeholder="Анна"></div>
-    </div>
-    <button class="generate" onclick="demo()">Создать письмо</button>
-    <div id="result" class="result"></div>
-    <div class="note">Демо-версия: сейчас показывает пример. Следующий этап — подключение AI, чтобы письмо создавалось по вашему описанию.</div>
-  </div>
-</div>
 <script>
-document.querySelectorAll('.cat').forEach(b=>b.onclick=()=>{document.querySelectorAll('.cat').forEach(x=>x.classList.remove('active'));b.classList.add('active')});
-function demo(){
- const s=document.getElementById('situation').value.trim();
- const name=document.getElementById('name').value.trim()||'[Ваше имя]';
- const r=document.getElementById('result');
- if(!s){alert('Сначала опишите ситуацию.');return}
- r.style.display='block';
- r.textContent=`Betreff: Anfrage\n\nSehr geehrte Damen und Herren,\n\nich wende mich mit folgendem Anliegen an Sie:\n${s}\n\nIch wäre Ihnen für eine kurze Rückmeldung sehr dankbar.\n\nMit freundlichen Grüßen\n${name}\n\n———\nДЕМО: после подключения AI русское описание будет автоматически превращаться в естественное немецкое письмо.`;
+document.querySelectorAll('.cat').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.cat').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+});
+
+async function demo() {
+  const situation = document.getElementById('situation').value.trim();
+  const name = document.getElementById('name').value.trim();
+  const tone = document.getElementById('tone').value;
+  const result = document.getElementById('result');
+
+  if (!situation) {
+    alert('Сначала опишите ситуацию.');
+    return;
+  }
+
+  result.style.display = 'block';
+  result.textContent = 'Создаю письмо...';
+
+  try {
+    const response = await fetch(
+      'https://rapid-term-dbe0.nadiiahonda34.workers.dev/',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: situation,
+          name: name || 'Друг',
+          tone: tone
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Ошибка сервера');
+    }
+
+    result.textContent = data.letter;
+
+  } catch (error) {
+    result.textContent = 'Ошибка: ' + error.message;
+  }
 }
 </script>
-</body>
-</html>
