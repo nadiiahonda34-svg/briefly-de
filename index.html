@@ -1,551 +1,690 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Briefly DE — немецкое письмо за 2 минуты</title>
+<title>Briefly — AI-помощник для писем</title>
 
-  <style>
-    :root {
-      --bg: #f5f7fb;
-      --card: #ffffff;
-      --text: #172033;
-      --muted: #667085;
-      --accent: #3157d5;
-      --line: #dce2ee;
-      --success: #16803c;
-      --error: #c62828;
-    }
+<style>
+:root {
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#172033;
+  --muted:#667085;
+  --accent:#3157d5;
+  --line:#dce2ee;
+  --error:#b42318;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+* { box-sizing:border-box; }
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont,
-                   "Segoe UI", Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
+body {
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
-    .wrap {
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 40px 18px;
-    }
+.wrap {
+  max-width:900px;
+  margin:auto;
+  padding:40px 18px;
+}
 
-    .hero {
-      text-align: center;
-      margin-bottom: 28px;
-    }
+.hero {
+  text-align:center;
+  margin-bottom:28px;
+}
 
-    .logo {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--accent);
-    }
+.logo {
+  font-size:24px;
+  font-weight:900;
+  color:var(--accent);
+}
 
-    h1 {
-      margin: 12px 0 8px;
-      font-size: 38px;
-      line-height: 1.1;
-    }
+h1 {
+  font-size:38px;
+  margin:14px 0 8px;
+}
 
-    .subtitle {
-      color: var(--muted);
-      font-size: 17px;
-    }
+.subtitle {
+  color:var(--muted);
+  font-size:17px;
+}
 
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 24px;
-      box-shadow: 0 8px 30px rgba(20, 30, 60, 0.06);
-    }
+.card {
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 8px 30px rgba(20,35,70,.06);
+}
 
-    .section-title {
-      font-weight: 700;
-      margin: 4px 0 12px;
-    }
+label {
+  display:block;
+  font-weight:700;
+  margin:18px 0 8px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 24px;
-    }
+.modes {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
 
-    .cat {
-      border: 1px solid var(--line);
-      background: #fff;
-      padding: 14px 10px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 650;
-      font-size: 15px;
-    }
+.mode {
+  border:1px solid var(--line);
+  background:white;
+  border-radius:12px;
+  padding:15px 8px;
+  cursor:pointer;
+  font-weight:700;
+}
 
-    .cat:hover {
-      border-color: var(--accent);
-    }
+.mode.active {
+  border:2px solid var(--accent);
+  background:#f3f6ff;
+  color:var(--accent);
+}
 
-    .cat.active {
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      background: #f6f8ff;
-    }
+.languages {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
 
-    label {
-      display: block;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+select,
+input,
+textarea {
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:13px;
+  font:inherit;
+  background:white;
+}
 
-    textarea,
-    input,
-    select {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 11px;
-      padding: 13px;
-      font: inherit;
-      background: white;
-      color: var(--text);
-    }
+textarea {
+  min-height:150px;
+  resize:vertical;
+}
 
-    textarea {
-      min-height: 130px;
-      resize: vertical;
-    }
+.categories {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:9px;
+}
 
-    textarea:focus,
-    input:focus,
-    select:focus {
-      outline: 2px solid rgba(49, 87, 213, 0.18);
-      border-color: var(--accent);
-    }
+.cat {
+  border:1px solid var(--line);
+  background:white;
+  border-radius:10px;
+  padding:11px;
+  cursor:pointer;
+}
 
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 18px;
-    }
+.cat.active {
+  border:2px solid var(--accent);
+  color:var(--accent);
+  background:#f3f6ff;
+}
 
-    .generate {
-      width: 100%;
-      margin-top: 20px;
-      padding: 15px;
-      border: 0;
-      border-radius: 12px;
-      background: var(--accent);
-      color: white;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-    }
+.row {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
 
-    .generate:hover {
-      opacity: 0.94;
-    }
+.generate {
+  width:100%;
+  margin-top:22px;
+  padding:16px;
+  border:0;
+  border-radius:12px;
+  background:var(--accent);
+  color:white;
+  font-size:16px;
+  font-weight:800;
+  cursor:pointer;
+}
 
-    .generate:disabled {
-      opacity: 0.55;
-      cursor: wait;
-    }
+.generate:disabled {
+  opacity:.55;
+  cursor:wait;
+}
 
-    .status {
-      display: none;
-      margin-top: 18px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 14px;
-    }
+.result {
+  display:none;
+  margin-top:22px;
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fafbfe;
+  white-space:pre-wrap;
+  line-height:1.6;
+}
 
-    .status.error {
-      display: block;
-      background: #fff1f1;
-      color: var(--error);
-      border: 1px solid #ffcaca;
-    }
+.result.show {
+  display:block;
+}
 
-    .result {
-      display: none;
-      white-space: pre-wrap;
-      margin-top: 22px;
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #fafbfe;
-      line-height: 1.65;
-    }
+.error {
+  margin-top:16px;
+  color:var(--error);
+}
 
-    .result.show {
-      display: block;
-    }
+.copy {
+  display:none;
+  margin-top:10px;
+  padding:10px 15px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:white;
+  cursor:pointer;
+}
 
-    .copy {
-      display: none;
-      margin-top: 10px;
-      padding: 10px 15px;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background: white;
-      cursor: pointer;
-      font-weight: 650;
-    }
+.copy.show {
+  display:inline-block;
+}
 
-    .copy.show {
-      display: inline-block;
-    }
+.note {
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:18px;
+}
 
-    .note {
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-      margin-top: 20px;
-    }
+@media(max-width:650px) {
+  h1 { font-size:30px; }
 
-    @media (max-width: 650px) {
-      .grid {
-        grid-template-columns: 1fr 1fr;
-      }
+  .modes,
+  .categories {
+    grid-template-columns:1fr;
+  }
 
-      .row {
-        grid-template-columns: 1fr;
-      }
-
-      h1 {
-        font-size: 30px;
-      }
-    }
-  </style>
+  .languages,
+  .row {
+    grid-template-columns:1fr;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <div class="wrap">
 
-  <div class="hero">
-    <div class="logo">Briefly DE 🇩🇪</div>
+<div class="hero">
+  <div class="logo">Briefly ✨</div>
 
-    <h1>Немецкое письмо за 2 минуты</h1>
+  <h1>Письма без языкового барьера</h1>
 
-    <div class="subtitle">
-      Опишите ситуацию своими словами — Briefly составит готовое письмо на немецком.
-    </div>
+  <div class="subtitle">
+    Создавайте, отвечайте и разбирайте письма с помощью AI.
   </div>
+</div>
 
-  <div class="card">
 
-    <div class="section-title">
-      Кому вы пишете?
-    </div>
+<div class="card">
 
-    <div class="grid" id="categories">
+<label>Что нужно сделать?</label>
 
-      <button type="button" class="cat active" data-recipient="Работодатель">
-        💼 Работодатель
-      </button>
+<div class="modes">
 
-      <button type="button" class="cat" data-recipient="Арендодатель">
-        🏠 Арендодатель
-      </button>
+<button
+  class="mode active"
+  data-mode="create">
+  ✍️ Создать письмо
+</button>
 
-      <button type="button" class="cat" data-recipient="Ведомство">
-        🏛️ Ведомство
-      </button>
+<button
+  class="mode"
+  data-mode="reply">
+  ↩️ Ответить на письмо
+</button>
 
-      <button type="button" class="cat" data-recipient="Страховая компания">
-        🩺 Страховая
-      </button>
+<button
+  class="mode"
+  data-mode="explain">
+  💡 Объяснить письмо
+</button>
 
-      <button type="button" class="cat" data-recipient="Магазин">
-        🛒 Магазин
-      </button>
+</div>
 
-      <button type="button" class="cat" data-recipient="Другое">
-        ✍️ Другое
-      </button>
 
-    </div>
+<div class="languages">
 
-    <label for="situation">
-      Что вы хотите сообщить?
-    </label>
+<div>
+<label for="sourceLanguage">
+Я пишу / письмо написано на
+</label>
 
-    <textarea
-      id="situation"
-      placeholder="Например: я заболела и сегодня не смогу прийти на работу. Хочу сообщить начальнику и извиниться."
-    ></textarea>
+<select id="sourceLanguage">
+<option>Автоматически</option>
+<option>Русский</option>
+<option>Украинский</option>
+<option>Немецкий</option>
+<option>Английский</option>
+<option>Польский</option>
+<option>Французский</option>
+<option>Испанский</option>
+<option>Итальянский</option>
+</select>
+</div>
 
-    <div class="row">
 
-      <div>
-        <label for="tone">Тон</label>
+<div>
+<label for="targetLanguage">
+Получить результат на
+</label>
 
-        <select id="tone">
-          <option value="Вежливый">Вежливый</option>
-          <option value="Официальный">Официальный</option>
-          <option value="Настойчивый">Настойчивый</option>
-        </select>
-      </div>
+<select id="targetLanguage">
+<option>Немецкий</option>
+<option>Русский</option>
+<option>Украинский</option>
+<option>Английский</option>
+<option>Польский</option>
+<option>Французский</option>
+<option>Испанский</option>
+<option>Итальянский</option>
+</select>
+</div>
 
-      <div>
-        <label for="name">Ваше имя</label>
+</div>
 
-        <input
-          id="name"
-          type="text"
-          placeholder="Например: Анна"
-        >
-      </div>
 
-    </div>
+<div id="recipientBlock">
 
-    <button
-      type="button"
-      class="generate"
-      id="generate"
-    >
-      Создать письмо
-    </button>
+<label>Кому пишем?</label>
 
-    <div id="status" class="status"></div>
+<div class="categories">
 
-    <div id="result" class="result"></div>
+<button class="cat active"
+data-recipient="Работодатель">
+💼 Работодатель
+</button>
 
-    <button
-      type="button"
-      id="copy"
-      class="copy"
-    >
-      📋 Скопировать письмо
-    </button>
+<button class="cat"
+data-recipient="Арендодатель">
+🏠 Арендодатель
+</button>
 
-  </div>
+<button class="cat"
+data-recipient="Ведомство">
+🏛️ Ведомство
+</button>
 
-  <div class="note">
-    Проверьте имена, даты и другие важные данные перед отправкой письма.
-  </div>
+<button class="cat"
+data-recipient="Страховая компания">
+🩺 Страховая
+</button>
+
+<button class="cat"
+data-recipient="Магазин">
+🛒 Магазин
+</button>
+
+<button class="cat"
+data-recipient="Другое">
+✍️ Другое
+</button>
+
+</div>
+</div>
+
+
+<label id="textLabel" for="text">
+Что вы хотите сообщить?
+</label>
+
+<textarea
+id="text"
+placeholder="Например: хочу попросить работодателя дать мне отпуск с 12 по 19 сентября.">
+</textarea>
+
+
+<div class="row">
+
+<div>
+<label for="tone">Тон</label>
+
+<select id="tone">
+<option>Вежливый</option>
+<option>Официальный</option>
+<option>Дружелюбный</option>
+<option>Настойчивый</option>
+<option>Краткий</option>
+</select>
+</div>
+
+
+<div>
+<label for="name">Ваше имя</label>
+
+<input
+id="name"
+placeholder="Например: Анна">
+</div>
+
+</div>
+
+
+<button
+id="generate"
+class="generate">
+Создать письмо
+</button>
+
+<div id="error" class="error"></div>
+
+<div id="result" class="result"></div>
+
+<button
+id="copy"
+class="copy">
+📋 Скопировать
+</button>
+
+</div>
+
+
+<div class="note">
+AI может ошибаться. Проверяйте имена, даты, суммы и важные сведения перед отправкой.
+</div>
 
 </div>
 
 
 <script>
 
-  const WORKER_URL =
-    "https://rapid-term-dbe0.nadiiahonda34.workers.dev/";
+const WORKER_URL =
+"https://rapid-term-dbe0.nadiiahonda34.workers.dev/";
 
-  let recipient = "Работодатель";
+let mode = "create";
+let recipient = "Работодатель";
 
 
-  const categoryButtons =
-    document.querySelectorAll(".cat");
+const modeButtons =
+document.querySelectorAll(".mode");
 
-  const situationInput =
-    document.getElementById("situation");
+const categoryButtons =
+document.querySelectorAll(".cat");
 
-  const toneInput =
-    document.getElementById("tone");
+const recipientBlock =
+document.getElementById("recipientBlock");
 
-  const nameInput =
-    document.getElementById("name");
+const textLabel =
+document.getElementById("textLabel");
 
-  const generateButton =
-    document.getElementById("generate");
+const text =
+document.getElementById("text");
 
-  const result =
-    document.getElementById("result");
+const sourceLanguage =
+document.getElementById("sourceLanguage");
 
-  const statusBox =
-    document.getElementById("status");
+const targetLanguage =
+document.getElementById("targetLanguage");
 
-  const copyButton =
-    document.getElementById("copy");
+const tone =
+document.getElementById("tone");
 
+const name =
+document.getElementById("name");
 
-  categoryButtons.forEach(button => {
+const generate =
+document.getElementById("generate");
 
-    button.addEventListener("click", () => {
+const result =
+document.getElementById("result");
 
-      categoryButtons.forEach(item => {
-        item.classList.remove("active");
-      });
+const errorBox =
+document.getElementById("error");
 
-      button.classList.add("active");
+const copy =
+document.getElementById("copy");
 
-      recipient =
-        button.dataset.recipient;
-    });
 
-  });
+modeButtons.forEach(button => {
 
+button.addEventListener("click", () => {
 
-  generateButton.addEventListener(
-    "click",
-    generateLetter
-  );
+modeButtons.forEach(x =>
+x.classList.remove("active"));
 
+button.classList.add("active");
 
-  async function generateLetter() {
+mode = button.dataset.mode;
 
-    const situation =
-      situationInput.value.trim();
+updateMode();
 
-    const name =
-      nameInput.value.trim();
+});
 
-    const tone =
-      toneInput.value;
+});
 
 
-    if (!situation) {
+categoryButtons.forEach(button => {
 
-      showError(
-        "Сначала опишите, какое письмо вам нужно."
-      );
+button.addEventListener("click", () => {
 
-      situationInput.focus();
+categoryButtons.forEach(x =>
+x.classList.remove("active"));
 
-      return;
-    }
+button.classList.add("active");
 
+recipient =
+button.dataset.recipient;
 
-    statusBox.className = "status";
-    statusBox.textContent = "";
+});
 
-    result.classList.remove("show");
+});
 
-    copyButton.classList.remove("show");
 
-    generateButton.disabled = true;
+function updateMode() {
 
-    generateButton.textContent =
-      "Создаю письмо...";
+result.classList.remove("show");
+copy.classList.remove("show");
+errorBox.textContent = "";
 
+if (mode === "create") {
 
-    try {
+recipientBlock.style.display = "block";
 
-      const response = await fetch(
-        WORKER_URL,
-        {
-          method: "POST",
+textLabel.textContent =
+"Что вы хотите сообщить?";
 
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
+text.placeholder =
+"Например: хочу попросить работодателя дать мне отпуск с 12 по 19 сентября.";
 
-          body: JSON.stringify({
-            recipient: recipient,
-            message: situation,
-            name: name || "Без имени",
-            tone: tone
-          })
-        }
-      );
+generate.textContent =
+"Создать письмо";
 
+}
 
-      let data;
+if (mode === "reply") {
 
-      try {
+recipientBlock.style.display = "none";
 
-        data = await response.json();
+textLabel.textContent =
+"Вставьте полученное письмо";
 
-      } catch (jsonError) {
+text.placeholder =
+"Вставьте сюда письмо, на которое хотите ответить...";
 
-        throw new Error(
-          "Сервер вернул неправильный ответ."
-        );
-      }
+generate.textContent =
+"Подготовить ответ";
 
+}
 
-      if (!response.ok) {
+if (mode === "explain") {
 
-        throw new Error(
-          data.error ||
-          data.details ||
-          "Ошибка сервера."
-        );
-      }
+recipientBlock.style.display = "none";
 
+textLabel.textContent =
+"Вставьте письмо";
 
-      if (!data.letter) {
+text.placeholder =
+"Вставьте сюда письмо, которое хотите понять...";
 
-        throw new Error(
-          "Письмо не получено от сервера."
-        );
-      }
+generate.textContent =
+"Объяснить письмо";
 
+}
 
-      result.textContent =
-        data.letter;
+}
 
-      result.classList.add("show");
 
-      copyButton.classList.add("show");
+generate.addEventListener(
+"click",
+async () => {
 
+const inputText =
+text.value.trim();
 
-    } catch (error) {
+if (!inputText) {
 
-      console.error(error);
+errorBox.textContent =
+"Введите текст.";
 
-      showError(
-        "Не удалось создать письмо: " +
-        error.message
-      );
+return;
+}
 
-    } finally {
+errorBox.textContent = "";
 
-      generateButton.disabled = false;
+result.classList.remove("show");
+copy.classList.remove("show");
 
-      generateButton.textContent =
-        "Создать письмо";
-    }
-  }
+generate.disabled = true;
 
+const oldButtonText =
+generate.textContent;
 
-  function showError(message) {
+generate.textContent =
+"AI работает...";
 
-    statusBox.textContent = message;
 
-    statusBox.className =
-      "status error";
-  }
+try {
 
+const response =
+await fetch(WORKER_URL, {
 
-  copyButton.addEventListener(
-    "click",
-    async () => {
+method:"POST",
 
-      try {
+headers:{
+"Content-Type":"application/json"
+},
 
-        await navigator.clipboard.writeText(
-          result.textContent
-        );
+body:JSON.stringify({
 
-        copyButton.textContent =
-          "✓ Скопировано";
+mode:mode,
 
-        setTimeout(() => {
+text:inputText,
 
-          copyButton.textContent =
-            "📋 Скопировать письмо";
+sourceLanguage:
+sourceLanguage.value,
 
-        }, 1500);
+targetLanguage:
+targetLanguage.value,
 
-      } catch (error) {
+recipient:recipient,
 
-        alert(
-          "Не удалось автоматически скопировать письмо."
-        );
-      }
-    }
-  );
+tone:tone.value,
+
+name:name.value.trim()
+
+})
+
+});
+
+
+const data =
+await response.json();
+
+
+if (!response.ok) {
+
+throw new Error(
+data.details ||
+data.error ||
+"Ошибка сервера"
+);
+
+}
+
+
+const output =
+data.result ||
+data.letter;
+
+
+if (!output) {
+
+throw new Error(
+"AI не вернул результат."
+);
+
+}
+
+
+result.textContent =
+output;
+
+result.classList.add("show");
+
+copy.classList.add("show");
+
+
+} catch(err) {
+
+console.error(err);
+
+errorBox.textContent =
+"Не удалось выполнить запрос: " +
+err.message;
+
+}
+
+
+generate.disabled = false;
+
+generate.textContent =
+oldButtonText;
+
+});
+
+
+copy.addEventListener(
+"click",
+async () => {
+
+try {
+
+await navigator.clipboard.writeText(
+result.textContent
+);
+
+copy.textContent =
+"✓ Скопировано";
+
+setTimeout(() => {
+
+copy.textContent =
+"📋 Скопировать";
+
+},1500);
+
+} catch {
+
+alert(
+"Не удалось скопировать текст."
+);
+
+}
+
+});
+
+
+updateMode();
 
 </script>
 
