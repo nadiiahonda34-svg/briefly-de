@@ -585,7 +585,7 @@ function fillLanguageSelects(){
  source.innerHTML="";
  target.innerHTML="";
 
- Object.entries(languages).forEach(([key,value])=>{
+ Object.entries(uiLang === "ar" ? languagesAr : languages).forEach(([key,value])=>{
    const option=document.createElement("option");
    option.value=key;
    option.textContent=value;
