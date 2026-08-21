@@ -643,7 +643,26 @@ function updateInterface(){
 
  $("copy").textContent=t.copy;
  $("note").textContent=t.note;
+const tonesByLanguage = {
+  ru: ["Официальный", "Вежливый", "Дружелюбный", "Подробный"],
+  de: ["Formell", "Höflich", "Freundlich", "Ausführlich"],
+  en: ["Formal", "Polite", "Friendly", "Detailed"],
+  uk: ["Офіційний", "Ввічливий", "Дружній", "Детальний"],
+  pl: ["Formalny", "Uprzejmy", "Przyjazny", "Szczegółowy"],
+  fr: ["Formel", "Poli", "Amical", "Détaillé"],
+  es: ["Formal", "Cortés", "Amable", "Detallado"],
+  it: ["Formale", "Cortese", "Amichevole", "Dettagliato"],
+  ar: ["رسمي", "مهذب", "ودود", "مفصل"]
+};
 
+$("tone").innerHTML = "";
+
+(tonesByLanguage[uiLang] || tonesByLanguage.ru).forEach(value => {
+  const option = document.createElement("option");
+  option.value = value;
+  option.textContent = value;
+  $("tone").appendChild(option);
+});
  updateMode();
 }
 
