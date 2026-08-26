@@ -1,7 +1,7 @@
 <!doctype html><html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Briefly — AI Letter Assistant</title>
   <meta name="description" content="Briefly is an AI letter assistant that helps you create, reply to and understand professional messages and letters in multiple languages.">
-<link rel="canonical" href="https://nadiiahonda34-svg.github.io/briefly-de/">
+<link rel="canAonical" href="https://nadiiahonda34-svg.github.io/briefly-de/">
 <meta name="robots" content="index, follow">
 <style>
 :root{--bg:#f6f8fc;--card:#fff;--text:#172033;--muted:#667085;--accent:#3157d5;--accent-dark:#2346bb;--soft:#eef3ff;--success:#087a55;--line:#dce2ee;--error:#b42318}
@@ -22,8 +22,10 @@ html[dir=rtl] .feature{text-align:right}
 @media(max-width:800px){.scenarios{grid-template-columns:1fr 1fr}.trust{grid-template-columns:1fr}.top-link{display:none}}
 @media(max-width:650px){.wrap{padding:14px 14px 40px}.top{margin-bottom:22px}.card{padding:18px}.scenarios,.steps,.pricing{grid-template-columns:1fr}.section{margin-top:46px}.footer{flex-direction:column}.hero-proof{gap:8px 14px}}
 
-</style></head><body>
-<div class="wrap"><div class="top"><a class="brand" href="#top">Briefly ✨</a><div class="top-actions"><a class="top-link" href="#how">How it works</a><a class="top-link" href="#pricing">Pricing</a><select id="uiLanguage" class="language-select" aria-label="Interface language"></select></div></div><div class="hero" id="top"><div class="eyebrow">🇩🇪 Made for life in Germany</div><h1 id="title"></h1><div id="subtitle" class="subtitle"></div><div class="hero-proof"><span>No registration</span><span>9 languages</span><span>Facts stay unchanged</span></div></div>
+</style>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head><body>
+<div class="wrap"><div class="top"><a class="brand" href="#top">Briefly ✨</a><div class="top-actions"><a class="top-link" href="#how">How it works</a><a class="top-link" href="#pricing">Pricing</a><select id="uiLanguage" class="language-select" aria-label="Interface language"></select><div id="googleSignIn"></div><div id="googleUser" style="display:none;align-items:center;gap:8px;font-size:13px;font-weight:700"><span id="googleUserName"></span><button type="button" id="googleSignOut" style="border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px;cursor:pointer">Sign out</button></div></div></div><div class="hero" id="top"><div class="eyebrow">🇩🇪 Made for life in Germany</div><h1 id="title"></h1><div id="subtitle" class="subtitle"></div><div class="hero-proof"><span>No registration</span><span>9 languages</span><span>Facts stay unchanged</span></div></div>
 <div class="features">
 <div class="feature"><strong id="featureCreateTitle"></strong><span id="featureCreateText"></span></div>
 <div class="feature"><strong id="featureReplyTitle"></strong><span id="featureReplyText"></span></div>
@@ -52,7 +54,7 @@ en:{navHow:"How it works",navPrice:"Pricing",badge:"🇩🇪 Made for life in Ge
 de:{navHow:"So funktioniert es",navPrice:"Preise",badge:"🇩🇪 Für den Alltag in Deutschland",proof:["Ohne Registrierung","9 Sprachen","Fakten bleiben unverändert"],scTitle:"Häufige Situationen schneller lösen",scLead:"Wählen Sie einen typischen Fall und passen Sie ihn an.",scenarios:{jobcenter:["Jobcenter-Bescheid","Nachfragen oder einen Widerspruch vorbereiten."],heating:["Heizung oder Reparatur","Mangel melden und eine Frist erfragen."],appointment:["Behördentermin","Termin bestätigen, absagen oder verschieben."],employer:["Nachricht an Arbeitgeber","Zu Unterlagen, Schicht oder Abwesenheit schreiben."]},howTitle:"Vom komplizierten Brief zum nächsten Schritt",howLead:"Briefly macht auch schwierige Nachrichten verständlich.",steps:[["Einfügen oder beschreiben","Fügen Sie die Nachricht ein oder schildern Sie die Situation in Ihrer Sprache."],["Verstehen","Erhalten Sie eine einfache Erklärung ohne erfundene Fakten."],["Antworten","Erstellen Sie eine klare Antwort auf Deutsch oder in einer anderen Sprache."]],trustTitle:"Für vertrauliche Korrespondenz entwickelt",trust:[["Fakten bleiben erhalten","Namen, Daten, Beträge und Details werden nicht unbemerkt verändert."],["Sie behalten die Kontrolle","Prüfen und bearbeiten Sie jeden Text vor dem Versand."],["Klare Grenzen","Briefly hilft beim Formulieren, ersetzt aber keine Rechtsberatung."]],priceTitle:"Kostenlos starten. Später auf Plus wechseln.",priceLead:"Das Monatsabo wird vorbereitet. Noch werden keine Zahlungen angenommen.",free:"Kostenlos testen",freeList:["Erstellen, antworten und erklären","Alle unterstützten Sprachen","Keine Zahlung erforderlich"],try:"Briefly testen",plus:"Briefly Plus — demnächst",month:"/ Monat",plusList:["Höhere monatliche Nutzung","Bevorzugte Verarbeitung","Entwürfe und Verlauf speichern"],cta:"Über Start informieren",status:"Abonnements sind noch nicht verfügbar. Nach der Gewerbeanmeldung kann ein Zahlungslink ergänzt werden.",launch:"Der kommerzielle Start ist noch nicht aktiv. Vor Abonnements müssen Zahlungsanbieter sowie geschäftliche und rechtliche Angaben eingerichtet werden.",contact:"Kontaktdaten folgen",impressum:"Impressum",privacy:"Datenschutz",legal:"Rechtliche Angaben vor dem Start: Name, Anschrift, Kontakt sowie Informationen zu Hosting und Datenverarbeitung ergänzen.",replyCta:"Antwort vorbereiten →"},
 ru:{navHow:"Как это работает",navPrice:"Тарифы",badge:"🇩🇪 Для жизни в Германии",proof:["Без регистрации","9 языков","Факты не изменяются"],scTitle:"Популярные ситуации — быстрее",scLead:"Выберите типичную ситуацию в Германии и дополните её своими данными.",scenarios:{jobcenter:["Решение Jobcenter","Запросить разъяснение или подготовить возражение."],heating:["Отопление или ремонт","Сообщить о поломке и запросить срок ремонта."],appointment:["Приём в ведомстве","Подтвердить, отменить или перенести встречу."],employer:["Сообщение работодателю","Написать о документах, смене или отсутствии."]},howTitle:"От сложного письма к понятному действию",howLead:"Briefly помогает разобраться в сообщении и подготовить следующий шаг.",steps:[["Вставьте или опишите","Добавьте полученное письмо или опишите ситуацию на своём языке."],["Разберитесь","Получите простое объяснение без выдуманных дат, сумм и фактов."],["Ответьте","Создайте краткий ответ на немецком или другом языке."]],trustTitle:"Для важной переписки",trust:[["Факты сохраняются","Имена, даты, суммы и детали не изменяются незаметно."],["Решение остаётся за вами","Проверьте и отредактируйте результат перед отправкой."],["Чёткие границы","Briefly помогает с текстом, но не заменяет юридическую консультацию."]],priceTitle:"Начните бесплатно. Перейдите на Plus после запуска.",priceLead:"Ежемесячная подписка готовится. Сейчас оплата не принимается.",free:"Бесплатный тест",freeList:["Создание, ответы и объяснения","Все поддерживаемые языки","Без оплаты"],try:"Попробовать Briefly",plus:"Briefly Plus — скоро",month:"/ месяц",plusList:["Больше запросов в месяц","Приоритетная обработка","Сохранение черновиков и истории"],cta:"Сообщить о запуске",status:"Подписка пока не открыта. Платёжную ссылку можно добавить после регистрации деятельности.",launch:"Коммерческий запуск пока не активирован. До приёма оплаты подключите платёжный сервис и заполните деловые и юридические данные.",contact:"Контактные данные появятся позже",impressum:"Impressum",privacy:"Конфиденциальность",legal:"Юридические данные перед запуском: добавьте имя ответственного лица, почтовый адрес, контакты и информацию об обработке данных.",replyCta:"Подготовить ответ →"},
 uk:{navHow:"Як це працює",navPrice:"Тарифи",badge:"🇩🇪 Для життя в Німеччині",proof:["Без реєстрації","9 мов","Факти не змінюються"],scTitle:"Типові ситуації — швидше",scLead:"Оберіть поширену ситуацію та доповніть її своїми даними.",scenarios:{jobcenter:["Рішення Jobcenter","Запитати пояснення або підготувати заперечення."],heating:["Опалення чи ремонт","Повідомити про несправність і запитати строк ремонту."],appointment:["Прийом у відомстві","Підтвердити, скасувати або перенести зустріч."],employer:["Повідомлення роботодавцю","Написати про документи, зміну чи відсутність."]},howTitle:"Від складного листа до зрозумілої дії",howLead:"Briefly допомагає зрозуміти повідомлення та підготувати наступний крок.",steps:[["Вставте або опишіть","Додайте отриманий лист або опишіть ситуацію своєю мовою."],["Зрозумійте","Отримайте просте пояснення без вигаданих фактів."],["Відповідайте","Створіть стислу відповідь німецькою або іншою мовою."]],trustTitle:"Для важливого листування",trust:[["Факти зберігаються","Імена, дати, суми та деталі не змінюються непомітно."],["Рішення за вами","Перевірте й відредагуйте результат перед надсиланням."],["Чіткі межі","Briefly допомагає з текстом, але не замінює юридичну консультацію."]],priceTitle:"Почніть безкоштовно. Перейдіть на Plus після запуску.",priceLead:"Щомісячна підписка готується. Оплата ще не приймається.",free:"Безкоштовний тест",freeList:["Створення, відповіді та пояснення","Усі підтримувані мови","Без оплати"],try:"Спробувати Briefly",plus:"Briefly Plus — незабаром",month:"/ місяць",plusList:["Більше запитів щомісяця","Пріоритетна обробка","Збереження чернеток та історії"],cta:"Повідомити про запуск",status:"Підписка ще не відкрита. Платіжне посилання можна додати після реєстрації діяльності.",launch:"Комерційний запуск ще не активовано. Перед оплатою підключіть платіжний сервіс і заповніть юридичні дані.",contact:"Контактні дані з’являться пізніше",impressum:"Impressum",privacy:"Конфіденційність",legal:"Юридичні дані перед запуском: додайте ім’я відповідальної особи, адресу, контакти та інформацію про обробку даних.",replyCta:"Підготувати відповідь →"}}
-const WORKER_URL="https://rapid-term-dbe0.nadiiahonda34.workers.dev/";
+const WORKER_URL="https://briefly-api.nadiiahonda34.workers.dev/";
 const savedUiLang=localStorage.getItem("briefly-ui-lang"),browserUiLang=(navigator.language||"").slice(0,2);
 let uiLang=savedUiLang||((T[browserUiLang]&&browserUiLang)||"de"),mode="create",recipientKey="employer";
 if(!T[uiLang])uiLang="en";
@@ -81,5 +83,42 @@ const SCENARIO_TEXT={en:{jobcenter:"I received a decision from the Jobcenter and
 document.querySelectorAll(".scenario").forEach(button=>button.addEventListener("click",()=>{mode="create";modeButtons.forEach(x=>x.classList.toggle("active",x.dataset.mode==="create"));recipientKey=button.dataset.recipient;catButtons.forEach(x=>x.classList.toggle("active",x.dataset.key===recipientKey));updateMode();const s=SCENARIO_TEXT[uiLang]||SCENARIO_TEXT.en;text.value=s[button.dataset.scenario]||"";document.querySelector(".card").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>text.focus(),450)}));
 document.getElementById("subscribeCta").addEventListener("click",e=>{e.preventDefault();const status=document.getElementById("subscribeStatus");status.textContent=(MARKET[uiLang]||MARKET.en).status;status.hidden=false;status.scrollIntoView({behavior:"smooth",block:"nearest"})});
 document.getElementById("year").textContent=new Date().getFullYear();
+
+const GOOGLE_CLIENT_ID="524942119824-jb5pjgfblo6apr2qa5o5si7vp9gt5e1g.apps.googleusercontent.com";
+function decodeGoogleCredential(token){
+  try{
+    const part=token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
+    const padded=part+"=".repeat((4-part.length%4)%4);
+    return JSON.parse(decodeURIComponent(Array.from(atob(padded),c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0")).join("")));
+  }catch{return null}
+}
+function showGoogleUser(profile){
+  if(!profile)return;
+  localStorage.setItem("briefly-google-user",JSON.stringify({name:profile.name||profile.given_name||"",email:profile.email||""}));
+  document.getElementById("googleSignIn").style.display="none";
+  document.getElementById("googleUser").style.display="flex";
+  document.getElementById("googleUserName").textContent=profile.name||profile.email||"Google user";
+  if(!nameInput.value.trim()&&(profile.name||profile.given_name))nameInput.value=profile.name||profile.given_name;
+}
+function handleGoogleCredential(response){
+  const profile=decodeGoogleCredential(response.credential);
+  if(profile)showGoogleUser(profile);
+}
+function initGoogleSignIn(){
+  const saved=localStorage.getItem("briefly-google-user");
+  if(saved){try{showGoogleUser(JSON.parse(saved))}catch{}}
+  if(!window.google?.accounts?.id){setTimeout(initGoogleSignIn,200);return}
+  google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential});
+  google.accounts.id.renderButton(document.getElementById("googleSignIn"),{theme:"outline",size:"medium",shape:"pill",text:"signin_with"});
+}
+document.getElementById("googleSignOut").addEventListener("click",()=>{
+  localStorage.removeItem("briefly-google-user");
+  google?.accounts?.id?.disableAutoSelect();
+  document.getElementById("googleUser").style.display="none";
+  document.getElementById("googleSignIn").style.display="block";
+  document.getElementById("googleSignIn").innerHTML="";
+  if(window.google?.accounts?.id)google.accounts.id.renderButton(document.getElementById("googleSignIn"),{theme:"outline",size:"medium",shape:"pill",text:"signin_with"});
+});
+initGoogleSignIn();
 fillUi();update();
 </script></body></html>
