@@ -148,12 +148,23 @@ const LIMIT_UI = {
 };
 
 
-function showUsage(usage) {
+function showUsage(usage, responsePlan = "") {
   if (!usageStatus || !usage) return;
 
   const u = LIMIT_UI[uiLang] || LIMIT_UI.en;
 
-  const plan = String(usage.plan || "free").toLowerCase();
+  // План берём из ответа Worker.
+  // Никакого автоматического "free".
+  const plan = String(
+    responsePlan ||
+    usage.plan ||
+    ""
+  ).trim().toLowerCase();
+
+  if (!plan) {
+    console.warn("Briefly: plan missing in usage response", usage);
+    return;
+  }
 
   const limit =
     Number(usage.limit) ||
@@ -161,7 +172,11 @@ function showUsage(usage) {
 
   const used = Math.max(
     0,
-    Number(usage.used ?? usage.daily_count ?? 0)
+    Number(
+      usage.used ??
+      usage.daily_count ??
+      0
+    )
   );
 
   const remaining = Math.max(
@@ -188,16 +203,27 @@ function showUsage(usage) {
 }
 
 
-function showLimitReached(plan = "free") {
+function showLimitReached(plan) {
+  if (!usageStatus) return;
+
   const u = LIMIT_UI[uiLang] || LIMIT_UI.en;
 
-  const isPlus =
-    String(plan).toLowerCase() === "plus";
+  const normalizedPlan =
+    String(plan || "")
+      .trim()
+      .toLowerCase();
+
+  if (!normalizedPlan) {
+    console.warn(
+      "Briefly: limit reached but subscription plan is missing"
+    );
+    return;
+  }
 
   usageStatus.className =
     "usage-status show limit";
 
-  if (isPlus) {
+  if (normalizedPlan === "plus") {
     usageStatus.innerHTML =
       `<strong>${u.plusTitle}</strong>` +
       `<span>${u.plusBody}</span>`;
@@ -207,19 +233,287 @@ function showLimitReached(plan = "free") {
       `<span>${u.freeBody}</span>` +
       `<br>` +
       `<a class="usage-plus" href="#pricing">${u.plus}</a>`;
+  }
+}
 
-}
-}
-generate.addEventListener("click",async()=>{const t=T[uiLang],input=text.value.trim(),instruction=replyInstruction.value.trim();if(!input){errorBox.textContent=t.empty;return}if(mode==="reply"&&!instruction){errorBox.textContent=uiLang==="de"?"Bitte beschreiben Sie kurz, was Sie antworten möchten.":uiLang==="ru"?"Кратко напишите, что вы хотите ответить.":"Please tell Briefly what you would like to say in your reply.";replyInstruction.focus();return}errorBox.textContent="";result.classList.remove("show");copy.classList.remove("show");replyFromExplain.classList.remove("show");const old=generate.textContent;generate.disabled=true;generate.textContent=t.wait;try{const response=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json",...(sessionStorage.getItem("briefly-google-credential")?{"Authorization":"Bearer "+sessionStorage.getItem("briefly-google-credential")}:{})},body:JSON.stringify({mode,situation:input,text:input,message:input,instruction:instruction,replyInstruction:instruction,intent:instruction,sourceLanguage:sourceLanguage.value,targetLanguage:targetLanguage.value,language:targetLanguage.value,recipient:t[recipientKey],recipientKey,tone:tone.value,name:nameInput.value.trim(),uiLanguage:uiLang,preserveFacts:true,preserveDates:true,naturalReply:true,noInventedDates:true})});const raw=await response.text();let data;try{data=raw?JSON.parse(raw):{}}catch{throw new Error(raw||"Invalid server response")}if(!response.ok){
- if (
-  response.status === 429 ||
-  data.code === "FREE_DAILY_LIMIT_REACHED" ||
-  data.code === "PLUS_DAILY_LIMIT_REACHED"
-){
- showLimitReached(data.plan || data?.usage?.plan || "free");
-  return;
-}
-  throw new Error(data.details||data.error||`Server error (${response.status})`)}const output=data.result||data.letter||data.output||data.text||data.reply||data.answer||data.message||data?.choices?.[0]?.message?.content;if(typeof output!=="string"||!output.trim())throw new Error(data.error||"No result returned by the server");result.textContent=output.trim();result.classList.add("show");copy.classList.add("show");if(mode==="explain")replyFromExplain.classList.add("show");showUsage(data.usage)}catch(e){errorBox.textContent=t.error+(e?.message||String(e))}finally{generate.disabled=false;generate.textContent=old}});
+
+generate.addEventListener("click", async () => {
+  const t = T[uiLang];
+
+  const input = text.value.trim();
+
+  const instruction =
+    replyInstruction.value.trim();
+
+
+  // -----------------------------
+  // ПРОВЕРКА ВВОДА
+  // -----------------------------
+
+  if (!input) {
+    errorBox.textContent = t.empty;
+    return;
+  }
+
+
+  if (
+    mode === "reply" &&
+    !instruction
+  ) {
+    errorBox.textContent =
+      uiLang === "de"
+        ? "Bitte beschreiben Sie kurz, was Sie antworten möchten."
+        : uiLang === "ru"
+        ? "Кратко напишите, что вы хотите ответить."
+        : "Please tell Briefly what you would like to say in your reply.";
+
+    replyInstruction.focus();
+    return;
+  }
+
+
+  errorBox.textContent = "";
+
+  result.classList.remove("show");
+  copy.classList.remove("show");
+  replyFromExplain.classList.remove("show");
+
+
+  const old =
+    generate.textContent;
+
+  generate.disabled = true;
+  generate.textContent = t.wait;
+
+
+  try {
+
+    // -----------------------------
+    // GOOGLE CREDENTIAL
+    // -----------------------------
+
+    const credential =
+      sessionStorage.getItem(
+        "briefly-google-credential"
+      );
+
+
+    // -----------------------------
+    // ЗАПРОС К WORKER
+    // -----------------------------
+
+    const response =
+      await fetch(
+        WORKER_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            ...(credential
+              ? {
+                  Authorization:
+                    "Bearer " +
+                    credential
+                }
+              : {})
+          },
+
+          body: JSON.stringify({
+            mode: mode,
+
+            situation: input,
+            text: input,
+            message: input,
+
+            instruction: instruction,
+            replyInstruction: instruction,
+            intent: instruction,
+
+            sourceLanguage:
+              sourceLanguage.value,
+
+            targetLanguage:
+              targetLanguage.value,
+
+            language:
+              targetLanguage.value,
+
+            recipient:
+              t[recipientKey],
+
+            recipientKey:
+              recipientKey,
+
+            tone:
+              tone.value,
+
+            name:
+              nameInput.value.trim(),
+
+            uiLanguage:
+              uiLang,
+
+            preserveFacts: true,
+            preserveDates: true,
+            naturalReply: true,
+            noInventedDates: true
+          })
+        }
+      );
+
+
+    // -----------------------------
+    // ЧИТАЕМ ОТВЕТ
+    // -----------------------------
+
+    const raw =
+      await response.text();
+
+    let data;
+
+    try {
+      data =
+        raw
+          ? JSON.parse(raw)
+          : {};
+    } catch {
+      throw new Error(
+        raw ||
+        "Invalid server response"
+      );
+    }
+
+
+    // -----------------------------
+    // ОШИБКА / ЛИМИТ
+    // -----------------------------
+
+    if (!response.ok) {
+
+      if (
+        response.status === 429 ||
+        data.code ===
+          "FREE_DAILY_LIMIT_REACHED" ||
+        data.code ===
+          "PLUS_DAILY_LIMIT_REACHED"
+      ) {
+
+        const plan =
+          data.plan ||
+          data?.usage?.plan ||
+          "";
+
+        if (plan) {
+          showLimitReached(plan);
+        } else {
+          console.warn(
+            "Briefly: limit response has no plan",
+            data
+          );
+
+          errorBox.textContent =
+            t.error +
+            "Subscription plan was not returned by the server.";
+        }
+
+        return;
+      }
+
+
+      throw new Error(
+        data.details ||
+        data.error ||
+        `Server error (${response.status})`
+      );
+    }
+
+
+    // -----------------------------
+    // ПОЛУЧАЕМ ТЕКСТ
+    // -----------------------------
+
+    const output =
+      data.result ||
+      data.letter ||
+      data.output ||
+      data.text ||
+      data.reply ||
+      data.answer ||
+      data.message ||
+      data?.choices?.[0]
+        ?.message?.content;
+
+
+    if (
+      typeof output !== "string" ||
+      !output.trim()
+    ) {
+      throw new Error(
+        data.error ||
+        "No result returned by the server"
+      );
+    }
+
+
+    // -----------------------------
+    // ПОКАЗЫВАЕМ РЕЗУЛЬТАТ
+    // -----------------------------
+
+    result.textContent =
+      output.trim();
+
+    result.classList.add("show");
+
+    copy.classList.add("show");
+
+
+    if (mode === "explain") {
+      replyFromExplain
+        .classList.add("show");
+    }
+
+
+    // -----------------------------
+    // PLAN + USAGE
+    // -----------------------------
+
+    if (data.usage) {
+
+      const serverPlan =
+        data.plan ||
+        data.usage.plan ||
+        "";
+
+      showUsage(
+        data.usage,
+        serverPlan
+      );
+    }
+
+
+  } catch (e) {
+
+    console.error(
+      "Briefly generation error:",
+      e
+    );
+
+    errorBox.textContent =
+      t.error +
+      (e?.message || String(e));
+
+
+  } finally {
+
+    generate.disabled = false;
+
+    generate.textContent =
+      old;
+  }
+});
 copy.addEventListener("click",async()=>{const t=T[uiLang];try{await navigator.clipboard.writeText(result.textContent);copy.textContent=t.copied;setTimeout(()=>copy.textContent=t.copy,1500)}catch{errorBox.textContent=t.error}});
 replyFromExplain.addEventListener("click",()=>{const original=text.value;modeButtons.forEach(x=>x.classList.toggle("active",x.dataset.mode==="reply"));mode="reply";updateMode();text.value=original;replyInstruction.focus();window.scrollTo({top:document.querySelector(".card").offsetTop-16,behavior:"smooth"})});
 const SCENARIO_TEXT={en:{jobcenter:"I received a decision from the Jobcenter and need a clear explanation and help asking about the reasons and next steps.",heating:"The heating in my apartment is not working. I want to inform my landlord, request a prompt repair and ask for a clear deadline.",appointment:"I need to ask a German authority to reschedule my appointment and propose an alternative date.",employer:"I need to write a clear, polite message to my employer about a work-related matter."},de:{jobcenter:"Ich habe einen Bescheid vom Jobcenter erhalten und möchte die Gründe und nächsten Schritte erfragen.",heating:"Die Heizung in meiner Wohnung funktioniert nicht. Ich möchte den Vermieter informieren, eine schnelle Reparatur und einen klaren Termin verlangen.",appointment:"Ich möchte eine Behörde um die Verschiebung meines Termins bitten und einen Ersatztermin vorschlagen.",employer:"Ich möchte meinem Arbeitgeber eine klare und höfliche Nachricht zu einem Arbeitsthema schreiben."},ru:{jobcenter:"Я получил(а) решение Jobcenter и хочу запросить понятное объяснение причин и дальнейших действий.",heating:"В моей квартире не работает отопление. Я хочу сообщить арендодателю, попросить срочный ремонт и указать чёткий срок.",appointment:"Я хочу попросить немецкое ведомство перенести встречу и предложить другую дату.",employer:"Я хочу написать работодателю ясное и вежливое сообщение по рабочему вопросу."},uk:{jobcenter:"Я отримав(ла) рішення Jobcenter і хочу попросити зрозуміле пояснення причин та наступних кроків.",heating:"У моїй квартирі не працює опалення. Я хочу повідомити орендодавця, попросити терміновий ремонт і чіткий строк.",appointment:"Я хочу попросити німецьку установу перенести зустріч і запропонувати іншу дату.",employer:"Я хочу написати роботодавцю зрозуміле й ввічливе повідомлення з робочого питання."}};
