@@ -76,26 +76,150 @@ function update(){const t=T[uiLang];document.documentElement.lang=uiLang;documen
 uiLanguage.addEventListener("change",e=>{uiLang=e.target.value;localStorage.setItem("briefly-ui-lang",uiLang);update()});
 modeButtons.forEach(b=>b.addEventListener("click",()=>{modeButtons.forEach(x=>x.classList.remove("active"));b.classList.add("active");mode=b.dataset.mode;updateMode()}));
 catButtons.forEach(b=>b.addEventListener("click",()=>{catButtons.forEach(x=>x.classList.remove("active"));b.classList.add("active");recipientKey=b.dataset.key}));
-const LIMIT_UI={
-  de:{remaining:n=>`Noch ${n} von 5 kostenlosen Texten heute.`,title:"Kostenloses Tageslimit erreicht",body:"Du hast heute deine 5 kostenlosen Texte verwendet. Morgen stehen dir wieder 5 kostenlose Texte zur Verfügung.",plus:"Briefly Plus — demnächst"},
-  ru:{remaining:n=>`Сегодня осталось бесплатных текстов: ${n} из 5.`,title:"Бесплатный дневной лимит исчерпан",body:"Сегодня вы использовали 5 бесплатных текстов. Завтра вам снова будут доступны 5 бесплатных текстов.",plus:"Briefly Plus — скоро"},
-  uk:{remaining:n=>`Сьогодні залишилося безкоштовних текстів: ${n} із 5.`,title:"Безкоштовний денний ліміт вичерпано",body:"Сьогодні ви використали 5 безкоштовних текстів. Завтра вам знову будуть доступні 5 безкоштовних текстів.",plus:"Briefly Plus — незабаром"},
-  en:{remaining:n=>`${n} of 5 free texts remaining today.`,title:"Free daily limit reached",body:"You have used your 5 free texts today. You will have 5 free texts available again tomorrow.",plus:"Briefly Plus — coming soon"}
+const LIMIT_UI = {
+  de: {
+    freeRemaining: n => `Heute noch ${n} von 5 kostenlosen Texten verfügbar.`,
+    plusRemaining: n => `Briefly Plus — heute noch ${n} von 100 Texten verfügbar.`,
+
+    freeTitle: "Kostenloses Tageslimit erreicht",
+    freeBody:
+      "Du hast heute deine 5 kostenlosen Texte verwendet. Morgen stehen dir wieder 5 kostenlose Texte zur Verfügung.",
+
+    plusTitle: "Briefly Plus Tageslimit erreicht",
+    plusBody:
+      "Du hast heute 100 von 100 Texten verwendet. Morgen stehen dir wieder 100 Texte zur Verfügung.",
+
+    plus: "Briefly Plus"
+  },
+
+  ru: {
+    freeRemaining: n =>
+      `Сегодня осталось бесплатных текстов: ${n} из 5.`,
+
+    plusRemaining: n =>
+      `Briefly Plus — сегодня осталось текстов: ${n} из 100.`,
+
+    freeTitle: "Бесплатный дневной лимит исчерпан",
+    freeBody:
+      "Сегодня вы использовали 5 бесплатных текстов. Завтра вам снова будут доступны 5 бесплатных текстов.",
+
+    plusTitle: "Дневной лимит Briefly Plus исчерпан",
+    plusBody:
+      "Сегодня вы использовали 100 из 100 текстов. Завтра вам снова будут доступны 100 текстов.",
+
+    plus: "Briefly Plus"
+  },
+
+  uk: {
+    freeRemaining: n =>
+      `Сьогодні залишилося безкоштовних текстів: ${n} із 5.`,
+
+    plusRemaining: n =>
+      `Briefly Plus — сьогодні залишилося текстів: ${n} із 100.`,
+
+    freeTitle: "Безкоштовний денний ліміт вичерпано",
+    freeBody:
+      "Сьогодні ви використали 5 безкоштовних текстів. Завтра вам знову будуть доступні 5 безкоштовних текстів.",
+
+    plusTitle: "Денний ліміт Briefly Plus вичерпано",
+    plusBody:
+      "Сьогодні ви використали 100 із 100 текстів. Завтра вам знову будуть доступні 100 текстів.",
+
+    plus: "Briefly Plus"
+  },
+
+  en: {
+    freeRemaining: n =>
+      `${n} of 5 free texts remaining today.`,
+
+    plusRemaining: n =>
+      `Briefly Plus — ${n} of 100 texts remaining today.`,
+
+    freeTitle: "Free daily limit reached",
+    freeBody:
+      "You have used your 5 free texts today. You will have 5 free texts available again tomorrow.",
+
+    plusTitle: "Briefly Plus daily limit reached",
+    plusBody:
+      "You have used 100 of 100 texts today. You will have 100 texts available again tomorrow.",
+
+    plus: "Briefly Plus"
+  }
 };
-function showUsage(usage){
-  if(!usageStatus||!usage||usage.limit==null)return;
-  const u=LIMIT_UI[uiLang]||LIMIT_UI.en;
-  const remaining=Math.max(0,Number(usage.remaining??0));
-  usageStatus.className="usage-status show";
-  usageStatus.textContent=u.remaining(remaining);
-  if(remaining===0)showLimitReached();
+
+
+function showUsage(usage) {
+  if (!usageStatus || !usage) return;
+
+  const u = LIMIT_UI[uiLang] || LIMIT_UI.en;
+
+  const plan = String(usage.plan || "free").toLowerCase();
+
+  const limit =
+    Number(usage.limit) ||
+    (plan === "plus" ? 100 : 5);
+
+  const used = Math.max(
+    0,
+    Number(usage.used ?? usage.daily_count ?? 0)
+  );
+
+  const remaining = Math.max(
+    0,
+    Number(
+      usage.remaining ??
+      (limit - used)
+    )
+  );
+
+  usageStatus.className = "usage-status show";
+
+  if (plan === "plus") {
+    usageStatus.textContent =
+      u.plusRemaining(remaining);
+  } else {
+    usageStatus.textContent =
+      u.freeRemaining(remaining);
+  }
+
+  if (remaining === 0) {
+    showLimitReached(plan);
+  }
 }
-function showLimitReached(){
-  const u=LIMIT_UI[uiLang]||LIMIT_UI.en;
-  usageStatus.className="usage-status show limit";
-  usageStatus.innerHTML=`<strong>${u.title}</strong><span>${u.body}</span><br><a class="usage-plus" href="#pricing">${u.plus}</a>`;
+
+
+function showLimitReached(plan = "free") {
+  const u = LIMIT_UI[uiLang] || LIMIT_UI.en;
+
+  const isPlus =
+    String(plan).toLowerCase() === "plus";
+
+  usageStatus.className =
+    "usage-status show limit";
+
+  if (isPlus) {
+    usageStatus.innerHTML =
+      `<strong>${u.plusTitle}</strong>` +
+      `<span>${u.plusBody}</span>`;
+  } else {
+    usageStatus.innerHTML =
+      `<strong>${u.freeTitle}</strong>` +
+      `<span>${u.freeBody}</span>` +
+      `<br>` +
+      `<a class="usage-plus" href="#pricing">${u.plus}</a>`;
+
 }
-generate.addEventListener("click",async()=>{const t=T[uiLang],input=text.value.trim(),instruction=replyInstruction.value.trim();if(!input){errorBox.textContent=t.empty;return}if(mode==="reply"&&!instruction){errorBox.textContent=uiLang==="de"?"Bitte beschreiben Sie kurz, was Sie antworten möchten.":uiLang==="ru"?"Кратко напишите, что вы хотите ответить.":"Please tell Briefly what you would like to say in your reply.";replyInstruction.focus();return}errorBox.textContent="";result.classList.remove("show");copy.classList.remove("show");replyFromExplain.classList.remove("show");const old=generate.textContent;generate.disabled=true;generate.textContent=t.wait;try{const response=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json",...(sessionStorage.getItem("briefly-google-credential")?{"Authorization":"Bearer "+sessionStorage.getItem("briefly-google-credential")}:{})},body:JSON.stringify({mode,situation:input,text:input,message:input,instruction:instruction,replyInstruction:instruction,intent:instruction,sourceLanguage:sourceLanguage.value,targetLanguage:targetLanguage.value,language:targetLanguage.value,recipient:t[recipientKey],recipientKey,tone:tone.value,name:nameInput.value.trim(),uiLanguage:uiLang,preserveFacts:true,preserveDates:true,naturalReply:true,noInventedDates:true})});const raw=await response.text();let data;try{data=raw?JSON.parse(raw):{}}catch{throw new Error(raw||"Invalid server response")}if(!response.ok){if(response.status===429||data.code==="FREE_DAILY_LIMIT_REACHED"){showLimitReached();return}throw new Error(data.details||data.error||`Server error (${response.status})`)}const output=data.result||data.letter||data.output||data.text||data.reply||data.answer||data.message||data?.choices?.[0]?.message?.content;if(typeof output!=="string"||!output.trim())throw new Error(data.error||"No result returned by the server");result.textContent=output.trim();result.classList.add("show");copy.classList.add("show");if(mode==="explain")replyFromExplain.classList.add("show");showUsage(data.usage)}catch(e){errorBox.textContent=t.error+(e?.message||String(e))}finally{generate.disabled=false;generate.textContent=old}});
+}
+generate.addEventListener("click",async()=>{const t=T[uiLang],input=text.value.trim(),instruction=replyInstruction.value.trim();if(!input){errorBox.textContent=t.empty;return}if(mode==="reply"&&!instruction){errorBox.textContent=uiLang==="de"?"Bitte beschreiben Sie kurz, was Sie antworten möchten.":uiLang==="ru"?"Кратко напишите, что вы хотите ответить.":"Please tell Briefly what you would like to say in your reply.";replyInstruction.focus();return}errorBox.textContent="";result.classList.remove("show");copy.classList.remove("show");replyFromExplain.classList.remove("show");const old=generate.textContent;generate.disabled=true;generate.textContent=t.wait;try{const response=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json",...(sessionStorage.getItem("briefly-google-credential")?{"Authorization":"Bearer "+sessionStorage.getItem("briefly-google-credential")}:{})},body:JSON.stringify({mode,situation:input,text:input,message:input,instruction:instruction,replyInstruction:instruction,intent:instruction,sourceLanguage:sourceLanguage.value,targetLanguage:targetLanguage.value,language:targetLanguage.value,recipient:t[recipientKey],recipientKey,tone:tone.value,name:nameInput.value.trim(),uiLanguage:uiLang,preserveFacts:true,preserveDates:true,naturalReply:true,noInventedDates:true})});const raw=await response.text();let data;try{data=raw?JSON.parse(raw):{}}catch{throw new Error(raw||"Invalid server response")}if(!response.ok){
+ if (
+  response.status === 429 ||
+  data.code === "FREE_DAILY_LIMIT_REACHED" ||
+  data.code === "PLUS_DAILY_LIMIT_REACHED"
+){
+ showLimitReached(data.plan || data?.usage?.plan || "free");
+  return;
+}
+  throw new Error(data.details||data.error||`Server error (${response.status})`)}const output=data.result||data.letter||data.output||data.text||data.reply||data.answer||data.message||data?.choices?.[0]?.message?.content;if(typeof output!=="string"||!output.trim())throw new Error(data.error||"No result returned by the server");result.textContent=output.trim();result.classList.add("show");copy.classList.add("show");if(mode==="explain")replyFromExplain.classList.add("show");showUsage(data.usage)}catch(e){errorBox.textContent=t.error+(e?.message||String(e))}finally{generate.disabled=false;generate.textContent=old}});
 copy.addEventListener("click",async()=>{const t=T[uiLang];try{await navigator.clipboard.writeText(result.textContent);copy.textContent=t.copied;setTimeout(()=>copy.textContent=t.copy,1500)}catch{errorBox.textContent=t.error}});
 replyFromExplain.addEventListener("click",()=>{const original=text.value;modeButtons.forEach(x=>x.classList.toggle("active",x.dataset.mode==="reply"));mode="reply";updateMode();text.value=original;replyInstruction.focus();window.scrollTo({top:document.querySelector(".card").offsetTop-16,behavior:"smooth"})});
 const SCENARIO_TEXT={en:{jobcenter:"I received a decision from the Jobcenter and need a clear explanation and help asking about the reasons and next steps.",heating:"The heating in my apartment is not working. I want to inform my landlord, request a prompt repair and ask for a clear deadline.",appointment:"I need to ask a German authority to reschedule my appointment and propose an alternative date.",employer:"I need to write a clear, polite message to my employer about a work-related matter."},de:{jobcenter:"Ich habe einen Bescheid vom Jobcenter erhalten und möchte die Gründe und nächsten Schritte erfragen.",heating:"Die Heizung in meiner Wohnung funktioniert nicht. Ich möchte den Vermieter informieren, eine schnelle Reparatur und einen klaren Termin verlangen.",appointment:"Ich möchte eine Behörde um die Verschiebung meines Termins bitten und einen Ersatztermin vorschlagen.",employer:"Ich möchte meinem Arbeitgeber eine klare und höfliche Nachricht zu einem Arbeitsthema schreiben."},ru:{jobcenter:"Я получил(а) решение Jobcenter и хочу запросить понятное объяснение причин и дальнейших действий.",heating:"В моей квартире не работает отопление. Я хочу сообщить арендодателю, попросить срочный ремонт и указать чёткий срок.",appointment:"Я хочу попросить немецкое ведомство перенести встречу и предложить другую дату.",employer:"Я хочу написать работодателю ясное и вежливое сообщение по рабочему вопросу."},uk:{jobcenter:"Я отримав(ла) рішення Jobcenter і хочу попросити зрозуміле пояснення причин та наступних кроків.",heating:"У моїй квартирі не працює опалення. Я хочу повідомити орендодавця, попросити терміновий ремонт і чіткий строк.",appointment:"Я хочу попросити німецьку установу перенести зустріч і запропонувати іншу дату.",employer:"Я хочу написати роботодавцю зрозуміле й ввічливе повідомлення з робочого питання."}};
