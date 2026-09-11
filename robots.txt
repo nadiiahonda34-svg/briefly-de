@@ -1,3 +1,3 @@
 User-agent: *
-Allow: /
-Sitemap: https://nadiiahonda34-svg.github.io/sitemap.xml
+Allow: /briefly-de/
+Sitemap: https://nadiiahonda34-svg.github.io/briefly-de/sitemap.xml
