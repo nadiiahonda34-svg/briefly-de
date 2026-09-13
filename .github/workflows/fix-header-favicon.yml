@@ -1,0 +1,36 @@
+name: Fix Briefly header and favicon
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-header-favicon.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply focused fixes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          favicon='<link rel="icon" type="image/x-icon" href="./favicon.ico?v=4">'
+          if favicon not in s:
+              marker='<meta name="robots" content="index, follow">'
+              s=s.replace(marker, marker+'\n'+favicon, 1)
+          old='.top{position:sticky;top:14px;'
+          new='.top{position:relative;top:auto;'
+          if old not in s:
+              raise SystemExit('sticky header pattern not found')
+          s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "Stop sticky header and connect favicon"
+          git push
