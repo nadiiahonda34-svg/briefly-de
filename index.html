@@ -1,1 +1,646 @@
-__PLACEHOLDER__
+<!doctype html><html lang="en" dir="ltr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Briefly — AI Letter Assistant</title>
+  <meta name="description" content="Briefly is a free AI letter assistant that helps you create, reply to and understand professional messages and letters in multiple languages.">
+<link rel="canonical" href="https://nadiiahonda34-svg.github.io/briefly-de/">
+<meta name="robots" content="index, follow">
+<meta name="google-adsense-account" content="ca-pub-8272791832669756">
+<style>
+:root{--bg:#f6f8fc;--card:#fff;--text:#172033;--muted:#667085;--accent:#3157d5;--accent-dark:#2346bb;--soft:#eef3ff;--success:#087a55;--line:#dce2ee;--error:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.wrap{max-width:1040px;margin:auto;padding:18px 18px 56px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}.brand{font-size:22px;font-weight:900;color:var(--accent);text-decoration:none}.top-actions{display:flex;align-items:center;gap:10px}.top-link{color:var(--muted);font-weight:700;text-decoration:none;font-size:14px}.language-select{width:auto;min-width:150px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit}
+.hero{text-align:center;max-width:800px;margin:0 auto 26px}.eyebrow{display:inline-flex;gap:7px;align-items:center;padding:7px 11px;border-radius:999px;background:var(--soft);color:var(--accent);font-size:13px;font-weight:800}.logo{font-size:25px;font-weight:900;color:var(--accent)}h1{font-size:clamp(34px,6vw,56px);line-height:1.05;letter-spacing:-.035em;margin:18px 0 14px}.subtitle{max-width:650px;margin:auto;color:var(--muted);font-size:18px;line-height:1.55}.hero-proof{display:flex;justify-content:center;flex-wrap:wrap;gap:16px;margin-top:18px;color:var(--muted);font-size:13px}.hero-proof span:before{content:"✓";color:var(--success);font-weight:900;margin-right:6px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 18px 60px rgba(20,35,70,.09)}
+label{display:block;font-weight:700;margin:18px 0 8px}.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.mode,.cat{border:1px solid var(--line);background:#fff;border-radius:12px;padding:13px 9px;cursor:pointer;font-weight:700}.mode.active,.cat.active{border:2px solid var(--accent);background:#f3f6ff;color:var(--accent)}
+.languages,.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.categories{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}select,input,textarea{width:100%;border:1px solid var(--line);border-radius:11px;padding:13px;font:inherit;background:#fff;color:var(--text)}textarea{min-height:150px;resize:vertical}.intent textarea{min-height:90px}
+.generate{width:100%;margin-top:22px;padding:16px;border:0;border-radius:12px;background:var(--accent);color:#fff;font-size:16px;font-weight:800;cursor:pointer;transition:.2s}.generate:hover{background:var(--accent-dark);transform:translateY(-1px)}.generate:disabled{opacity:.55;cursor:wait;transform:none}.usage-status{display:none;margin-top:14px;padding:13px 15px;border:1px solid #cbd7f7;border-radius:12px;background:var(--soft);color:var(--accent);font-size:14px;font-weight:700;line-height:1.5}.usage-status.show{display:block}.usage-status.limit{background:#fff8e8;border-color:#ead49a;color:#765b18}.usage-status strong{display:block;font-size:16px;margin-bottom:4px}.result{display:none;margin-top:22px;padding:20px;border:1px solid #cbd7f7;border-radius:14px;background:#f8faff;white-space:pre-wrap;line-height:1.65}.result.show{display:block}.error{margin-top:16px;color:var(--error)}.result-actions{display:flex;gap:10px;flex-wrap:wrap}.copy,.reply-from-explain{display:none;margin-top:10px;padding:10px 15px;border:1px solid var(--line);border-radius:9px;background:#fff;cursor:pointer;font-weight:700}.copy.show,.reply-from-explain.show{display:inline-block}.reply-from-explain{color:#fff;background:var(--accent);border-color:var(--accent)}.note{text-align:center;color:var(--muted);font-size:13px;margin-top:18px}
+html[dir=rtl] body{text-align:right}html[dir=rtl] .top{justify-content:flex-start}@media(max-width:650px){h1{font-size:30px}.modes,.categories,.languages,.row{grid-template-columns:1fr}}
+
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:760px;margin:0 auto 24px}
+.feature{background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-align:center}
+.feature strong{display:block;font-size:14px;margin-bottom:4px}.feature span{font-size:13px;color:var(--muted)}
+html[dir=rtl] .feature{text-align:right}
+@media(max-width:650px){.features{grid-template-columns:1fr}.feature{padding:12px 14px}}
+.section{margin:64px auto 0}.section-head{text-align:center;max-width:650px;margin:0 auto 24px}.section h2{font-size:32px;letter-spacing:-.025em;margin:0 0 10px}.section-head p{color:var(--muted);line-height:1.6}.scenarios{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.scenario{border:1px solid var(--line);border-radius:16px;background:#fff;padding:18px;text-align:left;cursor:pointer;transition:.2s}.scenario:hover{border-color:#9bb0ee;transform:translateY(-2px);box-shadow:0 8px 24px rgba(20,35,70,.07)}.scenario-icon{font-size:23px}.scenario strong{display:block;margin:10px 0 5px}.scenario span{color:var(--muted);font-size:13px;line-height:1.45}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.step{padding:22px;border-left:3px solid var(--accent);background:#fff;border-radius:0 16px 16px 0}.step b{color:var(--accent)}.step h3{margin:10px 0 6px}.step p{margin:0;color:var(--muted);line-height:1.5}.featured .trust{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.trust-item{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}.trust-item strong{display:block;margin-bottom:6px}.trust-item span{color:var(--muted);font-size:13px;line-height:1.5}.footer{margin-top:64px;border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:13px}.footer nav{display:flex;flex-wrap:wrap;gap:14px}.footer a{color:var(--muted)}.ad-area{max-width:760px;min-height:110px;margin:20px auto 0;border:1px dashed var(--line);border-radius:14px;background:#fff;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px}
+@media(max-width:800px){.scenarios{grid-template-columns:1fr 1fr}.trust{grid-template-columns:1fr}.top-link{display:none}}
+@media(max-width:650px){.wrap{padding:14px 14px 40px}.top{margin-bottom:22px}.card{padding:18px}.scenarios,.steps,.section{margin-top:46px}.footer{flex-direction:column}.hero-proof{gap:8px 14px}}
+
+
+/* Editorial / SEO content */
+.resources{margin:64px auto 0}
+.resource-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.resource-card{display:block;background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;text-decoration:none;color:var(--text);transition:.2s}
+.resource-card:hover{transform:translateY(-2px);border-color:#9bb0ee;box-shadow:0 10px 28px rgba(20,35,70,.07)}
+.resource-card .tag{display:inline-block;font-size:12px;font-weight:800;color:var(--accent);background:var(--soft);padding:5px 8px;border-radius:999px;margin-bottom:10px}
+.resource-card h3{margin:0 0 8px;font-size:19px}
+.resource-card p{margin:0;color:var(--muted);line-height:1.55;font-size:14px}
+.resource-card .read{display:inline-block;margin-top:14px;color:var(--accent);font-weight:800;font-size:14px}
+@media(max-width:650px){.resource-grid{grid-template-columns:1fr}}
+
+  .brand-signature{
+  display:grid;
+  grid-template-columns:auto auto;
+  grid-template-rows:auto auto;
+  align-items:center;
+  column-gap:7px;
+  text-decoration:none;
+  line-height:1;
+}
+
+.brand-name{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:31px;
+  font-weight:700;
+  font-style:italic;
+  letter-spacing:-1.5px;
+  color:#172554;
+}
+
+.brand-feather{
+  font-size:22px;
+  color:#6d5dfc;
+  transform:rotate(-12deg);
+}
+
+.brand-tagline{
+  grid-column:1 / 3;
+  margin-top:4px;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:8px;
+  font-style:normal;
+  font-weight:700;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+  color:#7c8499;
+}
+
+@media(max-width:650px){
+  .brand-name{font-size:26px}
+  .brand-feather{font-size:19px}
+  .brand-tagline{font-size:7px;letter-spacing:1.2px}
+}
+</style>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8272791832669756"
+     crossorigin="anonymous"></script>
+<style id="briefly-modern-2026">
+:root{--bg:#f7f8fc;--card:rgba(255,255,255,.88);--text:#111827;--muted:#667085;--accent:#635bff;--accent-dark:#4f46e5;--soft:#f0efff;--success:#059669;--line:#e6e8f0;--error:#dc2626}
+body{background:radial-gradient(circle at 10% 0%,rgba(99,91,255,.10),transparent 28rem),radial-gradient(circle at 90% 12%,rgba(14,165,233,.08),transparent 24rem),var(--bg);min-height:100vh}
+.wrap{max-width:1120px}.top,.nav{background:rgba(255,255,255,.72);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(230,232,240,.85);border-radius:18px;padding:10px 14px;position:relative;z-index:5}.brand{letter-spacing:-.02em}.hero{padding-top:38px}.eyebrow,.tag{box-shadow:inset 0 0 0 1px rgba(99,91,255,.08)}h1{letter-spacing:-.045em}.card,main{background:var(--card);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-color:rgba(230,232,240,.9);box-shadow:0 24px 70px rgba(17,24,39,.08)}
+.mode,.cat,select,input,textarea,.scenario,.trust-item,.resource-card,.links a,.grid .card{transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;background:rgba(255,255,255,.92)}
+.mode:hover,.cat:hover,.resource-card:hover,.grid .card:hover{border-color:#b8b4ff;box-shadow:0 10px 30px rgba(99,91,255,.10)}
+.mode.active,.cat.active{box-shadow:0 0 0 3px rgba(99,91,255,.10)}
+.generate,.cta{background:linear-gradient(135deg,#635bff,#4f46e5);box-shadow:0 10px 26px rgba(99,91,255,.22)}.generate:hover,.cta:hover{filter:brightness(.98);transform:translateY(-1px)}
+.section h2{font-size:clamp(28px,4vw,38px)}.scenario,.trust-item,.resource-card,.grid .card{border-radius:20px}.step{border-left:0;border-top:3px solid var(--accent);border-radius:18px;background:rgba(255,255,255,.84)}
+.footer{padding-bottom:16px}.ad-area{background:rgba(255,255,255,.7)}
+@media(max-width:650px){.top,.nav{border-radius:14px}.hero{padding-top:20px}.language-select{min-width:128px}.card,main{border-radius:18px}}
+</style>
+<style id="briefly-premium-2026">
+:root{--accent:#6d5dfc;--accent-dark:#5146e5;--soft:#f2f0ff;--text:#0f172a;--muted:#64748b;--line:#e8eaf2}
+body{background:radial-gradient(900px 500px at 12% -8%,rgba(109,93,252,.18),transparent 60%),radial-gradient(800px 480px at 92% 8%,rgba(56,189,248,.14),transparent 58%),linear-gradient(180deg,#fbfcff 0%,#f7f8fc 45%,#fff 100%);font-feature-settings:'ss01' 1}
+.wrap{max-width:1180px;padding-top:22px}.top{position:sticky;top:14px;margin:0 auto 42px;border-radius:22px;padding:12px 16px;background:rgba(255,255,255,.78);box-shadow:0 10px 40px rgba(15,23,42,.07);border:1px solid rgba(255,255,255,.9)}
+.brand{font-size:23px;background:linear-gradient(135deg,#5146e5,#8b5cf6);-webkit-background-clip:text;background-clip:text;color:transparent}.top-link{padding:9px 10px;border-radius:10px}.top-link:hover{background:#f4f3ff;color:#5146e5}.language-select{border-radius:12px;border-color:#e5e7eb;box-shadow:0 1px 2px rgba(15,23,42,.03)}
+.hero{max-width:900px;padding:46px 0 24px}.eyebrow{padding:9px 14px;background:rgba(255,255,255,.75);border:1px solid #e9e7ff;box-shadow:0 8px 30px rgba(109,93,252,.08)}h1{font-size:clamp(42px,7vw,72px);line-height:.98;letter-spacing:-.055em;margin:22px 0 20px;background:linear-gradient(135deg,#0f172a 10%,#4338ca 58%,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}.subtitle{font-size:clamp(17px,2vw,20px);max-width:720px}.hero-proof{margin-top:24px;gap:10px}.hero-proof span{background:rgba(255,255,255,.7);border:1px solid #ececf3;border-radius:999px;padding:8px 12px}
+.features{max-width:900px;gap:14px;margin-bottom:28px}.feature{padding:18px;border-radius:18px;background:rgba(255,255,255,.72);box-shadow:0 8px 30px rgba(15,23,42,.04);border-color:rgba(226,232,240,.9)}.feature strong{font-size:15px}.feature span{line-height:1.45}
+.card{max-width:940px;margin-left:auto;margin-right:auto;border-radius:30px;padding:34px;background:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.96);box-shadow:0 32px 90px rgba(55,48,163,.12),0 2px 8px rgba(15,23,42,.04)}label{font-size:13px;letter-spacing:.01em;color:#334155}.modes{padding:5px;background:#f5f6fa;border-radius:16px;gap:5px}.mode{border:0;border-radius:12px;padding:14px}.mode.active{border:0;background:#fff;color:#5146e5;box-shadow:0 3px 12px rgba(15,23,42,.08)}.categories{gap:8px}.cat{border-radius:14px;padding:13px 10px}.cat.active{border:1px solid #bdb7ff;background:#f3f1ff;color:#5146e5;box-shadow:0 0 0 3px rgba(109,93,252,.08)}select,input,textarea{border-radius:14px;border-color:#e2e8f0;padding:14px 15px;box-shadow:0 1px 2px rgba(15,23,42,.02)}select:focus,input:focus,textarea:focus{outline:none;border-color:#a8a0ff;box-shadow:0 0 0 4px rgba(109,93,252,.10)}textarea{min-height:165px}.generate{border-radius:15px;padding:17px;background:linear-gradient(135deg,#6d5dfc,#5146e5 55%,#7c3aed);box-shadow:0 14px 30px rgba(81,70,229,.25)}
+.section{margin-top:86px}.section-head{max-width:720px}.section h2{font-size:clamp(30px,4vw,44px);letter-spacing:-.04em}.scenarios{gap:16px}.scenario,.trust-item,.resource-card{border-radius:22px;padding:22px;border-color:#e8eaf2;box-shadow:0 10px 35px rgba(15,23,42,.04)}.scenario:hover,.resource-card:hover{transform:translateY(-4px);box-shadow:0 18px 45px rgba(81,70,229,.10);border-color:#cbc7ff}.scenario-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:#f3f1ff}.steps{gap:18px}.step{padding:26px;border-radius:22px;border-top:0;background:linear-gradient(180deg,#fff,#fbfbff);box-shadow:0 10px 35px rgba(15,23,42,.04)}.step b{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:10px;background:#eeecff}.resource-grid{gap:18px}.resource-card .tag{padding:6px 10px}.footer{margin-top:90px;padding:28px 0}.ad-area{border-radius:20px}
+@media(max-width:800px){.top{position:relative;top:auto;margin-bottom:26px}.hero{padding-top:28px}.card{padding:24px;border-radius:24px}.scenarios{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.wrap{padding:12px 12px 36px}.top{border-radius:18px;padding:10px 12px}.brand{font-size:20px}.hero{padding:26px 4px 18px}h1{font-size:42px}.hero-proof span{font-size:12px}.card{padding:18px;border-radius:22px}.modes{grid-template-columns:1fr}.categories,.languages,.row,.scenarios,.steps{grid-template-columns:1fr}.section{margin-top:58px}.resource-card,.scenario,.trust-item{padding:18px}}
+</style>
+</head><body>
+<div class="wrap"><div class="top"><a class="brand brand-signature" href="#top">
+  <span class="brand-name">Briefly</span>
+  <span class="brand-feather">✒</span>
+  <span class="brand-tagline">klar. hilfreich. menschlich.</span>
+</a><div class="top-actions"><a class="top-link" href="#how">How it works</a><a class="top-link" href="#resources">Guides</a><a class="top-link" href="#funding">Free</a><select id="uiLanguage" class="language-select" aria-label="Interface language"></select><div id="googleSignIn"></div><div id="googleUser" style="display:none;align-items:center;gap:8px;font-size:13px;font-weight:700"><span id="googleUserName"></span><button type="button" id="googleSignOut" style="border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px;cursor:pointer">Sign out</button></div></div></div><div class="hero" id="top"><div class="eyebrow">🇩🇪 Made for life in Germany</div><h1 id="title">Letters and replies without the extra words</h1><div id="subtitle" class="subtitle"></div><div class="hero-proof"><span>5 free texts per day</span><span>9 languages</span><span>Facts stay unchanged</span></div></div>
+<div class="features">
+<div class="feature"><strong id="featureCreateTitle"></strong><span id="featureCreateText"></span></div>
+<div class="feature"><strong id="featureReplyTitle"></strong><span id="featureReplyText"></span></div>
+<div class="feature"><strong id="featureExplainTitle"></strong><span id="featureExplainText"></span></div>
+</div>
+<div class="card"><label id="actionLabel"></label><div class="modes"><button type="button" class="mode active" data-mode="create" id="createMode"></button><button type="button" class="mode" data-mode="reply" id="replyMode"></button><button type="button" class="mode" data-mode="explain" id="explainMode"></button></div>
+<div class="languages"><div><label id="sourceLabel" for="sourceLanguage"></label><select id="sourceLanguage"></select></div><div><label id="targetLabel" for="targetLanguage"></label><select id="targetLanguage"></select></div></div>
+<div id="recipientBlock"><label id="recipientLabel"></label><div class="categories"><button type="button" class="cat active" data-key="employer"></button><button type="button" class="cat" data-key="landlord"></button><button type="button" class="cat" data-key="authority"></button><button type="button" class="cat" data-key="insurance"></button><button type="button" class="cat" data-key="shop"></button><button type="button" class="cat" data-key="other"></button></div></div>
+<label id="textLabel" for="text"></label><textarea id="text"></textarea><div id="intentBlock" class="intent" hidden><label id="intentLabel" for="replyInstruction"></label><textarea id="replyInstruction"></textarea></div>
+<div class="row"><div><label id="toneLabel" for="tone"></label><select id="tone"></select></div><div><label id="nameLabel" for="name"></label><input id="name"></div></div><p id="signInHint" class="note">Sign in with Google to create a text. Guides are available without signing in.</p><button type="button" id="generate" class="generate">Create text</button><div id="usageStatus" class="usage-status" role="status"></div><div id="error" class="error" role="alert"></div><div id="result" class="result" aria-live="polite"></div><div class="result-actions"><button type="button" id="copy" class="copy"></button><button type="button" id="replyFromExplain" class="reply-from-explain">Prepare a reply →</button></div></div><div id="note" class="note"></div>
+<section class="section" id="scenarios"><div class="section-head"><h2>Common situations, ready faster</h2><p>Start with a practical German scenario and adapt it to your case.</p></div><div class="scenarios">
+<button type="button" class="scenario" data-scenario="jobcenter" data-recipient="authority"><span class="scenario-icon">🏛️</span><strong>Jobcenter decision</strong><span>Ask for clarification or prepare an objection.</span></button>
+<button type="button" class="scenario" data-scenario="heating" data-recipient="landlord"><span class="scenario-icon">🏠</span><strong>Heating or repairs</strong><span>Report a defect clearly and request a deadline.</span></button>
+<button type="button" class="scenario" data-scenario="appointment" data-recipient="authority"><span class="scenario-icon">📅</span><strong>Authority appointment</strong><span>Confirm, cancel or request a new appointment.</span></button>
+<button type="button" class="scenario" data-scenario="employer" data-recipient="employer"><span class="scenario-icon">💼</span><strong>Message to employer</strong><span>Write about documents, shifts or an absence.</span></button>
+</div></section>
+<section class="section" id="how"><div class="section-head"><h2>From confusing letter to clear next step</h2><p>Briefly keeps the workflow simple, even when the original message is not.</p></div><div class="steps"><div class="step"><b>01</b><h3>Paste or describe</h3><p>Add the message you received or explain your situation in your own language.</p></div><div class="step"><b>02</b><h3>Understand</h3><p>Get a plain-language explanation without invented dates, amounts or facts.</p></div><div class="step"><b>03</b><h3>Reply</h3><p>Create a concise response in German or another supported language.</p></div></div></section>
+<section class="section" id="trust"><div class="section-head"><h2>Designed for sensitive correspondence</h2></div><div class="trust"><div class="trust-item"><strong>Facts are preserved</strong><span>Names, dates, amounts and details are passed through instead of being silently changed.</span></div><div class="trust-item"><strong>You stay in control</strong><span>Review and edit every result before sending it. Briefly never sends messages for you.</span></div><div class="trust-item"><strong>Clear limits</strong><span>Briefly helps with wording and understanding. It is not a substitute for legal advice.</span></div></div></section>
+
+<section class="section resources" id="resources">
+  <div class="section-head">
+    <h2 id="guidesTitle">Guides for letters and everyday bureaucracy in Germany</h2>
+    <p id="guidesIntro">Practical information to help you understand common letters, deadlines and formal replies before using the AI assistant.</p>
+  </div>
+  <div class="resource-grid">
+    <a class="resource-card" href="jobcenter-briefe-verstehen.html"><span class="tag">Jobcenter</span><h3>Jobcenter-Briefe verstehen</h3><p>Bescheid, Anhörung, Mitwirkung and Widerspruch: what the terms mean and what to check first.</p><span class="read">Guide öffnen →</span></a>
+    <a class="resource-card" href="vermieter-brief-verstehen.html"><span class="tag">Wohnen</span><h3>Briefe vom Vermieter verstehen</h3><p>Understand common letters about repairs, rent, service charges and other tenancy matters.</p><span class="read">Guide öffnen →</span></a>
+    <a class="resource-card" href="behoerdenbriefe-verstehen.html"><span class="tag">Behörden</span><h3>Behördenbriefe richtig lesen</h3><p>Find the sender, reference number, deadline, requested action and contact details in an official letter.</p><span class="read">Guide öffnen →</span></a>
+    <a class="resource-card" href="formelle-antwort-deutsch.html"><span class="tag">Schreiben</span><h3>Formell auf Deutsch antworten</h3><p>A simple structure for polite, clear replies to authorities, employers, landlords and companies.</p><span class="read">Guide öffnen →</span></a>
+    <a class="resource-card" href="ueber-briefly.html"><span class="tag">Briefly</span><h3>Über Briefly</h3><p>What the service does, how AI-generated text should be reviewed, and where its limits are.</p><span class="read">Mehr erfahren →</span></a>
+    <a class="resource-card" href="ratgeber.html"><span class="tag">Ratgeber</span><h3>Alle Briefly-Ratgeber</h3><p>Practical guides for Jobcenter, authorities, housing, work, insurance and formal German correspondence.</p><span class="read">Alle Ratgeber →</span></a>
+    <a class="resource-card" href="behoerden-deutsch-glossar.html"><span class="tag">Deutsch</span><h3>Behördendeutsch einfach erklärt</h3><p>Important terms such as Frist, Bescheid, Nachweis, Anhörung and Widerspruch in plain language.</p><span class="read">Glossar öffnen →</span></a>
+    <a class="resource-card" href="brief-checkliste.html"><span class="tag">Checkliste</span><h3>Vor dem Absenden prüfen</h3><p>A practical checklist for names, dates, amounts, attachments, tone and privacy.</p><span class="read">Checkliste öffnen →</span></a>
+  </div>
+</section>
+
+<section class="section" id="funding">
+  <div class="section-head">
+    <h2 id="fundingTitle">Briefly is free</h2>
+    <p id="fundingLead">Briefly is supported by advertising. You can create up to 5 texts per day at no charge.</p>
+  </div>
+  <!-- Advertising area -->
+  
+</section>
+
+<footer class="footer"><div>© <span id="year"></span> Briefly</div><nav><span id="contactLabel"></span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Privacy</a></nav></footer>
+</div>
+<script>
+const T={"ru": {"title": "Письма и ответы без лишних слов", "subtitle": "Помощник для писем и сообщений", "featureCreateTitle": "Создать", "featureCreateText": "Превратите ситуацию в ясное сообщение", "featureReplyTitle": "Ответить", "featureReplyText": "Подготовьте краткий и подходящий ответ", "featureExplainTitle": "Объяснить", "featureExplainText": "Поймите сложное сообщение простыми словами", "action": "Что нужно сделать?", "create": "Создать", "reply": "Ответить", "explain": "Объяснить", "source": "Исходный язык", "target": "Язык результата", "recipient": "Получатель", "employer": "Работодатель", "landlord": "Арендодатель", "authority": "Ведомство", "insurance": "Страховая компания", "shop": "Магазин", "other": "Другое", "tone": "Тон", "name": "Имя (необязательно)", "namePh": "Например: Анна", "createLabel": "Что вы хотите написать?", "replyLabel": "Вставьте сообщение, на которое нужно ответить", "explainLabel": "Вставьте текст, который нужно объяснить", "createPh": "Опишите ситуацию...", "replyPh": "Вставьте полученное сообщение...", "explainPh": "Вставьте текст...", "intent": "Что вы хотите ответить? (необязательно)", "intentPh": "Например: подтвердить встречу; вежливо отказаться; предложить пятницу после 14:00", "createBtn": "Создать текст", "replyBtn": "Создать ответ", "explainBtn": "Объяснить", "copy": "Копировать", "copied": "Скопировано!", "wait": "Подождите...", "empty": "Введите текст.", "error": "Ошибка: ", "note": "Даты, время, суммы, имена и факты сохраняются из исходного текста. Относительные даты вроде «следующий вторник» не превращаются в выдуманную календарную дату."}, "de": {"title": "Briefe und Antworten auf den Punkt", "subtitle": "Hilfe für Briefe und Nachrichten", "featureCreateTitle": "Erstellen", "featureCreateText": "Machen Sie aus einer Situation eine klare Nachricht", "featureReplyTitle": "Antworten", "featureReplyText": "Erstellen Sie eine kurze und passende Antwort", "featureExplainTitle": "Erklären", "featureExplainText": "Verstehen Sie komplizierte Nachrichten in einfachen Worten", "action": "Was möchten Sie tun?", "create": "Erstellen", "reply": "Antworten", "explain": "Erklären", "source": "Ausgangssprache", "target": "Zielsprache", "recipient": "Empfänger", "employer": "Arbeitgeber", "landlord": "Vermieter", "authority": "Behörde", "insurance": "Versicherung", "shop": "Geschäft", "other": "Andere", "tone": "Ton", "name": "Name (optional)", "namePh": "Zum Beispiel: Anna", "createLabel": "Was möchten Sie schreiben?", "replyLabel": "Fügen Sie die Nachricht ein, auf die Sie antworten möchten", "explainLabel": "Fügen Sie den Text ein, den Sie erklärt haben möchten", "createPh": "Beschreiben Sie die Situation...", "replyPh": "Empfangene Nachricht einfügen...", "explainPh": "Text einfügen...", "intent": "Was möchten Sie antworten? (optional)", "intentPh": "Zum Beispiel: Termin bestätigen; höflich absagen; Freitag nach 14 Uhr vorschlagen", "createBtn": "Text erstellen", "replyBtn": "Antwort erstellen", "explainBtn": "Erklären", "copy": "Kopieren", "copied": "Kopiert!", "wait": "Bitte warten...", "empty": "Bitte geben Sie einen Text ein.", "error": "Fehler: ", "note": "Daten, Uhrzeiten, Beträge, Namen und Fakten aus dem Ausgangstext werden beibehalten. Relative Angaben wie „kommenden Dienstag“ werden nicht in ein erfundenes Kalenderdatum umgewandelt."}, "en": {"title": "Letters and replies without the extra words", "subtitle": "Help with letters and messages", "featureCreateTitle": "Create", "featureCreateText": "Turn a situation into a clear message", "featureReplyTitle": "Reply", "featureReplyText": "Prepare a concise and appropriate response", "featureExplainTitle": "Explain", "featureExplainText": "Understand complicated messages in simple words", "action": "What do you need to do?", "create": "Create", "reply": "Reply", "explain": "Explain", "source": "Source language", "target": "Result language", "recipient": "Recipient", "employer": "Employer", "landlord": "Landlord", "authority": "Authority", "insurance": "Insurance company", "shop": "Shop", "other": "Other", "tone": "Tone", "name": "Name (optional)", "namePh": "For example: Anna", "createLabel": "What would you like to write?", "replyLabel": "Paste the message you want to reply to", "explainLabel": "Paste the text you want explained", "createPh": "Describe the situation...", "replyPh": "Paste the received message...", "explainPh": "Paste the text...", "intent": "What would you like to say? (optional)", "intentPh": "For example: confirm the meeting; politely decline; suggest Friday after 2 pm", "createBtn": "Create text", "replyBtn": "Create reply", "explainBtn": "Explain", "copy": "Copy", "copied": "Copied!", "wait": "Please wait...", "empty": "Please enter some text.", "error": "Error: ", "note": "Dates, times, amounts, names and facts from the source are preserved. Relative dates such as “next Tuesday” are not converted into an invented calendar date."}, "uk": {"title": "Листи й відповіді без зайвих слів", "subtitle": "Помічник для листів і повідомлень", "featureCreateTitle": "Створити", "featureCreateText": "Перетворіть ситуацію на зрозуміле повідомлення", "featureReplyTitle": "Відповісти", "featureReplyText": "Підготуйте коротку й доречну відповідь", "featureExplainTitle": "Пояснити", "featureExplainText": "Зрозумійте складне повідомлення простими словами", "action": "Що потрібно зробити?", "create": "Створити", "reply": "Відповісти", "explain": "Пояснити", "source": "Мова оригіналу", "target": "Мова результату", "recipient": "Одержувач", "employer": "Роботодавець", "landlord": "Орендодавець", "authority": "Установа", "insurance": "Страхова компанія", "shop": "Магазин", "other": "Інше", "tone": "Тон", "name": "Ім’я (необов’язково)", "namePh": "Наприклад: Анна", "createLabel": "Що ви хочете написати?", "replyLabel": "Вставте повідомлення, на яке потрібно відповісти", "explainLabel": "Вставте текст, який потрібно пояснити", "createPh": "Опишіть ситуацію...", "replyPh": "Вставте отримане повідомлення...", "explainPh": "Вставте текст...", "intent": "Що ви хочете відповісти? (необов’язково)", "intentPh": "Наприклад: підтвердити зустріч; ввічливо відмовити; запропонувати п’ятницю після 14:00", "createBtn": "Створити текст", "replyBtn": "Створити відповідь", "explainBtn": "Пояснити", "copy": "Копіювати", "copied": "Скопійовано!", "wait": "Зачекайте...", "empty": "Введіть текст.", "error": "Помилка: ", "note": "Дати, час, суми, імена та факти з вихідного тексту зберігаються. Відносні дати на кшталт «наступного вівторка» не перетворюються на вигадану календарну дату."}, "pl": {"title": "Listy i odpowiedzi bez zbędnych słów", "subtitle": "Pomoc w pisaniu listów i wiadomości", "featureCreateTitle": "Utwórz", "featureCreateText": "Zamień opis sytuacji w jasną wiadomość", "featureReplyTitle": "Odpowiedz", "featureReplyText": "Przygotuj krótką i odpowiednią odpowiedź", "featureExplainTitle": "Wyjaśnij", "featureExplainText": "Zrozum skomplikowaną wiadomość prostymi słowami", "action": "Co chcesz zrobić?", "create": "Utwórz", "reply": "Odpowiedz", "explain": "Wyjaśnij", "source": "Język źródłowy", "target": "Język wyniku", "recipient": "Odbiorca", "employer": "Pracodawca", "landlord": "Wynajmujący", "authority": "Urząd", "insurance": "Firma ubezpieczeniowa", "shop": "Sklep", "other": "Inne", "tone": "Ton", "name": "Imię (opcjonalnie)", "namePh": "Na przykład: Anna", "createLabel": "Co chcesz napisać?", "replyLabel": "Wklej wiadomość, na którą chcesz odpowiedzieć", "explainLabel": "Wklej tekst, który chcesz wyjaśnić", "createPh": "Opisz sytuację...", "replyPh": "Wklej otrzymaną wiadomość...", "explainPh": "Wklej tekst...", "intent": "Co chcesz odpowiedzieć? (opcjonalnie)", "intentPh": "Na przykład: potwierdź spotkanie; grzecznie odmów; zaproponuj piątek po 14:00", "createBtn": "Utwórz tekst", "replyBtn": "Utwórz odpowiedź", "explainBtn": "Wyjaśnij", "copy": "Kopiuj", "copied": "Skopiowano!", "wait": "Proszę czekać...", "empty": "Wpisz tekst.", "error": "Błąd: ", "note": "Przed wysłaniem sprawdź ważne daty, kwoty i fakty."}, "fr": {"title": "Des lettres et réponses sans détour", "subtitle": "Aide pour les lettres et les messages", "featureCreateTitle": "Créer", "featureCreateText": "Transformez une situation en message clair", "featureReplyTitle": "Répondre", "featureReplyText": "Préparez une réponse concise et adaptée", "featureExplainTitle": "Expliquer", "featureExplainText": "Comprenez un message complexe avec des mots simples", "action": "Que souhaitez-vous faire ?", "create": "Créer", "reply": "Répondre", "explain": "Expliquer", "source": "Langue source", "target": "Langue du résultat", "recipient": "Destinataire", "employer": "Employeur", "landlord": "Propriétaire", "authority": "Administration", "insurance": "Compagnie d’assurance", "shop": "Magasin", "other": "Autre", "tone": "Ton", "name": "Nom (facultatif)", "namePh": "Par exemple : Anna", "createLabel": "Que souhaitez-vous écrire ?", "replyLabel": "Collez le message auquel vous souhaitez répondre", "explainLabel": "Collez le texte que vous souhaitez faire expliquer", "createPh": "Décrivez la situation...", "replyPh": "Collez le message reçu...", "explainPh": "Collez le texte...", "intent": "Que souhaitez-vous répondre ? (facultatif)", "intentPh": "Par exemple : confirmer le rendez-vous ; refuser poliment ; proposer vendredi après 14 h", "createBtn": "Créer le texte", "replyBtn": "Créer la réponse", "explainBtn": "Expliquer", "copy": "Copier", "copied": "Copié !", "wait": "Veuillez patienter...", "empty": "Saisissez un texte.", "error": "Erreur : ", "note": "Les dates, heures, montants, noms et faits du texte source sont conservés. Une date relative comme « mardi prochain » n’est pas transformée en date calendaire inventée."}, "es": {"title": "Cartas y respuestas sin rodeos", "subtitle": "Ayuda para cartas y mensajes", "featureCreateTitle": "Crear", "featureCreateText": "Convierte una situación en un mensaje claro", "featureReplyTitle": "Responder", "featureReplyText": "Prepara una respuesta breve y adecuada", "featureExplainTitle": "Explicar", "featureExplainText": "Entiende un mensaje complicado con palabras sencillas", "action": "¿Qué necesitas hacer?", "create": "Crear", "reply": "Responder", "explain": "Explicar", "source": "Idioma de origen", "target": "Idioma del resultado", "recipient": "Destinatario", "employer": "Empleador", "landlord": "Arrendador", "authority": "Administración", "insurance": "Compañía de seguros", "shop": "Tienda", "other": "Otro", "tone": "Tono", "name": "Nombre (opcional)", "namePh": "Por ejemplo: Anna", "createLabel": "¿Qué quieres escribir?", "replyLabel": "Pega el mensaje al que quieres responder", "explainLabel": "Pega el texto que quieres explicar", "createPh": "Describe la situación...", "replyPh": "Pega el mensaje recibido...", "explainPh": "Pega el texto...", "intent": "¿Qué quieres responder? (opcional)", "intentPh": "Por ejemplo: confirmar la reunión; rechazar con cortesía; proponer el viernes después de las 14:00", "createBtn": "Crear texto", "replyBtn": "Crear respuesta", "explainBtn": "Explicar", "copy": "Copiar", "copied": "¡Copiado!", "wait": "Espera un momento...", "empty": "Introduce un texto.", "error": "Error: ", "note": "Se conservan las fechas, horas, importes, nombres y hechos del texto original. Las fechas relativas, como «el próximo martes», no se convierten en una fecha de calendario inventada."}, "it": {"title": "Lettere e risposte senza giri di parole", "subtitle": "Aiuto per lettere e messaggi", "featureCreateTitle": "Crea", "featureCreateText": "Trasforma una situazione in un messaggio chiaro", "featureReplyTitle": "Rispondi", "featureReplyText": "Prepara una risposta breve e appropriata", "featureExplainTitle": "Spiega", "featureExplainText": "Comprendi un messaggio complesso con parole semplici", "action": "Cosa vuoi fare?", "create": "Crea", "reply": "Rispondi", "explain": "Spiega", "source": "Lingua di origine", "target": "Lingua del risultato", "recipient": "Destinatario", "employer": "Datore di lavoro", "landlord": "Proprietario", "authority": "Ente pubblico", "insurance": "Compagnia assicurativa", "shop": "Negozio", "other": "Altro", "tone": "Tono", "name": "Nome (facoltativo)", "namePh": "Per esempio: Anna", "createLabel": "Cosa vuoi scrivere?", "replyLabel": "Incolla il messaggio a cui vuoi rispondere", "explainLabel": "Incolla il testo che vuoi far spiegare", "createPh": "Descrivi la situazione...", "replyPh": "Incolla il messaggio ricevuto...", "explainPh": "Incolla il testo...", "intent": "Cosa vuoi rispondere? (facoltativo)", "intentPh": "Per esempio: conferma l’incontro; rifiuta con cortesia; proponi venerdì dopo le 14:00", "createBtn": "Crea testo", "replyBtn": "Crea risposta", "explainBtn": "Spiega", "copy": "Copia", "copied": "Copiato!", "wait": "Attendi...", "empty": "Inserisci un testo.", "error": "Errore: ", "note": "Date, orari, importi, nomi e fatti del testo originale vengono mantenuti. Le date relative, come «martedì prossimo», non vengono trasformate in una data di calendario inventata."}, "ar": {"title": "رسائل وردود بلا إطالة", "subtitle": "مساعد للرسائل والمراسلات", "featureCreateTitle": "إنشاء", "featureCreateText": "حوّل الموقف إلى رسالة واضحة", "featureReplyTitle": "رد", "featureReplyText": "جهّز ردًا موجزًا ومناسبًا", "featureExplainTitle": "شرح", "featureExplainText": "افهم الرسائل المعقدة بكلمات بسيطة", "action": "ماذا تريد أن تفعل؟", "create": "إنشاء", "reply": "رد", "explain": "شرح", "source": "لغة المصدر", "target": "لغة النتيجة", "recipient": "المستلم", "employer": "صاحب العمل", "landlord": "المالك", "authority": "جهة رسمية", "insurance": "شركة التأمين", "shop": "متجر", "other": "أخرى", "tone": "النبرة", "name": "الاسم (اختياري)", "namePh": "مثال: آنا", "createLabel": "ماذا تريد أن تكتب؟", "replyLabel": "ألصق الرسالة التي تريد الرد عليها", "explainLabel": "ألصق النص الذي تريد شرحه", "createPh": "صف الموقف...", "replyPh": "ألصق الرسالة المستلمة...", "explainPh": "ألصق النص...", "intent": "ماذا تريد أن تقول في الرد؟ (اختياري)", "intentPh": "مثال: أكّد الموعد؛ ارفض بأدب؛ اقترح الجمعة بعد الساعة 14:00", "createBtn": "إنشاء النص", "replyBtn": "إنشاء الرد", "explainBtn": "شرح", "copy": "نسخ", "copied": "تم النسخ!", "wait": "يرجى الانتظار...", "empty": "أدخل نصًا.", "error": "خطأ: ", "note": "تُحفظ التواريخ والأوقات والمبالغ والأسماء والحقائق الواردة في النص الأصلي. ولا تُحوَّل العبارات النسبية مثل «الثلاثاء القادم» إلى تاريخ تقويمي مُختلق."}},L={"ru": {"auto": "Автоматически", "de": "Немецкий", "en": "Английский", "ru": "Русский", "uk": "Украинский", "pl": "Польский", "fr": "Французский", "es": "Испанский", "it": "Итальянский", "ar": "Арабский"}, "de": {"auto": "Automatisch", "de": "Deutsch", "en": "Englisch", "ru": "Russisch", "uk": "Ukrainisch", "pl": "Polnisch", "fr": "Französisch", "es": "Spanisch", "it": "Italienisch", "ar": "Arabisch"}, "en": {"auto": "Automatically", "de": "German", "en": "English", "ru": "Russian", "uk": "Ukrainian", "pl": "Polish", "fr": "French", "es": "Spanish", "it": "Italian", "ar": "Arabic"}, "uk": {"auto": "Автоматично", "de": "Німецька", "en": "Англійська", "ru": "Російська", "uk": "Українська", "pl": "Польська", "fr": "Французька", "es": "Іспанська", "it": "Італійська", "ar": "Арабська"}, "pl": {"auto": "Automatycznie", "de": "Niemiecki", "en": "Angielski", "ru": "Rosyjski", "uk": "Ukraiński", "pl": "Polski", "fr": "Francuski", "es": "Hiszpański", "it": "Włoski", "ar": "Arabski"}, "fr": {"auto": "Automatique", "de": "Allemand", "en": "Anglais", "ru": "Russe", "uk": "Ukrainien", "pl": "Polonais", "fr": "Français", "es": "Espagnol", "it": "Italien", "ar": "Arabe"}, "es": {"auto": "Automático", "de": "Alemán", "en": "Inglés", "ru": "Ruso", "uk": "Ucraniano", "pl": "Polaco", "fr": "Francés", "es": "Español", "it": "Italiano", "ar": "Árabe"}, "it": {"auto": "Automatico", "de": "Tedesco", "en": "Inglese", "ru": "Russo", "uk": "Ucraino", "pl": "Polacco", "fr": "Francese", "es": "Spagnolo", "it": "Italiano", "ar": "Arabo"}, "ar": {"auto": "تلقائي", "de": "الألمانية", "en": "الإنجليزية", "ru": "الروسية", "uk": "الأوكرانية", "pl": "البولندية", "fr": "الفرنسية", "es": "الإسبانية", "it": "الإيطالية", "ar": "العربية"}},TONES={"ru": ["Официальный", "Вежливый", "Дружелюбный", "Подробный"], "de": ["Formell", "Höflich", "Freundlich", "Ausführlich"], "en": ["Formal", "Polite", "Friendly", "Detailed"], "uk": ["Офіційний", "Ввічливий", "Дружній", "Детальний"], "pl": ["Formalny", "Uprzejmy", "Przyjazny", "Szczegółowy"], "fr": ["Formel", "Poli", "Amical", "Détaillé"], "es": ["Formal", "Cortés", "Amable", "Detallado"], "it": ["Formale", "Cortese", "Amichevole", "Dettagliato"], "ar": ["رسمي", "مهذب", "ودود", "مفصل"]},UI={"de": "Deutsch", "en": "English", "ru": "Русский", "uk": "Українська", "pl": "Polski", "fr": "Français", "es": "Español", "it": "Italiano", "ar": "العربية"};
+const MARKET={
+en:{navHow:"How it works",navPrice:"Free",badge:"🇩🇪 Made for life in Germany",proof:["5 free texts per day","9 languages","Facts stay unchanged"],scTitle:"Common situations, ready faster",scLead:"Start with a practical German scenario and adapt it to your case.",scenarios:{jobcenter:["Jobcenter decision","Ask for clarification or prepare an objection."],heating:["Heating or repairs","Report a defect clearly and request a deadline."],appointment:["Authority appointment","Confirm, cancel or request a new appointment."],employer:["Message to employer","Write about documents, shifts or an absence."]},howTitle:"From confusing letter to clear next step",howLead:"Briefly keeps the workflow simple, even when the original message is not.",steps:[["Paste or describe","Add the message you received or explain your situation in your own language."],["Understand","Get a plain-language explanation without invented dates, amounts or facts."],["Reply","Create a concise response in German or another supported language."]],trustTitle:"Designed for sensitive correspondence",trust:[["Facts are preserved","Names, dates, amounts and details are passed through instead of being silently changed."],["You stay in control","Review and edit every result before sending it. Briefly never sends messages for you."],["Clear limits","Briefly helps with wording and understanding. It is not a substitute for legal advice."]],priceTitle:"Briefly is free",priceLead:"Create up to 5 texts per day for free. Briefly is supported by advertising.",free:"Free",freeList:["5 texts per day","Create, reply and explain","All supported languages"],try:"Try Briefly",contact:"",impressum:"Impressum",privacy:"Privacy",legal:"",replyCta:"Prepare a reply →"},
+de:{navHow:"So funktioniert es",navPrice:"Kostenlos",badge:"🇩🇪 Für den Alltag in Deutschland",proof:["5 kostenlose Texte pro Tag","9 Sprachen","Fakten bleiben unverändert"],scTitle:"Häufige Situationen schneller lösen",scLead:"Wählen Sie einen typischen Fall und passen Sie ihn an.",scenarios:{jobcenter:["Jobcenter-Bescheid","Nachfragen oder einen Widerspruch vorbereiten."],heating:["Heizung oder Reparatur","Mangel melden und eine Frist erfragen."],appointment:["Behördentermin","Termin bestätigen, absagen oder verschieben."],employer:["Nachricht an Arbeitgeber","Zu Unterlagen, Schicht oder Abwesenheit schreiben."]},howTitle:"Vom komplizierten Brief zum nächsten Schritt",howLead:"Briefly macht auch schwierige Nachrichten verständlich.",steps:[["Einfügen oder beschreiben","Fügen Sie die Nachricht ein oder schildern Sie die Situation in Ihrer Sprache."],["Verstehen","Erhalten Sie eine einfache Erklärung ohne erfundene Fakten."],["Antworten","Erstellen Sie eine klare Antwort auf Deutsch oder in einer anderen Sprache."]],trustTitle:"Für vertrauliche Korrespondenz entwickelt",trust:[["Fakten bleiben erhalten","Namen, Daten, Beträge und Details werden nicht unbemerkt verändert."],["Sie behalten die Kontrolle","Prüfen und bearbeiten Sie jeden Text vor dem Versand."],["Klare Grenzen","Briefly hilft beim Formulieren, ersetzt aber keine Rechtsberatung."]],priceTitle:"Briefly ist kostenlos",priceLead:"Erstellen Sie bis zu 5 Texte pro Tag kostenlos. Briefly wird durch Werbung finanziert.",free:"Kostenlos",freeList:["5 Texte pro Tag","Erstellen, antworten und erklären","Alle unterstützten Sprachen"],try:"Briefly testen",contact:"",impressum:"Impressum",privacy:"Datenschutz",legal:"",replyCta:"Antwort vorbereiten →"},
+ru:{navHow:"Как это работает",navPrice:"Бесплатно",badge:"🇩🇪 Для жизни в Германии",proof:["5 бесплатных текстов в день","9 языков","Факты не изменяются"],scTitle:"Популярные ситуации — быстрее",scLead:"Выберите типичную ситуацию в Германии и дополните её своими данными.",scenarios:{jobcenter:["Решение Jobcenter","Запросить разъяснение или подготовить возражение."],heating:["Отопление или ремонт","Сообщить о поломке и запросить срок ремонта."],appointment:["Приём в ведомстве","Подтвердить, отменить или перенести встречу."],employer:["Сообщение работодателю","Написать о документах, смене или отсутствии."]},howTitle:"От сложного письма к понятному действию",howLead:"Briefly помогает разобраться в сообщении и подготовить следующий шаг.",steps:[["Вставьте или опишите","Добавьте полученное письмо или опишите ситуацию на своём языке."],["Разберитесь","Получите простое объяснение без выдуманных дат, сумм и фактов."],["Ответьте","Создайте краткий ответ на немецком или другом языке."]],trustTitle:"Для важной переписки",trust:[["Факты сохраняются","Имена, даты, суммы и детали не изменяются незаметно."],["Решение остаётся за вами","Проверьте и отредактируйте результат перед отправкой."],["Чёткие границы","Briefly помогает с текстом, но не заменяет юридическую консультацию."]],priceTitle:"Briefly работает бесплатно",priceLead:"Создавайте до 5 текстов в день бесплатно. Работа Briefly поддерживается рекламой.",free:"Бесплатно",freeList:["5 текстов в день","Создание, ответы и объяснения","Все поддерживаемые языки"],try:"Попробовать Briefly",contact:"",impressum:"Impressum",privacy:"Конфиденциальность",legal:"",replyCta:"Подготовить ответ →"},
+uk:{navHow:"Як це працює",navPrice:"Безкоштовно",badge:"🇩🇪 Для життя в Німеччині",proof:["5 безкоштовних текстів на день","9 мов","Факти не змінюються"],scTitle:"Типові ситуації — швидше",scLead:"Оберіть поширену ситуацію та доповніть її своїми даними.",scenarios:{jobcenter:["Рішення Jobcenter","Запитати пояснення або підготувати заперечення."],heating:["Опалення чи ремонт","Повідомити про несправність і запитати строк ремонту."],appointment:["Прийом у відомстві","Підтвердити, скасувати або перенести зустріч."],employer:["Повідомлення роботодавцю","Написати про документи, зміну чи відсутність."]},howTitle:"Від складного листа до зрозумілої дії",howLead:"Briefly допомагає зрозуміти повідомлення та підготувати наступний крок.",steps:[["Вставте або опишіть","Додайте отриманий лист або опишіть ситуацію своєю мовою."],["Зрозумійте","Отримайте просте пояснення без вигаданих фактів."],["Відповідайте","Створіть стислу відповідь німецькою або іншою мовою."]],trustTitle:"Для важливого листування",trust:[["Факти зберігаються","Імена, дати, суми та деталі не змінюються непомітно."],["Рішення за вами","Перевірте й відредагуйте результат перед надсиланням."],["Чіткі межі","Briefly допомагає з текстом, але не замінює юридичну консультацію."]],priceTitle:"Briefly працює безкоштовно",priceLead:"Створюйте до 5 текстів на день безкоштовно. Робота Briefly підтримується рекламою.",free:"Безкоштовно",freeList:["5 текстів на день","Створення, відповіді та пояснення","Усі підтримувані мови"],try:"Спробувати Briefly",contact:"",impressum:"Impressum",privacy:"Конфіденційність",legal:"",replyCta:"Підготувати відповідь →"}}
+const WORKER_URL="https://briefly-api.nadiiahonda34.workers.dev/";
+const savedUiLang=localStorage.getItem("briefly-ui-lang"),browserUiLang=(navigator.language||"").slice(0,2);
+let uiLang=savedUiLang||((T[browserUiLang]&&browserUiLang)||"de"),mode="create",recipientKey="employer";
+if(!T[uiLang])uiLang="en";
+const $=id=>document.getElementById(id);
+const uiLanguage=$("uiLanguage"), title=$("title"), subtitle=$("subtitle"), actionLabel=$("actionLabel"),
+  createMode=$("createMode"), replyMode=$("replyMode"), explainMode=$("explainMode"),
+  sourceLabel=$("sourceLabel"), sourceLanguage=$("sourceLanguage"), targetLabel=$("targetLabel"), targetLanguage=$("targetLanguage"),
+  recipientBlock=$("recipientBlock"), recipientLabel=$("recipientLabel"), textLabel=$("textLabel"), text=$("text"),
+  intentBlock=$("intentBlock"), intentLabel=$("intentLabel"), replyInstruction=$("replyInstruction"),
+  toneLabel=$("toneLabel"), tone=$("tone"), nameLabel=$("nameLabel"), nameInput=$("name"),
+  generate=$("generate"), usageStatus=$("usageStatus"), errorBox=$("error"), result=$("result"), copy=$("copy"), replyFromExplain=$("replyFromExplain"), note=$("note"), featureCreateTitle=$("featureCreateTitle"), featureCreateText=$("featureCreateText"), featureReplyTitle=$("featureReplyTitle"), featureReplyText=$("featureReplyText"), featureExplainTitle=$("featureExplainTitle"), featureExplainText=$("featureExplainText");
+const modeButtons=[...document.querySelectorAll(".mode")], catButtons=[...document.querySelectorAll(".cat")];
+const STATUS_UI={"de": ["Bitte melden Sie sich mit Google an, um einen Text zu erstellen. Die Ratgeber sind ohne Anmeldung zugänglich.", "Abmelden", "Bitte beschreiben Sie, was Sie antworten möchten.", "Datenschutz", "Ratgeber auf Deutsch"], "en": ["Sign in with Google to create a text. Guides are available without signing in.", "Sign out", "Please describe what you would like to say in your reply.", "Privacy", "Guides in German"], "ru": ["Войдите через Google, чтобы создать текст. Справочники доступны без входа.", "Выйти", "Напишите, что вы хотите ответить.", "Конфиденциальность", "Справочники на немецком"], "uk": ["Увійдіть через Google, щоб створити текст. Довідники доступні без входу.", "Вийти", "Напишіть, що ви хочете відповісти.", "Конфіденційність", "Довідники німецькою"], "pl": ["Zaloguj się przez Google, aby utworzyć tekst. Poradniki są dostępne bez logowania.", "Wyloguj", "Napisz, co chcesz odpowiedzieć.", "Prywatność", "Poradniki po niemiecku"], "fr": ["Connectez-vous avec Google pour créer un texte. Les guides sont accessibles sans connexion.", "Se déconnecter", "Indiquez ce que vous souhaitez répondre.", "Confidentialité", "Guides en allemand"], "es": ["Inicia sesión con Google para crear un texto. Las guías están disponibles sin iniciar sesión.", "Cerrar sesión", "Indica qué quieres responder.", "Privacidad", "Guías en alemán"], "it": ["Accedi con Google per creare un testo. Le guide sono disponibili senza accesso.", "Esci", "Indica cosa vuoi rispondere.", "Privacy", "Guide in tedesco"], "ar": ["سجّل الدخول عبر Google لإنشاء نص. الأدلة متاحة دون تسجيل الدخول.", "تسجيل الخروج", "اكتب ما تريد قوله في الرد.", "الخصوصية", "أدلة باللغة الألمانية"]};
+function fillUi(){uiLanguage.innerHTML="";Object.entries(UI).forEach(([v,n])=>uiLanguage.add(new Option(n,v)));uiLanguage.value=uiLang}
+function fillLanguages(){const d=L[uiLang],sv=sourceLanguage.value||"auto",tv=targetLanguage.value||"de";sourceLanguage.innerHTML="";targetLanguage.innerHTML="";Object.entries(d).forEach(([v,n])=>{sourceLanguage.add(new Option(n,v));if(v!=="auto")targetLanguage.add(new Option(n,v))});sourceLanguage.value=d[sv]?sv:"auto";targetLanguage.value=(d[tv]&&tv!=="auto")?tv:(uiLang==="ar"?"ar":"de")}
+function fillTones(){const old=tone.selectedIndex;tone.innerHTML="";TONES[uiLang].forEach(v=>tone.add(new Option(v,v)));if(old>=0&&old<tone.options.length)tone.selectedIndex=old}
+function updateMode(){const t=T[uiLang];recipientBlock.hidden=mode!=="create";intentBlock.hidden=mode!=="reply";textLabel.textContent=t[mode+"Label"];text.placeholder=t[mode+"Ph"];generate.textContent=t[mode+"Btn"];errorBox.textContent="";result.classList.remove("show");copy.classList.remove("show");replyFromExplain.classList.remove("show")}
+function applyMarket(){
+  const m=MARKET[uiLang]||MARKET.en,
+        q=s=>document.querySelector(s),
+        qa=s=>[...document.querySelectorAll(s)];
+  const howNav=q('.top-link[href="#how"]');
+  const fundingNav=q('.top-link[href="#funding"]');
+  if(howNav) howNav.textContent=m.navHow;
+  if(fundingNav) fundingNav.textContent=m.navPrice;
+  q(".eyebrow").textContent=m.badge;
+  qa(".hero-proof span").forEach((x,i)=>x.textContent=m.proof[i]);
+  q("#scenarios h2").textContent=m.scTitle;
+  q("#scenarios .section-head p").textContent=m.scLead;
+  qa(".scenario").forEach(x=>{
+    const v=m.scenarios[x.dataset.scenario];
+    x.querySelector("strong").textContent=v[0];
+    x.querySelector("span:last-child").textContent=v[1];
+  });
+  q("#how h2").textContent=m.howTitle;
+  q("#how .section-head p").textContent=m.howLead;
+  qa("#how .step").forEach((x,i)=>{
+    x.querySelector("h3").textContent=m.steps[i][0];
+    x.querySelector("p").textContent=m.steps[i][1];
+  });
+  q("#trust h2").textContent=m.trustTitle;
+  qa("#trust .trust-item").forEach((x,i)=>{
+    x.querySelector("strong").textContent=m.trust[i][0];
+    x.querySelector("span").textContent=m.trust[i][1];
+  });
+  q("#fundingTitle").textContent=m.priceTitle;
+  q("#fundingLead").textContent=m.priceLead;
+  const adPlaceholder=q("#adPlaceholder");
+  if(adPlaceholder) adPlaceholder.textContent =
+    uiLang==="de" ? "Werbung" :
+    uiLang==="ru" ? "Реклама" :
+    uiLang==="uk" ? "Реклама" : "Advertisement";
+  q("#contactLabel").textContent=m.contact;
+  const footerLinks=qa(".footer a");
+  footerLinks[0].textContent=m.impressum;
+  footerLinks[1].textContent=m.privacy;
+  replyFromExplain.textContent=m.replyCta;
+}
+function update(){const t=T[uiLang];document.documentElement.lang=uiLang;document.documentElement.dir=uiLang==="ar"?"rtl":"ltr";title.textContent=t.title;subtitle.textContent=t.subtitle;actionLabel.textContent=t.action;createMode.textContent=t.create;replyMode.textContent=t.reply;explainMode.textContent=t.explain;sourceLabel.textContent=t.source;targetLabel.textContent=t.target;recipientLabel.textContent=t.recipient;catButtons.forEach(b=>b.textContent=t[b.dataset.key]);toneLabel.textContent=t.tone;nameLabel.textContent=t.name;nameInput.placeholder=t.namePh;intentLabel.textContent=t.intent;replyInstruction.placeholder=t.intentPh;copy.textContent=t.copy;note.textContent=t.note;featureCreateTitle.textContent=t.featureCreateTitle;featureCreateText.textContent=t.featureCreateText;featureReplyTitle.textContent=t.featureReplyTitle;featureReplyText.textContent=t.featureReplyText;featureExplainTitle.textContent=t.featureExplainTitle;featureExplainText.textContent=t.featureExplainText;fillLanguages();fillTones();updateMode();applyMarket();$("signInHint").textContent=STATUS_UI[uiLang][0];$("googleSignOut").textContent=STATUS_UI[uiLang][1];intentLabel.textContent=STATUS_UI[uiLang][2];document.querySelector('.footer a[href="datenschutz.html"]').textContent=STATUS_UI[uiLang][3]}
+uiLanguage.addEventListener("change",e=>{uiLang=e.target.value;localStorage.setItem("briefly-ui-lang",uiLang);update()});
+modeButtons.forEach(b=>b.addEventListener("click",()=>{modeButtons.forEach(x=>x.classList.remove("active"));b.classList.add("active");mode=b.dataset.mode;updateMode()}));
+catButtons.forEach(b=>b.addEventListener("click",()=>{catButtons.forEach(x=>x.classList.remove("active"));b.classList.add("active");recipientKey=b.dataset.key}));
+const LIMIT_UI = {
+  de: {
+    freeRemaining: n => `Heute noch ${n} von 5 kostenlosen Texten verfügbar.`,
+    freeTitle: "Kostenloses Tageslimit erreicht",
+    freeBody: "Du hast heute deine 5 kostenlosen Texte verwendet. Morgen stehen dir wieder 5 kostenlose Texte zur Verfügung."
+  },
+  ru: {
+    freeRemaining: n => `Сегодня осталось бесплатных текстов: ${n} из 5.`,
+    freeTitle: "Бесплатный дневной лимит исчерпан",
+    freeBody: "Сегодня вы использовали 5 бесплатных текстов. Завтра вам снова будут доступны 5 бесплатных текстов."
+  },
+  uk: {
+    freeRemaining: n => `Сьогодні залишилося безкоштовних текстів: ${n} із 5.`,
+    freeTitle: "Безкоштовний денний ліміт вичерпано",
+    freeBody: "Сьогодні ви використали 5 безкоштовних текстів. Завтра вам знову будуть доступні 5 безкоштовних текстів."
+  },
+  en: {
+    freeRemaining: n => `${n} of 5 free texts remaining today.`,
+    freeTitle: "Free daily limit reached",
+    freeBody: "You have used your 5 free texts today. You will have 5 free texts available again tomorrow."
+  }
+};
+
+function showUsage(usage) {
+  if (!usageStatus || !usage) return;
+  const u = LIMIT_UI[uiLang] || LIMIT_UI.en;
+  const used = Math.max(0, Number(usage.used ?? usage.daily_count ?? 0));
+  const remaining = Math.max(0, Math.min(5, Number(usage.remaining ?? (5 - used))));
+  usageStatus.className = "usage-status show";
+  usageStatus.textContent = u.freeRemaining(remaining);
+  if (remaining === 0) showLimitReached();
+}
+
+function showLimitReached() {
+  if (!usageStatus) return;
+  const u = LIMIT_UI[uiLang] || LIMIT_UI.en;
+  usageStatus.className = "usage-status show limit";
+  usageStatus.innerHTML = `<strong>${u.freeTitle}</strong> <span>${u.freeBody}</span>`;
+}
+
+generate.addEventListener("click", async () => {
+  const t = T[uiLang];
+
+  const input = text.value.trim();
+
+  const instruction =
+    replyInstruction.value.trim();
+
+
+  // -----------------------------
+  // ПРОВЕРКА ВВОДА
+  // -----------------------------
+
+  if (!input) {
+    errorBox.textContent = t.empty;
+    return;
+  }
+
+
+  if (
+    mode === "reply" &&
+    !instruction
+  ) {
+    errorBox.textContent = STATUS_UI[uiLang][2];
+    replyInstruction.focus();
+    return;
+  }
+
+
+  errorBox.textContent = "";
+
+  result.classList.remove("show");
+  copy.classList.remove("show");
+  replyFromExplain.classList.remove("show");
+
+
+  const old =
+    generate.textContent;
+
+  generate.disabled = true;
+  generate.textContent = t.wait;
+
+
+  try {
+
+    // -----------------------------
+    // GOOGLE CREDENTIAL
+    // -----------------------------
+
+    const credential =
+      sessionStorage.getItem(
+        "briefly-google-credential"
+      );
+
+
+    if (!credential) {
+      errorBox.textContent = STATUS_UI[uiLang][0];
+      return;
+    }
+
+    // -----------------------------
+    // ЗАПРОС К WORKER
+    // -----------------------------
+
+    const response =
+      await fetch(
+        WORKER_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            ...(credential
+              ? {
+                  Authorization:
+                    "Bearer " +
+                    credential
+                }
+              : {})
+          },
+
+          body: JSON.stringify({
+            mode: mode,
+
+            situation: input,
+            text: input,
+            message: input,
+
+            instruction: instruction,
+            replyInstruction: instruction,
+            intent: instruction,
+
+            sourceLanguage:
+              sourceLanguage.value,
+
+            targetLanguage:
+              targetLanguage.value,
+
+            language:
+              targetLanguage.value,
+
+            recipient:
+              t[recipientKey],
+
+            recipientKey:
+              recipientKey,
+
+            tone:
+              tone.value,
+
+            name:
+              nameInput.value.trim(),
+
+            uiLanguage:
+              uiLang,
+
+            preserveFacts: true,
+            preserveDates: true,
+            naturalReply: true,
+            noInventedDates: true
+          })
+        }
+      );
+
+
+    // -----------------------------
+    // ЧИТАЕМ ОТВЕТ
+    // -----------------------------
+
+    const raw =
+      await response.text();
+
+    let data;
+
+    try {
+      data =
+        raw
+          ? JSON.parse(raw)
+          : {};
+    } catch {
+      throw new Error(
+        raw ||
+        "Invalid server response"
+      );
+    }
+
+
+    // -----------------------------
+    // ОШИБКА / ЛИМИТ
+    // -----------------------------
+
+    if (!response.ok) {
+      if(response.status === 401 || /sign in with google/i.test(String(data.error || data.details || ""))) {
+        errorBox.textContent=STATUS_UI[uiLang][0];
+        return;
+      }
+
+      if (
+        response.status === 429 ||
+        data.code ===
+          "FREE_DAILY_LIMIT_REACHED" ||
+        data.code ===
+          "PLUS_DAILY_LIMIT_REACHED"
+      ) {
+
+        const plan =
+          data.plan ||
+          data?.usage?.plan ||
+          "";
+
+        if (plan) {
+          showLimitReached();
+        } else {
+          console.warn(
+            "Briefly: limit response has no plan",
+            data
+          );
+
+          errorBox.textContent =
+            t.error +
+            "Subscription plan was not returned by the server.";
+        }
+
+        return;
+      }
+
+
+      throw new Error(
+        data.details ||
+        data.error ||
+        `Server error (${response.status})`
+      );
+    }
+
+
+    // -----------------------------
+    // ПОЛУЧАЕМ ТЕКСТ
+    // -----------------------------
+
+    const output =
+      data.result ||
+      data.letter ||
+      data.output ||
+      data.text ||
+      data.reply ||
+      data.answer ||
+      data.message ||
+      data?.choices?.[0]
+        ?.message?.content;
+
+
+    if (
+      typeof output !== "string" ||
+      !output.trim()
+    ) {
+      throw new Error(
+        data.error ||
+        "No result returned by the server"
+      );
+    }
+
+
+    // -----------------------------
+    // ПОКАЗЫВАЕМ РЕЗУЛЬТАТ
+    // -----------------------------
+
+    result.textContent =
+      output.trim();
+
+    result.classList.add("show");
+
+    copy.classList.add("show");
+
+
+    if (mode === "explain") {
+      replyFromExplain
+        .classList.add("show");
+    }
+
+
+    // -----------------------------
+    // PLAN + USAGE
+    // -----------------------------
+
+    if (data.usage) {
+
+      const serverPlan =
+        data.plan ||
+        data.usage.plan ||
+        "";
+
+      showUsage(
+        data.usage,
+        serverPlan
+      );
+    }
+
+
+  } catch (e) {
+
+    console.error(
+      "Briefly generation error:",
+      e
+    );
+
+    errorBox.textContent =
+      t.error +
+      (e?.message || String(e));
+
+
+  } finally {
+
+    generate.disabled = false;
+
+    generate.textContent =
+      T[uiLang][mode+"Btn"];
+  }
+});
+copy.addEventListener("click",async()=>{const t=T[uiLang];try{await navigator.clipboard.writeText(result.textContent);copy.textContent=t.copied;setTimeout(()=>copy.textContent=t.copy,1500)}catch{errorBox.textContent=t.error}});
+replyFromExplain.addEventListener("click",()=>{const original=text.value;modeButtons.forEach(x=>x.classList.toggle("active",x.dataset.mode==="reply"));mode="reply";updateMode();text.value=original;replyInstruction.focus();window.scrollTo({top:document.querySelector(".card").offsetTop-16,behavior:"smooth"})});
+const SCENARIO_TEXT={en:{jobcenter:"I received a decision from the Jobcenter and need a clear explanation and help asking about the reasons and next steps.",heating:"The heating in my apartment is not working. I want to inform my landlord, request a prompt repair and ask for a clear deadline.",appointment:"I need to ask a German authority to reschedule my appointment and propose an alternative date.",employer:"I need to write a clear, polite message to my employer about a work-related matter."},de:{jobcenter:"Ich habe einen Bescheid vom Jobcenter erhalten und möchte die Gründe und nächsten Schritte erfragen.",heating:"Die Heizung in meiner Wohnung funktioniert nicht. Ich möchte den Vermieter informieren, eine schnelle Reparatur und einen klaren Termin verlangen.",appointment:"Ich möchte eine Behörde um die Verschiebung meines Termins bitten und einen Ersatztermin vorschlagen.",employer:"Ich möchte meinem Arbeitgeber eine klare und höfliche Nachricht zu einem Arbeitsthema schreiben."},ru:{jobcenter:"Я получил(а) решение Jobcenter и хочу запросить понятное объяснение причин и дальнейших действий.",heating:"В моей квартире не работает отопление. Я хочу сообщить арендодателю, попросить срочный ремонт и указать чёткий срок.",appointment:"Я хочу попросить немецкое ведомство перенести встречу и предложить другую дату.",employer:"Я хочу написать работодателю ясное и вежливое сообщение по рабочему вопросу."},uk:{jobcenter:"Я отримав(ла) рішення Jobcenter і хочу попросити зрозуміле пояснення причин та наступних кроків.",heating:"У моїй квартирі не працює опалення. Я хочу повідомити орендодавця, попросити терміновий ремонт і чіткий строк.",appointment:"Я хочу попросити німецьку установу перенести зустріч і запропонувати іншу дату.",employer:"Я хочу написати роботодавцю зрозуміле й ввічливе повідомлення з робочого питання."}};
+document.querySelectorAll(".scenario").forEach(button=>button.addEventListener("click",()=>{mode="create";modeButtons.forEach(x=>x.classList.toggle("active",x.dataset.mode==="create"));recipientKey=button.dataset.recipient;catButtons.forEach(x=>x.classList.toggle("active",x.dataset.key===recipientKey));updateMode();const s=SCENARIO_TEXT[uiLang]||SCENARIO_TEXT.en;text.value=s[button.dataset.scenario]||"";document.querySelector(".card").scrollIntoView({behavior:"smooth",block:"start"});setTimeout(()=>text.focus(),450)}));
+document.getElementById("year").textContent=new Date().getFullYear();
+
+const GOOGLE_CLIENT_ID="524942119824-jb5pjgfblo6apr2qa5o5si7vp9gt5e1g.apps.googleusercontent.com";
+function decodeGoogleCredential(token){
+  try{
+    const part=token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");
+    const padded=part+"=".repeat((4-part.length%4)%4);
+    return JSON.parse(decodeURIComponent(Array.from(atob(padded),c=>"%"+c.charCodeAt(0).toString(16).padStart(2,"0")).join("")));
+  }catch{return null}
+}
+function showGoogleUser(profile){
+  if(!profile)return;
+  localStorage.setItem("briefly-google-user",JSON.stringify({name:profile.name||profile.given_name||"",email:profile.email||""}));
+  document.getElementById("googleSignIn").style.display="none";
+  document.getElementById("googleUser").style.display="flex";
+  document.getElementById("googleUserName").textContent=profile.name||profile.email||"Google user";
+  if(!nameInput.value.trim()&&(profile.name||profile.given_name))nameInput.value=profile.name||profile.given_name;
+}
+function handleGoogleCredential(response){
+  const profile=decodeGoogleCredential(response.credential);
+  if(profile){
+    sessionStorage.setItem("briefly-google-credential",response.credential);
+    showGoogleUser(profile);
+  }
+}
+function initGoogleSignIn(){
+  const saved=localStorage.getItem("briefly-google-user");
+  const credential=sessionStorage.getItem("briefly-google-credential");
+  const profile=credential ? decodeGoogleCredential(credential) : null;
+  if(saved && profile && profile.exp*1000>Date.now()){try{showGoogleUser(profile)}catch{}}
+  if(!window.google?.accounts?.id){setTimeout(initGoogleSignIn,200);return}
+  google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential});
+  google.accounts.id.renderButton(document.getElementById("googleSignIn"),{theme:"outline",size:"medium",shape:"pill",text:"signin_with"});
+}
+document.getElementById("googleSignOut").addEventListener("click",()=>{
+  localStorage.removeItem("briefly-google-user");
+  sessionStorage.removeItem("briefly-google-credential");
+  window.google?.accounts?.id?.disableAutoSelect();
+  document.getElementById("googleUser").style.display="none";
+  document.getElementById("googleSignIn").style.display="block";
+  document.getElementById("googleSignIn").innerHTML="";
+  if(window.google?.accounts?.id)google.accounts.id.renderButton(document.getElementById("googleSignIn"),{theme:"outline",size:"medium",shape:"pill",text:"signin_with"});
+});
+initGoogleSignIn();
+fillUi();update();
+</script>
+<script>
+(function(){
+  const GUIDE_I18N = {
+    de:{title:"Ratgeber für Briefe und Alltagsbürokratie in Deutschland",intro:"Praktische Informationen zu häufigen Schreiben, Fristen und formellen Antworten – als Ergänzung zum KI-Assistenten.",open:"Ratgeber öffnen →",more:"Mehr erfahren →",nav:"Ratgeber"},
+    en:{title:"Guides for letters and everyday bureaucracy in Germany",intro:"Practical information about common letters, deadlines and formal replies – as a complement to the AI assistant.",open:"Open guide →",more:"Learn more →",nav:"Guides"},
+    ru:{title:"Справочники по письмам и повседневной бюрократии в Германии",intro:"Практическая информация о типичных письмах, сроках и официальных ответах — в дополнение к ИИ-помощнику.",open:"Открыть справочник →",more:"Подробнее →",nav:"Справочники"},
+    uk:{title:"Довідники про листи та повсякденну бюрократію в Німеччині",intro:"Практична інформація про типові листи, строки та офіційні відповіді — як доповнення до ШІ-помічника.",open:"Відкрити довідник →",more:"Докладніше →",nav:"Довідники"},
+    pl:{title:"Poradniki dotyczące pism i codziennej biurokracji w Niemczech",intro:"Praktyczne informacje o typowych pismach, terminach i formalnych odpowiedziach — jako uzupełnienie asystenta AI.",open:"Otwórz poradnik →",more:"Dowiedz się więcej →",nav:"Poradniki"},
+    tr:{title:"Almanya'da mektuplar ve günlük bürokrasi için rehberler",intro:"Yaygın yazılar, süreler ve resmi yanıtlar hakkında pratik bilgiler — yapay zekâ asistanını tamamlayıcı olarak.",open:"Rehberi aç →",more:"Daha fazla bilgi →",nav:"Rehberler"},
+    ar:{title:"أدلة للرسائل والإجراءات اليومية في ألمانيا",intro:"معلومات عملية عن الرسائل الشائعة والمواعيد النهائية والردود الرسمية، كتكملة لمساعد الذكاء الاصطناعي.",open:"فتح الدليل ←",more:"معرفة المزيد ←",nav:"الأدلة"},
+    fr:{title:"Guides sur les courriers et les démarches quotidiennes en Allemagne",intro:"Des informations pratiques sur les courriers courants, les délais et les réponses formelles, en complément de l’assistant IA.",open:"Ouvrir le guide →",more:"En savoir plus →",nav:"Guides"},
+    es:{title:"Guías sobre cartas y trámites cotidianos en Alemania",intro:"Información práctica sobre cartas habituales, plazos y respuestas formales, como complemento del asistente de IA.",open:"Abrir guía →",more:"Más información →",nav:"Guías"}
+  };
+  GUIDE_I18N.it={title:"Guide per lettere e pratiche quotidiane in Germania",intro:"Informazioni pratiche per capire le lettere e preparare risposte formali.",open:"Apri la guida →",more:"Scopri di più →",nav:"Guide"};
+  const CARD_I18N={"de": [["Jobcenter", "Jobcenter-Briefe verstehen", "Bescheid, Anhörung, Mitwirkung und Widerspruch: Begriffe und erste Prüfschritte."], ["Wohnen", "Briefe vom Vermieter verstehen", "Reparaturen, Miete und Nebenkosten verstehen und gezielt nachfragen."], ["Behörden", "Behördenbriefe richtig lesen", "Absender, Aktenzeichen, Frist und geforderte Handlung erkennen."], ["Schreiben", "Formell auf Deutsch antworten", "Klare Antworten an Behörden, Arbeitgeber und Unternehmen aufbauen."], ["Briefly", "Über Briefly", "So funktioniert der Dienst und so prüfen Sie KI-Entwürfe."], ["Ratgeber", "Alle Briefly-Ratgeber", "Praktische Hilfen zu Behördenpost, Wohnen, Arbeit und Versicherungen."], ["Deutsch", "Behördendeutsch einfach erklärt", "20 Begriffe mit verständlichen Erklärungen und Beispielen."], ["Checkliste", "Vor dem Absenden prüfen", "Namen, Daten, Beträge, Anlagen und Ton sorgfältig kontrollieren."]], "en": [["Jobcenter", "Understand Jobcenter letters", "Identify decisions, hearings, requests for documents and objections."], ["Housing", "Understand landlord letters", "Read messages about repairs, rent and service charges."], ["Authorities", "Read official letters", "Identify the sender, reference, deadline and requested action."], ["Writing", "Reply formally in German", "Structure clear replies to authorities, employers and companies."], ["Briefly", "About Briefly", "How the service works and how to review AI drafts."], ["Guides", "All Briefly guides", "Practical help with official letters, housing, work and insurance."], ["German", "Official German explained", "20 terms with clear explanations and examples."], ["Checklist", "Check before sending", "Review names, dates, amounts, attachments and tone."]], "ru": [["Jobcenter", "Письма Jobcenter", "Решения, запросы документов и возражения: что проверить сначала."], ["Жильё", "Письма арендодателя", "Как разобраться в письмах о ремонте, аренде и коммунальных расходах."], ["Ведомства", "Как читать официальные письма", "Найдите отправителя, номер дела, срок и требуемое действие."], ["Переписка", "Официальный ответ на немецком", "Структура понятного ответа ведомству, работодателю или компании."], ["Briefly", "О проекте Briefly", "Как работает помощник и как проверять подготовленные ИИ тексты."], ["Справочники", "Все справочники Briefly", "Материалы о ведомствах, жилье, работе и страховании."], ["Немецкий", "Язык ведомств простыми словами", "20 терминов с объяснениями и примерами."], ["Проверка", "Перед отправкой письма", "Проверьте имена, даты, суммы, приложения и тон."]], "uk": [["Jobcenter", "Листи Jobcenter", "Рішення, запити документів і заперечення: що перевірити спочатку."], ["Житло", "Листи орендодавця", "Як зрозуміти листи про ремонт, оренду та комунальні витрати."], ["Установи", "Як читати офіційні листи", "Знайдіть відправника, номер справи, строк і потрібну дію."], ["Листування", "Офіційна відповідь німецькою", "Структура зрозумілої відповіді установі, роботодавцю чи компанії."], ["Briefly", "Про Briefly", "Як працює помічник і як перевіряти тексти ШІ."], ["Довідники", "Усі довідники Briefly", "Матеріали про установи, житло, роботу та страхування."], ["Німецька", "Мова установ простими словами", "20 термінів із поясненнями та прикладами."], ["Перевірка", "Перед надсиланням листа", "Перевірте імена, дати, суми, додатки й тон."]], "pl": [["Jobcenter", "Zrozum pisma z Jobcenter", "Decyzje, wezwania i odwołania: co sprawdzić najpierw."], ["Mieszkanie", "Pisma od wynajmującego", "Zrozum wiadomości o naprawach, czynszu i opłatach."], ["Urzędy", "Jak czytać pisma urzędowe", "Znajdź nadawcę, numer sprawy, termin i wymagane działanie."], ["Pisanie", "Formalna odpowiedź po niemiecku", "Przygotuj jasną odpowiedź do urzędu, pracodawcy lub firmy."], ["Briefly", "O Briefly", "Jak działa asystent i jak sprawdzać teksty AI."], ["Poradniki", "Wszystkie poradniki Briefly", "Pomoc dotycząca urzędów, mieszkania, pracy i ubezpieczeń."], ["Niemiecki", "Język urzędowy prosto", "20 pojęć z objaśnieniami i przykładami."], ["Lista kontrolna", "Sprawdź przed wysłaniem", "Sprawdź nazwiska, daty, kwoty, załączniki i ton."]], "fr": [["Jobcenter", "Comprendre les courriers du Jobcenter", "Décisions, demandes de documents et contestations : les points à vérifier."], ["Logement", "Courriers du propriétaire", "Comprendre les réparations, le loyer et les charges."], ["Administration", "Lire un courrier officiel", "Repérer l’expéditeur, la référence, le délai et la démarche demandée."], ["Rédaction", "Répondre formellement en allemand", "Structurer une réponse claire à une administration ou une entreprise."], ["Briefly", "À propos de Briefly", "Fonctionnement du service et vérification des textes IA."], ["Guides", "Tous les guides Briefly", "Des conseils sur les démarches, le logement, le travail et les assurances."], ["Allemand", "Le langage administratif expliqué", "20 termes avec explications et exemples."], ["Vérification", "Avant l’envoi", "Vérifier les noms, dates, montants, pièces jointes et le ton."]], "es": [["Jobcenter", "Entender cartas del Jobcenter", "Decisiones, documentos y recursos: qué comprobar primero."], ["Vivienda", "Cartas del arrendador", "Entender mensajes sobre reparaciones, alquiler y gastos."], ["Administración", "Leer cartas oficiales", "Identifica el remitente, la referencia, el plazo y la acción solicitada."], ["Redacción", "Responder formalmente en alemán", "Estructura una respuesta clara a una administración o empresa."], ["Briefly", "Acerca de Briefly", "Cómo funciona el servicio y cómo revisar textos de IA."], ["Guías", "Todas las guías de Briefly", "Ayuda con trámites, vivienda, trabajo y seguros."], ["Alemán", "Lenguaje administrativo explicado", "20 términos con explicaciones y ejemplos."], ["Revisión", "Antes de enviar", "Revisa nombres, fechas, importes, documentos adjuntos y tono."]], "it": [["Jobcenter", "Capire le lettere del Jobcenter", "Decisioni, documenti e ricorsi: cosa controllare per prima cosa."], ["Casa", "Lettere del proprietario", "Capire le comunicazioni su riparazioni, affitto e spese."], ["Uffici pubblici", "Leggere lettere ufficiali", "Individua mittente, riferimento, scadenza e azione richiesta."], ["Scrittura", "Rispondere formalmente in tedesco", "Struttura una risposta chiara a uffici, datori di lavoro e aziende."], ["Briefly", "Informazioni su Briefly", "Come funziona il servizio e come controllare i testi IA."], ["Guide", "Tutte le guide Briefly", "Aiuto per pratiche, casa, lavoro e assicurazioni."], ["Tedesco", "Il linguaggio amministrativo spiegato", "20 termini con spiegazioni ed esempi."], ["Controllo", "Prima di inviare", "Controlla nomi, date, importi, allegati e tono."]], "ar": [["Jobcenter", "فهم رسائل مركز العمل", "القرارات وطلبات المستندات والاعتراضات: ما الذي يجب مراجعته أولًا."], ["السكن", "رسائل المؤجّر", "فهم الرسائل المتعلقة بالإصلاحات والإيجار والتكاليف."], ["الجهات الرسمية", "قراءة الرسائل الرسمية", "حدّد المرسل ورقم الملف والمهلة والإجراء المطلوب."], ["الكتابة", "الرد الرسمي بالألمانية", "رتّب ردًا واضحًا للجهات الرسمية وأصحاب العمل والشركات."], ["Briefly", "عن Briefly", "كيف تعمل الخدمة وكيف تراجع النصوص التي ينشئها الذكاء الاصطناعي."], ["الأدلة", "جميع أدلة Briefly", "مساعدة في المراسلات الرسمية والسكن والعمل والتأمين."], ["الألمانية", "شرح اللغة الإدارية", "20 مصطلحًا مع شروحات وأمثلة."], ["المراجعة", "قبل الإرسال", "راجع الأسماء والتواريخ والمبالغ والمرفقات والأسلوب."]]};
+  function localizeGuidesSection(lang){
+    const key=(lang||"de").toLowerCase().split("-")[0];
+    const t=GUIDE_I18N[key]||GUIDE_I18N.de;
+    const title=document.getElementById("guidesTitle");
+    const intro=document.getElementById("guidesIntro");
+    if(title) title.textContent=t.title;
+    if(intro) intro.textContent=t.intro;
+    document.querySelectorAll("[data-guide-open]").forEach(a=>a.textContent=t.open);
+    document.querySelectorAll("[data-guide-more]").forEach(a=>a.textContent=t.more);
+    const cardTexts=CARD_I18N[key]||CARD_I18N.en;
+    document.querySelectorAll('.resource-card').forEach((card,i)=>{
+      const values=cardTexts[i];
+      card.querySelector('.tag').textContent=values[0];
+      card.querySelector('h3').textContent=values[1];
+      card.querySelector('p').textContent=values[2];
+      card.querySelector('.read').textContent=i===4 ? t.more : t.open;
+    });
+    if(intro && key!=='de') intro.textContent+=' '+STATUS_UI[key][4]+'.';
+    const nav=document.querySelector('.top-link[href="#resources"]');
+    if(nav) nav.textContent=t.nav;
+  }
+  window.localizeGuidesSection=localizeGuidesSection;
+  const select=document.querySelector('select');
+  const current=(select && select.value) || document.documentElement.lang || navigator.language || "de";
+  localizeGuidesSection(current);
+  if(select) select.addEventListener("change",()=>localizeGuidesSection(select.value));
+})();
+</script>
+
+</body></html>
