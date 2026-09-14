@@ -1,5 +1,11 @@
 name: Briefly public site check
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/public-site-check.yml'
+      - 'scripts/check_public_site.py'
+  page_build:
   workflow_run:
     workflows: ['pages build and deployment']
     types: [completed]
