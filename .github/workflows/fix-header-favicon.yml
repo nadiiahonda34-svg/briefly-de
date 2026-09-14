@@ -1,4 +1,4 @@
-name: Briefly site-wide consistency audit
+name: Briefly custom-domain migration
 on:
   push:
     paths:
@@ -6,46 +6,30 @@ on:
 permissions:
   contents: write
 jobs:
-  audit:
+  migrate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Apply safe site-wide fixes
+      - name: Replace legacy GitHub Pages URLs safely
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re
-          favicon='<link rel="icon" type="image/x-icon" href="favicon.ico?v=5">'
-          ads='<meta name="google-adsense-account" content="ca-pub-8272791832669756">'
+          old='https://nadiiahonda34-svg.github.io/briefly-de/'
+          new='https://brieflyletters.com/'
+          changed=[]
           for p in Path('.').glob('*.html'):
               s=p.read_text(encoding='utf-8')
-              # Favicon and AdSense ownership metadata on all public HTML pages.
-              if 'rel="icon"' not in s and '</head>' in s:
-                  s=s.replace('</head>',favicon+'</head>',1)
-              if 'google-adsense-account' not in s and '</head>' in s:
-                  s=s.replace('</head>',ads+'</head>',1)
-              # Never keep the main navigation attached to the viewport.
-              s=s.replace('position:sticky;top:14px','position:relative;top:auto')
-              # Complete legal navigation wherever an existing footer has Datenschutz.
-              if '<footer' in s and 'href="datenschutz.html"' in s:
-                  footer_start=s.rfind('<footer')
-                  footer_end=s.find('</footer>',footer_start)
-                  if footer_end != -1:
-                      block=s[footer_start:footer_end]
-                      additions=''
-                      if 'href="kontakt.html"' not in block:
-                          additions+=' · <a href="kontakt.html">Kontakt</a>'
-                      if 'href="nutzungsbedingungen.html"' not in block:
-                          additions+=' · <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>'
-                      if additions:
-                          s=s[:footer_end]+additions+s[footer_end:]
-              p.write_text(s,encoding='utf-8')
+              t=s.replace(old,new)
+              if t != s:
+                  p.write_text(t,encoding='utf-8')
+                  changed.append(p.name)
+          print('Updated:', ', '.join(changed) if changed else 'none')
           PY
-      - name: Commit all safe fixes
+      - name: Commit migrated HTML URLs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add '*.html'
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Standardize favicon legal footer and header site-wide"
+          git commit -m "Migrate HTML canonical URLs to brieflyletters.com"
           git push
