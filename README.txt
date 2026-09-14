@@ -1,8 +1,24 @@
-Briefly — AdSense content upgrade
+Briefly — AI Letter Assistant
 
-Prepared 2026-09-11.
-Includes the original generator and legal pages, plus a Ratgeber hub and 18 substantial editorial guides.
-Upload all files to the ROOT of the GitHub Pages repository nadiiahonda34-svg.github.io.
-Do not place these files in a /briefly-de subfolder because canonical URLs and sitemap point to the root domain.
-After publishing, verify index.html, ratgeber.html, impressum.html, datenschutz.html, robots.txt, sitemap.xml and ads.txt.
-Then request indexing for the main page and Ratgeber in Google Search Console. Do not request a new AdSense review until the published pages are accessible and indexed/crawled.
+Production website: https://brieflyletters.com/
+Repository: nadiiahonda34-svg/briefly-de
+Updated: 2026-09-14
+
+This repository is the source for the Briefly GitHub Pages site. Its CNAME,
+canonical URLs, robots.txt and sitemap.xml use brieflyletters.com.
+Publish this repository through its existing Pages configuration.
+Do not copy these files into the separate nadiiahonda34-svg.github.io repository.
+
+The site includes 28 German guides, 15 PDF templates and an interactive
+pre-send checklist. The glossary contains 40 terms.
+The letter assistant offers Google sign-in and calls its Cloudflare backend.
+Article reading and the checklist do not require sign-in.
+
+Operational settings for Search Console, AdSense, Google sign-in and the
+consent message are documented in GOOGLE_SETUP.md. Repository configuration
+does not prove that the corresponding account settings are complete.
+
+The public site check runs after Pages deployment. It checks HTTPS, published
+content, discovery files and the backend's CORS preflight for the production
+origin. It does not sign in, create letters, inspect private accounts or confirm
+an actual regional consent dialog.
