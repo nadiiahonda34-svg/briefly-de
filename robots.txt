@@ -1,3 +1,3 @@
 User-agent: *
-Allow: /briefly-de/
-Sitemap: https://nadiiahonda34-svg.github.io/briefly-de/sitemap.xml
+Allow: /
+Sitemap: https://brieflyletters.com/sitemap.xml
