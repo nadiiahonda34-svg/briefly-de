@@ -647,13 +647,32 @@ fillUi();update();
 
 
 <script>
-document.getElementById('privacy-settings').addEventListener('click', function (event) {
-  const consent = window.googlefc;
-  if (consent && consent.callbackQueue && typeof consent.showRevocationMessage === 'function') {
-    event.preventDefault();
-    consent.callbackQueue.push(consent.showRevocationMessage);
-  }
-});
+(() => {
+  'use strict';
+  const link = document.getElementById('privacy-settings');
+  if (!link) return;
+  let applies = false;
+  const consent = window.googlefc = window.googlefc || {};
+  consent.callbackQueue = consent.callbackQueue || [];
+  consent.callbackQueue.push({
+    CONSENT_API_READY: () => {
+      if (typeof window.__tcfapi !== 'function') return;
+      window.__tcfapi('addEventListener', 0, (data, success) => {
+        applies = Boolean(success && data && data.gdprApplies);
+      });
+    }
+  });
+  link.addEventListener('click', event => {
+    const current = window.googlefc;
+    if (!applies || !current || typeof current.showRevocationMessage !== 'function') return;
+    try {
+      current.showRevocationMessage();
+      event.preventDefault();
+    } catch (_) {
+      // Preserve the ordinary privacy-policy link when the dialog cannot open.
+    }
+  });
+})();
 </script>
 </body></html>
 
