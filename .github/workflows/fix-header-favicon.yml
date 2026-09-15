@@ -10,26 +10,45 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Replace legacy GitHub Pages URLs safely
+      - name: Add practical homepage navigation once
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          old='https://nadiiahonda34-svg.github.io/briefly-de/'
-          new='https://brieflyletters.com/'
-          changed=[]
-          for p in Path('.').glob('*.html'):
-              s=p.read_text(encoding='utf-8')
-              t=s.replace(old,new)
-              if t != s:
-                  p.write_text(t,encoding='utf-8')
-                  changed.append(p.name)
-          print('Updated:', ', '.join(changed) if changed else 'none')
+          p=Path('index.html')
+          s=p.read_text(encoding='utf-8')
+          if 'id="practical-pathways"' not in s:
+              marker='<section class="section" id="how">'
+              block='''<section class="section resources" id="practical-pathways" aria-labelledby="pathways-title">
+  <div class="section-head">
+    <span class="eyebrow">Praktische Wege</span>
+    <h2 id="pathways-title">Erst verstehen, dann passend antworten</h2>
+    <p>Ordnen Sie Ihr Schreiben ein, lesen Sie den passenden Ratgeber, formulieren Sie Ihre Antwort mit Briefly und prüfen Sie sie vor dem Versand.</p>
+  </div>
+  <div class="resource-grid">
+    <a class="resource-card" href="wege.html"><span class="tag">1 · Wege</span><h3>Den passenden Briefly-Weg finden</h3><p>Starten Sie mit Ihrer konkreten Situation und finden Sie die passenden nächsten Schritte.</p><span class="read">Praktische Wege öffnen →</span></a>
+    <a class="resource-card" href="ratgeber.html"><span class="tag">2 · Ratgeber</span><h3>Ratgeber für konkrete Fälle</h3><p>Prüfen Sie Begriffe, Fristen, Unterlagen und mögliche nächste Schritte, bevor Sie antworten.</p><span class="read">Ratgeber durchsuchen →</span></a>
+    <a class="resource-card" href="#top"><span class="tag">3 · Generator</span><h3>Antwort mit Briefly vorbereiten</h3><p>Wenn die Fakten klar sind, erstellen oder formulieren Sie eine passende Antwort in der gewünschten Sprache.</p><span class="read">Generator verwenden →</span></a>
+    <a class="resource-card" href="brief-checkliste.html"><span class="tag">4 · Checkliste</span><h3>Vor dem Absenden kontrollieren</h3><p>Kontrollieren Sie Namen, Daten, Fristen, Beträge, Anlagen und Empfänger vor dem Versand.</p><span class="read">Checkliste öffnen →</span></a>
+  </div>
+  <div class="pathway-topics" aria-label="Häufige Themen" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px">
+    <a href="jobcenter-briefe-verstehen.html">Jobcenter</a>
+    <a href="behoerdenbriefe-verstehen.html">Behörden</a>
+    <a href="vermieter-brief-verstehen.html">Wohnen</a>
+    <a href="krankmeldung-arbeitgeber.html">Arbeit</a>
+    <a href="krankenkasse-brief-verstehen.html">Krankenkasse</a>
+    <a href="versicherung-schaden-melden.html">Versicherung</a>
+  </div>
+</section>
+'''
+              if marker not in s:
+                  raise SystemExit('homepage insertion marker missing')
+              p.write_text(s.replace(marker,block+marker,1),encoding='utf-8')
           PY
-      - name: Commit migrated HTML URLs
+      - name: Commit homepage navigation
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add '*.html'
+          git add index.html
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Migrate HTML canonical URLs to brieflyletters.com"
+          git commit -m "Strengthen homepage internal navigation"
           git push
