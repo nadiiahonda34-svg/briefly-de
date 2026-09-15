@@ -12,7 +12,7 @@ on:
     branches: [main]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
 concurrency:
   group: briefly-public-site-check
   cancel-in-progress: true
@@ -25,49 +25,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
-          persist-credentials: true
-      - name: Add homepage practical pathways once
-        if: github.event_name == 'push'
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          p=Path('index.html')
-          s=p.read_text(encoding='utf-8')
-          if 'id="practical-pathways"' not in s:
-              marker='<section class="section" id="how">'
-              block='''<section class="section resources" id="practical-pathways" aria-labelledby="pathways-title">
-  <div class="section-head">
-    <span class="eyebrow">Praktische Wege</span>
-    <h2 id="pathways-title">Erst verstehen, dann passend antworten</h2>
-    <p>Ordnen Sie Ihr Schreiben ein, lesen Sie den passenden Ratgeber, formulieren Sie Ihre Antwort mit Briefly und prüfen Sie sie vor dem Versand.</p>
-  </div>
-  <div class="resource-grid">
-    <a class="resource-card" href="wege.html"><span class="tag">1 · Einordnen</span><h3>Den passenden Briefly-Weg finden</h3><p>Jobcenter, Behörden, Wohnung, Arbeit oder Versicherung: starten Sie mit Ihrer konkreten Situation.</p><span class="read">Praktische Wege öffnen →</span></a>
-    <a class="resource-card" href="ratgeber.html"><span class="tag">2 · Verstehen</span><h3>28 Ratgeber für konkrete Fälle</h3><p>Prüfen Sie Begriffe, Fristen, Unterlagen und mögliche nächste Schritte, bevor Sie antworten.</p><span class="read">Ratgeber durchsuchen →</span></a>
-    <a class="resource-card" href="#top"><span class="tag">3 · Antworten</span><h3>Antwort mit Briefly vorbereiten</h3><p>Wenn die Fakten klar sind, erstellen oder formulieren Sie eine passende Antwort in der gewünschten Sprache.</p><span class="read">Generator verwenden →</span></a>
-    <a class="resource-card" href="brief-checkliste.html"><span class="tag">4 · Prüfen</span><h3>Vor dem Absenden kontrollieren</h3><p>Kontrollieren Sie Namen, Daten, Fristen, Beträge, Anlagen und Empfänger mit der interaktiven Checkliste.</p><span class="read">Checkliste öffnen →</span></a>
-  </div>
-  <div class="pathway-topics" aria-label="Häufige Themen" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px">
-    <a href="jobcenter-briefe-verstehen.html">Jobcenter</a>
-    <a href="behoerdenbriefe-verstehen.html">Behörden</a>
-    <a href="vermieter-brief-verstehen.html">Wohnen</a>
-    <a href="krankmeldung-arbeitgeber.html">Arbeit</a>
-    <a href="krankenkasse-brief-verstehen.html">Krankenkasse</a>
-    <a href="versicherung-schaden-melden.html">Versicherung</a>
-  </div>
-</section>
-'''
-              if marker not in s:
-                  raise SystemExit('homepage insertion marker missing')
-              p.write_text(s.replace(marker,block+marker,1),encoding='utf-8')
-          PY
-          if ! git diff --quiet -- index.html; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add index.html
-            git commit -m "Strengthen homepage with practical Briefly pathways"
-            git push
-          fi
+          persist-credentials: false
       - name: Check HTTPS, published pages and backend preflight
         run: python3 scripts/check_public_site.py
