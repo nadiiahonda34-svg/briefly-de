@@ -5,6 +5,8 @@ on:
     paths:
       - '.github/workflows/public-site-check.yml'
       - 'scripts/check_public_site.py'
+      - 'scripts/apply_seo.py'
+      - 'scripts/fix_sitemap.py'
   page_build:
   workflow_run:
     workflows: ['pages build and deployment']
@@ -29,7 +31,9 @@ jobs:
           fetch-depth: 0
       - name: Apply SEO improvements
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        run: python3 scripts/apply_seo.py
+        run: |
+          python3 scripts/apply_seo.py
+          python3 scripts/fix_sitemap.py
       - name: Commit SEO improvements
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         shell: bash
