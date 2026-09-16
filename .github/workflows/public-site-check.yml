@@ -8,6 +8,7 @@ on:
       - 'scripts/apply_seo.py'
       - 'scripts/fix_sitemap.py'
       - 'scripts/enhance_content.py'
+      - 'scripts/add_search_guides.py'
   page_build:
   workflow_run:
     workflows: ['pages build and deployment']
@@ -33,6 +34,7 @@ jobs:
       - name: Apply SEO improvements
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         run: |
+          python3 scripts/add_search_guides.py
           python3 scripts/enhance_content.py
           python3 scripts/apply_seo.py
           python3 scripts/fix_sitemap.py
