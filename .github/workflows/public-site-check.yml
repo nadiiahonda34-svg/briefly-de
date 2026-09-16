@@ -14,7 +14,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: briefly-public-site-check
+  group: briefly-public-site-check-${{ github.event_name }}
   cancel-in-progress: true
 jobs:
   check:
