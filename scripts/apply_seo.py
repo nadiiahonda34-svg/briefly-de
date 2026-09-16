@@ -1,0 +1,220 @@
+from pathlib import Path
+import re
+import json
+import html
+import subprocess
+
+BASE = "https://brieflyletters.com"
+TODAY = "2026-09-16"
+changed = set()
+
+def write_if_changed(path, old, new):
+    path = Path(path)
+    if new != old:
+        path.write_text(new, encoding="utf-8")
+        changed.add(path.name)
+
+def replace_title_desc(s, title, desc):
+    s = re.sub(r"<title>.*?</title>", f"<title>{title}</title>", s, count=1, flags=re.S | re.I)
+    escaped = html.escape(desc, quote=True)
+    pattern = r'<meta\s+name=["\']description["\']\s+content=["\'][^"\']*["\']\s*/?>'
+    if re.search(pattern, s, flags=re.I):
+        s = re.sub(pattern, f'<meta name="description" content="{escaped}">', s, count=1, flags=re.I)
+    else:
+        s = s.replace("</title>", f'</title>\n<meta name="description" content="{escaped}">', 1)
+    return s
+
+def get_meta(s, name):
+    m = re.search(rf'<meta\s+name=["\']{re.escape(name)}["\']\s+content=["\']([^"\']*)["\']', s, flags=re.I)
+    return html.unescape(m.group(1)).strip() if m else ""
+
+def get_title(s):
+    m = re.search(r"<title>(.*?)</title>", s, flags=re.S | re.I)
+    return html.unescape(re.sub(r"\s+", " ", m.group(1))).strip() if m else "Briefly"
+
+def canonical_for(name):
+    return BASE + "/" if name == "index.html" else BASE + "/" + name
+
+def ensure_canonical(s, url):
+    pattern = r'<link\s+rel=["\']canonical["\']\s+href=["\'][^"\']+["\']\s*/?>'
+    if re.search(pattern, s, flags=re.I):
+        return re.sub(pattern, f'<link rel="canonical" href="{url}">', s, count=1, flags=re.I)
+    return s.replace("</title>", f'</title>\n<link rel="canonical" href="{url}">', 1)
+
+def ensure_social_and_schema(s, url, schema_type="WebPage"):
+    title = get_title(s)
+    desc = get_meta(s, "description")
+    if 'property="og:title"' not in s:
+        social = (
+            f'<meta property="og:type" content="website">\n'
+            f'<meta property="og:title" content="{html.escape(title, quote=True)}">\n'
+            f'<meta property="og:description" content="{html.escape(desc, quote=True)}">\n'
+            f'<meta property="og:url" content="{url}">\n'
+            f'<meta property="og:site_name" content="Briefly">\n'
+            f'<meta name="twitter:card" content="summary">\n'
+            f'<meta name="twitter:title" content="{html.escape(title, quote=True)}">\n'
+            f'<meta name="twitter:description" content="{html.escape(desc, quote=True)}">\n'
+        )
+        anchor = re.search(r'<link\s+rel=["\']canonical["\'][^>]*>', s, flags=re.I)
+        if anchor:
+            pos = anchor.end()
+            s = s[:pos] + "\n" + social + s[pos:]
+        else:
+            s = s.replace("</title>", "</title>\n" + social, 1)
+
+    if '"@context":"https://schema.org"' not in s and '"@context": "https://schema.org"' not in s:
+        schema = {
+            "@context": "https://schema.org",
+            "@type": schema_type,
+            "name": title,
+            "description": desc,
+            "url": url,
+            "inLanguage": "de",
+            "isPartOf": {"@type": "WebSite", "name": "Briefly", "url": BASE + "/"},
+            "publisher": {"@type": "Organization", "name": "Briefly", "url": BASE + "/"},
+        }
+        if schema_type == "WebPage":
+            schema["breadcrumb"] = {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Briefly", "item": BASE + "/"},
+                    {"@type": "ListItem", "position": 2, "name": "Ratgeber", "item": BASE + "/ratgeber.html"},
+                    {"@type": "ListItem", "position": 3, "name": title, "item": url},
+                ],
+            }
+        block = '<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False, separators=(",", ":")) + "</script>\n"
+        s = s.replace("</head>", block + "</head>", 1)
+
+    if '<meta name="author"' not in s and schema_type == "WebPage":
+        s = s.replace("</head>", '<meta name="author" content="Briefly Redaktion">\n</head>', 1)
+    return s
+
+p = Path("index.html")
+s = p.read_text(encoding="utf-8")
+old = s
+s = s.replace('<html lang="en" dir="ltr">', '<html lang="de" dir="ltr">', 1)
+s = replace_title_desc(
+    s,
+    "Brief auf Deutsch schreiben & Behördenpost verstehen | Briefly",
+    "Kostenloser KI-Briefassistent für Deutschland: Briefe auf Deutsch schreiben, Antworten formulieren und Schreiben von Jobcenter, Vermieter oder Behörden leichter verstehen.",
+)
+s = ensure_canonical(s, BASE + "/")
+replacements = {
+    '<a class="top-link" href="#how">How it works</a>': '<a class="top-link" href="#how">So funktioniert es</a>',
+    '<a class="top-link" href="#resources">Guides</a>': '<a class="top-link" href="#resources">Ratgeber</a>',
+    '<a class="top-link" href="#funding">Free</a>': '<a class="top-link" href="#funding">Kostenlos</a>',
+    "🇩🇪 Made for life in Germany": "🇩🇪 Für den Alltag in Deutschland",
+    '<h1 id="title">Letters and replies without the extra words</h1>': '<h1 id="title">Briefe auf Deutsch schreiben und Behördenpost verstehen</h1>',
+    '<div id="subtitle" class="subtitle"></div>': '<div id="subtitle" class="subtitle">Briefe erstellen, Antworten formulieren und schwierige Schreiben in einfachen Worten verstehen.</div>',
+    '<div class="hero-proof"><span>5 free texts per day</span><span>9 languages</span><span>Review before sending</span></div>': '<div class="hero-proof"><span>5 kostenlose Texte pro Tag</span><span>9 Sprachen</span><span>Vor Versand prüfen</span></div>',
+    'let uiLang=savedUiLang||((T[browserUiLang]&&browserUiLang)||"de")': 'let uiLang=savedUiLang||"de"',
+}
+for a, b in replacements.items():
+    s = s.replace(a, b, 1)
+s = ensure_social_and_schema(s, BASE + "/", "WebApplication")
+write_if_changed(p, old, s)
+
+overrides = {
+    "jobcenter-briefe-verstehen.html": (
+        "Jobcenter Brief verstehen: Bescheid, Anhörung & Widerspruch | Briefly",
+        "Jobcenter-Brief erhalten? Bescheid, Anhörung, Mitwirkung, Fristen und Widerspruch verständlich einordnen – mit Beispiel und nächsten Schritten.",
+    ),
+    "vermieter-brief-verstehen.html": (
+        "Brief vom Vermieter verstehen: Miete, Mängel & Nebenkosten | Briefly",
+        "Brief vom Vermieter erhalten? Miete, Reparaturen, Nebenkosten und Fristen verständlich einordnen und eine sachliche Antwort vorbereiten.",
+    ),
+    "behoerdenbriefe-verstehen.html": (
+        "Behördenbrief verstehen: Fristen, Aktenzeichen & Antwort | Briefly",
+        "Behördenbrief verständlich lesen: Absender, Aktenzeichen, Frist, geforderte Handlung und Anlagen prüfen und eine passende Antwort vorbereiten.",
+    ),
+    "formelle-antwort-deutsch.html": (
+        "Formelle Antwort auf Deutsch schreiben: Aufbau & Beispiel | Briefly",
+        "Formelle Antwort auf Deutsch schreiben: Betreff, Anrede, Bezug, klare Bitte und Grußformel – mit praktischem Aufbau und Beispiel.",
+    ),
+    "termin-behoerde-verschieben.html": (
+        "Behördentermin verschieben: Formulierung & Muster | Briefly",
+        "Behördentermin verschieben oder absagen: höfliche Formulierung, wichtige Angaben und ein Muster für die Anfrage nach einem neuen Termin.",
+    ),
+    "auslaenderbehoerde-termin-anfragen.html": (
+        "Termin bei der Ausländerbehörde anfragen: Muster | Briefly",
+        "Termin bei der Ausländerbehörde anfragen: Anliegen, Aktenzeichen und Kontaktdaten klar formulieren – mit Beispiel für eine sachliche Anfrage.",
+    ),
+    "arbeitsbescheinigung-anfordern.html": (
+        "Arbeitsbescheinigung anfordern: Muster für Arbeitgeber | Briefly",
+        "Arbeitsbescheinigung oder Verdienstnachweis beim Arbeitgeber anfordern: kurze, höfliche Formulierung mit den wichtigsten Angaben und Beispiel.",
+    ),
+}
+
+for name, (title, desc) in overrides.items():
+    p = Path(name)
+    if not p.exists():
+        continue
+    s = p.read_text(encoding="utf-8")
+    old = s
+    s = replace_title_desc(s, title, desc)
+    s = ensure_canonical(s, canonical_for(name))
+    s = ensure_social_and_schema(s, canonical_for(name), "WebPage")
+    write_if_changed(p, old, s)
+
+p = Path("ratgeber.html")
+if p.exists():
+    s = p.read_text(encoding="utf-8")
+    old = s
+    s = replace_title_desc(
+        s,
+        "Briefe & Behördenpost verstehen: Ratgeber für Deutschland | Briefly",
+        "Praktische Ratgeber für Briefe in Deutschland: Jobcenter, Behörden, Vermieter, Arbeitgeber, Versicherungen, Fristen und formelle Antworten verständlich erklärt.",
+    )
+    s = ensure_canonical(s, canonical_for("ratgeber.html"))
+    s = ensure_social_and_schema(s, canonical_for("ratgeber.html"), "CollectionPage")
+    write_if_changed(p, old, s)
+
+for p in sorted(Path(".").glob("*.html")):
+    if p.name in {"index.html", "404.html", "ratgeber.html"} or p.name in overrides:
+        continue
+    s = p.read_text(encoding="utf-8")
+    if re.search(r'<meta\s+name=["\']robots["\'][^>]*content=["\'][^"\']*noindex', s, flags=re.I):
+        continue
+    old = s
+    s = ensure_canonical(s, canonical_for(p.name))
+    s = ensure_social_and_schema(s, canonical_for(p.name), "WebPage")
+    write_if_changed(p, old, s)
+
+robots = "User-agent: *\nAllow: /\nSitemap: https://brieflyletters.com/sitemap.xml\n"
+rp = Path("robots.txt")
+old_robots = rp.read_text(encoding="utf-8") if rp.exists() else ""
+if old_robots != robots:
+    rp.write_text(robots, encoding="utf-8")
+    changed.add("robots.txt")
+
+urls = []
+for p in sorted(Path(".").glob("*.html")):
+    if p.name == "404.html":
+        continue
+    text = p.read_text(encoding="utf-8")
+    if re.search(r'<meta\s+name=["\']robots["\'][^>]*content=["\'][^"\']*noindex', text, flags=re.I):
+        continue
+    loc = canonical_for(p.name)
+    if p.name in changed:
+        lastmod = TODAY
+    else:
+        try:
+            lastmod = subprocess.check_output(["git", "log", "-1", "--format=%cs", "--", p.name], text=True).strip() or TODAY
+        except Exception:
+            lastmod = TODAY
+    urls.append((loc, lastmod))
+
+xml = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+for loc, lastmod in urls:
+    xml.append(f"  <url><loc>{loc}</loc><lastmod>{lastmod}</lastmod></url>")
+xml.append("</urlset>")
+xml_text = "\n".join(xml) + "\n"
+sp = Path("sitemap.xml")
+old_xml = sp.read_text(encoding="utf-8") if sp.exists() else ""
+if old_xml != xml_text:
+    sp.write_text(xml_text, encoding="utf-8")
+    changed.add("sitemap.xml")
+
+print("Changed files:")
+for x in sorted(changed):
+    print(" -", x)
