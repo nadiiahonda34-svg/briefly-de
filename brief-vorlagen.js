@@ -20,6 +20,7 @@ function localize() {
 }
 function showStep(next, focus=true) {
   step=next; for(const el of document.querySelectorAll('[data-step]')) el.hidden=Number(el.dataset.step)!==step;
+  $('form-status').textContent='';
   $('progress').textContent=msg('progress').replace('{n}',step);
   if(focus) (step===1 ? $('template') : step===2 ? document.querySelector('[data-template]:not([hidden]) input') : output).focus();
 }
