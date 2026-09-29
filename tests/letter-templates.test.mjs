@@ -13,6 +13,33 @@ test('appointment request uses the supplied date and does not invent a reason or
   assert.doesNotMatch(result,/Grund meiner Anfrage|krank|undefined|null/);
   assert.throws(()=>buildLetter('termin',{...identity,appointmentDate:'2026-10-08',appointmentTime:'25:00'}),/time/);
 });
+test('Jobcenter draft names only the chosen cause and proof plan',()=>{
+  const base={...identity,jcAppointmentDate:'2026-10-08',jcAppointmentTime:'09:30'};
+  const attached=buildLetter('jobcenter-termin',{...base,jcReasonType:'illness',jcProof:'attached'});
+  assert.match(attached,/Jobcenter-Termins am 08\.10\.2026/);
+  assert.match(attached,/08\.10\.2026 um 09:30 Uhr/);
+  assert.match(attached,/ich bin erkrankt/);
+  assert.match(attached,/Einen Nachweis füge ich bei/);
+  assert.doesNotMatch(attached,/Kind ist erkrankt|reiche ich zeitnah nach|bereits bestätigt/);
+  const later=buildLetter('jobcenter-termin',{...base,jcReasonType:'child',jcProof:'later'});
+  assert.match(later,/mein Kind ist erkrankt und ich muss die Betreuung übernehmen/);
+  assert.match(later,/reiche ich zeitnah nach, sobald er vorliegt/);
+  assert.doesNotMatch(later,/füge ich bei/);
+  const custom=buildLetter('jobcenter-termin',{...base,jcReasonType:'other',jcOtherReason:'wichtiger anderer Termin',jcProof:'ask',jcAlternative:'freitags ab 10 Uhr'});
+  assert.match(custom,/wichtiger anderer Termin/);
+  assert.match(custom,/welchen Nachweis ich für die Verhinderung einreichen soll/);
+  assert.match(custom,/Als möglichen Zeitraum schlage ich vor: freitags ab 10 Uhr/);
+});
+test('Jobcenter draft cannot omit the real reason, proof choice, date or time',()=>{
+  const base={...identity,jcAppointmentDate:'2026-10-08',jcAppointmentTime:'09:30',jcReasonType:'other',jcOtherReason:'ein wichtiger Termin',jcProof:'ask'};
+  for(const field of ['jcReasonType','jcOtherReason','jcProof','jcAppointmentDate','jcAppointmentTime']) {
+    const values={...base,[field]:''};
+    assert.throws(()=>buildLetter('jobcenter-termin',values),undefined,field);
+  }
+  assert.throws(()=>buildLetter('jobcenter-termin',{...base,jcAppointmentDate:'2026-02-30'}),/date/);
+  assert.throws(()=>buildLetter('jobcenter-termin',{...base,jcAppointmentTime:'29:99'}),/time/);
+  assert.throws(()=>buildLetter('jobcenter-termin',{...base,jcProof:'not-real'}),/proof/);
+});
 test('invalid dates and blank identity are rejected',()=>{
   assert.equal(germanDate('2028-02-29'),'29.02.2028');
   for(const date of ['2026-02-29','2026-13-02','2026-04-31','08.10.2026','']) assert.throws(()=>germanDate(date),/date/);
@@ -43,6 +70,9 @@ test('draft restoration preserves manual edits and rejects incompatible data',()
   assert.deepEqual(draftWarnings('{{Name}}'),['placeholders']);
   assert.deepEqual(draftWarnings('   '),['empty']);
   assert.deepEqual(draftWarnings('Fertiger Text.'),[]);
+  const jobcenter={...draft,template:'jobcenter-termin',fields:{...identity,jcReasonType:'child',jcProof:'later'}};
+  assert.equal(validDraft(jobcenter).fields.jcReasonType,'child');
+  assert.equal(validDraft(jobcenter).fields.jcProof,'later');
 });
 
 const homepage=readFileSync(new URL('../index.html',import.meta.url),'utf8');

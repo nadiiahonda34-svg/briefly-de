@@ -1,6 +1,6 @@
-export const templateIds = ['termin', 'bescheinigung', 'unterlagen'];
+export const templateIds = ['termin', 'jobcenter-termin', 'bescheinigung', 'unterlagen'];
 export const draftKey = 'briefly-guided-draft-v1';
-export const fields = ['recipient','sender','reference','appointmentDate','appointmentTime','reason','alternative','document','purpose','neededBy','letterDate','attachments'];
+export const fields = ['recipient','sender','reference','appointmentDate','appointmentTime','reason','alternative','jcAppointmentDate','jcAppointmentTime','jcReasonType','jcOtherReason','jcProof','jcAlternative','document','purpose','neededBy','letterDate','attachments'];
 const clean = (value, max = 600) => String(value ?? '').replace(/\r\n?/g,'\n').trim().slice(0,max);
 export function germanDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) throw new Error('date');
@@ -22,6 +22,24 @@ export function buildLetter(template, values) {
     body += '\n\nIch bitte Sie um einen Ersatztermin.';
     if (v.alternative) body += '\nAls mögliche Alternative schlage ich vor: '+v.alternative;
     body += '\n\nBitte teilen Sie mir mit, ob der bisherige Termin geändert werden kann und welcher neue Termin vorgesehen ist.';
+  } else if (template === 'jobcenter-termin') {
+    const date = germanDate(v.jcAppointmentDate);
+    if (!/^([01]\d|2[0-3]):[0-5]\d$/.test(v.jcAppointmentTime)) throw new Error('time');
+    const reasons = {
+      illness: 'ich bin erkrankt',
+      child: 'mein Kind ist erkrankt und ich muss die Betreuung übernehmen'
+    };
+    if (!['illness','child','other'].includes(v.jcReasonType)) throw new Error('reason');
+    if (v.jcReasonType === 'other' && !v.jcOtherReason) throw new Error('reason');
+    if (!['attached','later','ask'].includes(v.jcProof)) throw new Error('proof');
+    const reason = v.jcReasonType === 'other' ? v.jcOtherReason : reasons[v.jcReasonType];
+    subject = 'Bitte um Verlegung meines Jobcenter-Termins am '+date;
+    body = `den Termin am ${date} um ${v.jcAppointmentTime} Uhr kann ich aus folgendem Grund nicht wahrnehmen: ${reason}.`;
+    if (v.jcProof === 'attached') body += '\n\nEinen Nachweis füge ich bei.';
+    if (v.jcProof === 'later') body += '\n\nEinen Nachweis reiche ich zeitnah nach, sobald er vorliegt.';
+    if (v.jcProof === 'ask') body += '\n\nBitte teilen Sie mir mit, welchen Nachweis ich für die Verhinderung einreichen soll.';
+    body += '\n\nIch bitte um einen Ersatztermin und um Rückmeldung zum bisherigen Termin.';
+    if (v.jcAlternative) body += '\nAls möglichen Zeitraum schlage ich vor: '+v.jcAlternative;
   } else if (template === 'bescheinigung') {
     if (!v.document) throw new Error('document');
     subject = 'Bitte um Ausstellung einer Bescheinigung';
