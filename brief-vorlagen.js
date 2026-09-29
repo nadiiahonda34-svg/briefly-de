@@ -1,9 +1,9 @@
-import {templateIds,draftKey,fields,buildLetter,draftWarnings,validDraft} from './letter-templates.mjs?v=20260921-1';
-import {messages} from './letter-template-i18n.mjs?v=20260921-1';
+import {templateIds,draftKey,fields,buildLetter,draftWarnings,validDraft} from './letter-templates.mjs?v=20260929-1';
+import {messages} from './letter-template-i18n.mjs?v=20260929-1';
 const $=id=>document.getElementById(id), form=$('letter-form'), output=$('letter-result');
 const original=new Map([...document.querySelectorAll('[data-i18n]')].map(el=>[el.dataset.i18n,el.textContent]));
 original.set('title','Ein Anliegen. Ein klarer Brief.');
-const guidePaths={termin:'termin-behoerde-verschieben.html',bescheinigung:'arbeitsbescheinigung-anfordern.html',unterlagen:'unterlagen-nachreichen.html'};
+const guidePaths={termin:'termin-behoerde-verschieben.html','jobcenter-termin':{de:'jobcenter-termin-verschieben.html',ru:'jobcenter-termin-verschieben-ru.html',uk:'jobcenter-termin-verschieben-uk.html'},bescheinigung:'arbeitsbescheinigung-anfordern.html',unterlagen:'unterlagen-nachreichen.html'};
 let language='de', step=1, built=false;
 const msg=key=>messages[language][key] || messages.de[key] || original.get(key) || key;
 const status=key=>{$('form-status').textContent=msg(key);};
@@ -15,8 +15,24 @@ function updateWarnings() {
 function localize() {
   language=$('help-language').value; document.documentElement.lang=language;
   for(const el of document.querySelectorAll('[data-i18n]')) el.textContent=msg(el.dataset.i18n);
+  updateGuide(); updateProofCheck();
   $('progress').textContent=msg('progress').replace('{n}',step);
   $('form-status').textContent=''; updateWarnings();
+}
+function updateGuide() {
+  const template=$('template').value, path=guidePaths[template];
+  $('matching-guide').href=typeof path==='string'?path:path[language];
+  $('matching-guide').textContent=msg(template==='jobcenter-termin'?'jobcenterGuide':'matchingGuide');
+}
+function updateJobcenterReason() {
+  const other=$('template').value==='jobcenter-termin' && $('jcReasonType').value==='other';
+  $('jc-other-wrap').hidden=!other; $('jcOtherReason').disabled=!other;
+}
+function updateProofCheck() {
+  const template=$('template').value;
+  const attached=template==='jobcenter-termin' && $('jcProof').value==='attached';
+  $('attachment-check').hidden=template!=='unterlagen' && !attached;
+  $('attachment-check').querySelector('span').textContent=msg(attached?'jcProofAttachedCheck':'filesCheck');
 }
 function showStep(next, focus=true) {
   step=next; for(const el of document.querySelectorAll('[data-step]')) el.hidden=Number(el.dataset.step)!==step;
@@ -29,8 +45,9 @@ function chooseTemplate() {
   for(const group of document.querySelectorAll('[data-template]')) {
     group.hidden=group.dataset.template!==template;
     for(const input of group.querySelectorAll('input,textarea')) input.disabled=group.hidden;
+    for(const input of group.querySelectorAll('select')) input.disabled=group.hidden;
   }
-  $('matching-guide').href=guidePaths[template]; $('attachment-check').hidden=template!=='unterlagen';
+  updateJobcenterReason(); updateGuide(); updateProofCheck();
 }
 function validateStep(number) {
   const inputs=[...document.querySelector(`[data-step="${number}"]`).querySelectorAll('input,textarea,select')].filter(input=>!input.disabled);
@@ -53,6 +70,8 @@ $('help-language').value=['de','ru','uk'].includes(requestedLanguage)?requestedL
 chooseTemplate();localize();showStep(1,false);saveButtons();
 $('help-language').addEventListener('change',localize);
 $('template').addEventListener('change',()=>{chooseTemplate();built=false;$('save-draft').disabled=true;});
+$('jcReasonType').addEventListener('change',updateJobcenterReason);
+$('jcProof').addEventListener('change',updateProofCheck);
 form.addEventListener('input',event=>{
   event.target.setCustomValidity?.('');
   built=false;$('save-draft').disabled=true;
@@ -68,7 +87,7 @@ form.addEventListener('submit',event=>{
     output.value=buildLetter($('template').value,Object.fromEntries(new FormData(form)));
     $('facts-checked').checked=false;$('files-checked').checked=false;
     built=true;$('save-draft').disabled=false;showStep(3);updateWarnings();status('built');
-  } catch(error) {status(error.message==='attachments'?'attachmentsError':['identity','document','template'].includes(error.message)?'invalid':'dateError');}
+  } catch(error) {status(error.message==='attachments'?'attachmentsError':['identity','document','template','reason','proof'].includes(error.message)?'invalid':'dateError');}
 });
 $('edit-details').addEventListener('click',()=>{showStep(2);status('editing');});
 output.addEventListener('input',()=>{$('facts-checked').checked=false;$('files-checked').checked=false;updateWarnings();});
