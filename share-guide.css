@@ -1,0 +1,9 @@
+.share-guide{margin-top:28px;padding:20px;border:1px solid #dddff1;border-radius:14px;background:#f4f3ff}
+.share-guide h2{margin:0 0 8px}
+.share-guide p{margin:8px 0 12px}
+.share-guide button{border:0;border-radius:10px;background:#5a4ee3;color:#fff;font:inherit;font-weight:700;padding:10px 16px;cursor:pointer}
+.share-guide button:focus-visible,.share-guide input:focus-visible{outline:3px solid #3b82f6;outline-offset:3px}
+.share-guide label{display:block;margin-top:12px;font-weight:700}
+.share-guide input{display:block;width:100%;margin-top:5px;padding:9px;border:1px solid #a7a3c9;border-radius:8px;background:#fff;font:inherit}
+.share-guide [role=status]{font-size:14px;color:#39466a}
+@media print{.share-guide{display:none!important}}
