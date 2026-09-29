@@ -56,13 +56,16 @@ test('all nine UI languages keep guide titles attached to their links after card
   const translations=JSON.parse(script.match(/const CARD_I18N=(.*);/)[1]);
   const paths=['jobcenter-briefe-verstehen.html','vermieter-brief-verstehen.html','behoerdenbriefe-verstehen.html','formelle-antwort-deutsch.html','ueber-briefly.html','ratgeber.html','behoerden-deutsch-glossar.html','brief-checkliste.html'];
   const node=textContent=>({textContent});
-  const cards=[...homepage.matchAll(/<a class="resource-card" href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(m=>{
+  const cardsFrom=section=>[...section.matchAll(/<a class="resource-card" href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(m=>{
     const parts={'.tag':node(''),h3:node(m[2].match(/<h3>(.*?)<\/h3>/)[1]),p:node(''),'.read':node('')};
     return {href:m[1],parts,getAttribute:()=>m[1],querySelector:s=>parts[s]};
   });
-  assert.equal(cards.length,14);
-  const startCards=cards.slice(0,6),startTitles=startCards.map(c=>c.parts.h3.textContent);
-  const resources=cards.slice(6).reverse();
+  const startCards=cardsFrom(homepage.match(/<section class="section" id="start-here">([\s\S]*?)<\/section>/)[1]);
+  const guideCards=cardsFrom(homepage.match(/<section class="section resources" id="resources">([\s\S]*?)<\/section>/)[1]);
+  assert.equal(startCards.length,6);
+  assert.equal(guideCards.length,8);
+  const startTitles=startCards.map(c=>c.parts.h3.textContent);
+  const resources=guideCards.slice().reverse();
   resources.push({getAttribute:()=> 'future-guide.html',querySelector:()=>{throw new Error('Unknown cards must be left alone');}});
   const ids=new Map(['guidesTitle','guidesIntro','guided-title','guided-description','guided-link'].map(id=>[id,node('')]));
   const select={value:'de',addEventListener:()=>{}};
@@ -71,7 +74,7 @@ test('all nine UI languages keep guide titles attached to their links after card
   vm.runInNewContext(script,{document,window,STATUS_UI,navigator:{language:'de'}});
   for(const lang of ['de','en','ru','uk','pl','fr','es','it','ar']) {
     window.localizeGuidesSection(lang);
-    for(const card of cards.slice(6)) assert.equal(card.parts.h3.textContent,translations[lang][paths.indexOf(card.href)][1],`${lang}: ${card.href}`);
+    for(const card of guideCards) assert.equal(card.parts.h3.textContent,translations[lang][paths.indexOf(card.href)][1],`${lang}: ${card.href}`);
     assert.deepEqual(startCards.map(c=>c.parts.h3.textContent),startTitles);
   }
 });
