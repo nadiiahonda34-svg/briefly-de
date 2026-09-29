@@ -1,0 +1,22 @@
+.next-steps {
+  display: block;
+  margin-top: 32px;
+  padding: 20px 24px;
+  border: 1px solid var(--line, #e8eaf2);
+  border-radius: 17px;
+  background: var(--soft, #f2f0ff);
+  color: #334155;
+}
+
+.next-steps h2 {
+  margin-bottom: 8px;
+}
+
+.next-steps ul {
+  margin-bottom: 0;
+}
+
+.next-steps a {
+  color: #5146cc;
+  font-weight: 750;
+}
