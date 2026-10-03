@@ -34,7 +34,7 @@ export function buildLetter(template, values) {
     if (!['attached','later','ask'].includes(v.jcProof)) throw new Error('proof');
     const reason = v.jcReasonType === 'other' ? v.jcOtherReason : reasons[v.jcReasonType];
     subject = 'Bitte um Verlegung meines Jobcenter-Termins am '+date;
-    body = `den Termin am ${date} um ${v.jcAppointmentTime} Uhr kann ich aus folgendem Grund nicht wahrnehmen: ${reason}.`;
+    body = `den Termin am ${date} um ${v.jcAppointmentTime} Uhr kann ich aus folgendem Grund nicht wahrnehmen: ${reason}${/[.!?…]$/.test(reason) ? '' : '.'}`;
     if (v.jcProof === 'attached') body += '\n\nEinen Nachweis füge ich bei.';
     if (v.jcProof === 'later') body += '\n\nEinen Nachweis reiche ich zeitnah nach, sobald er vorliegt.';
     if (v.jcProof === 'ask') body += '\n\nBitte teilen Sie mir mit, welchen Nachweis ich für die Verhinderung einreichen soll.';
@@ -67,3 +67,4 @@ export function validDraft(value) {
   if (!value || value.version !== 1 || !templateIds.includes(value.template) || !value.fields || typeof value.fields !== 'object' || Array.isArray(value.fields) || typeof value.text !== 'string' || value.text.length > 12000 || !Number.isFinite(Date.parse(value.savedAt))) return null;
   return {version:1,template:value.template,language:['de','ru','uk'].includes(value.language) ? value.language : 'de',fields:Object.fromEntries(fields.map(key=>[key,clean(value.fields[key])])),text:value.text,savedAt:value.savedAt};
 }
+

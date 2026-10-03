@@ -1,4 +1,4 @@
-import {templateIds,draftKey,fields,buildLetter,draftWarnings,validDraft} from './letter-templates.mjs?v=20260929-1';
+import {templateIds,draftKey,fields,buildLetter,draftWarnings,validDraft} from './letter-templates.mjs?v=20261003-1';
 import {messages} from './letter-template-i18n.mjs?v=20260929-1';
 const $=id=>document.getElementById(id), form=$('letter-form'), output=$('letter-result');
 const original=new Map([...document.querySelectorAll('[data-i18n]')].map(el=>[el.dataset.i18n,el.textContent]));
@@ -120,3 +120,4 @@ $('restore-draft').addEventListener('click',()=>{
   }catch {status('restoreError');}
 });
 $('delete-draft').addEventListener('click',()=>{try {localStorage.removeItem(draftKey);saveButtons();status('deleted');}catch {status('deleteError');}});
+
