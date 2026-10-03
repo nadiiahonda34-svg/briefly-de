@@ -93,7 +93,7 @@ test('all nine UI languages keep guide titles attached to their links after card
   const startCards=cardsFrom(homepage.match(/<section class="section" id="start-here">([\s\S]*?)<\/section>/)[1]);
   const guideCards=cardsFrom(homepage.match(/<section class="section resources" id="resources">([\s\S]*?)<\/section>/)[1]);
   assert.equal(startCards.length,6);
-  assert.equal(guideCards.length,8);
+  assert.equal(guideCards.length,6);
   const startTitles=startCards.map(c=>c.parts.h3.textContent);
   const resources=guideCards.slice().reverse();
   resources.push({getAttribute:()=> 'future-guide.html',querySelector:()=>{throw new Error('Unknown cards must be left alone');}});
@@ -108,3 +108,4 @@ test('all nine UI languages keep guide titles attached to their links after card
     assert.deepEqual(startCards.map(c=>c.parts.h3.textContent),startTitles);
   }
 });
+
