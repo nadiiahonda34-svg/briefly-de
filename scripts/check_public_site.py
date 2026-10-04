@@ -203,9 +203,10 @@ def check_preflight():
 
 
 results = [check_source_seo()]
-with ThreadPoolExecutor(max_workers=4) as pool:
-    results.extend(pool.map(check_page, CHECKS.items()))
-results.append(check_preflight())
+if '--source-only' not in sys.argv:
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        results.extend(pool.map(check_page, CHECKS.items()))
+    results.append(check_preflight())
 for name, ok, detail in results:
     print(("PASS" if ok else "FAIL") + " " + name + ": " + detail, flush=True)
 print("No sign-in, generation, account approval or regional CMP behavior was tested.")

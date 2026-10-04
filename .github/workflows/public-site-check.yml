@@ -41,5 +41,8 @@ jobs:
           node-version: '22'
       - name: Check letter templates and language links
         run: node --test tests/*.test.mjs
-      - name: Check HTTPS, published pages and backend preflight
+      - name: Check source SEO and links
+        run: python3 scripts/check_public_site.py --source-only
+      - name: Check HTTPS, published pages and backend preflight after deployment
+        if: github.event_name != 'push'
         run: python3 scripts/check_public_site.py
