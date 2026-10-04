@@ -13,6 +13,7 @@ on:
       - 'robots.txt'
       - 'ads.txt'
       - 'tests/**'
+      - 'scripts/build-everyday-guides.py'
   page_build:
   workflow_run:
     workflows: ['pages build and deployment']
@@ -39,6 +40,6 @@ jobs:
         with:
           node-version: '22'
       - name: Check letter templates and language links
-        run: node --test tests/letter-templates.test.mjs
+        run: node --test tests/*.test.mjs
       - name: Check HTTPS, published pages and backend preflight
         run: python3 scripts/check_public_site.py
