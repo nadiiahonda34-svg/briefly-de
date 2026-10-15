@@ -7,6 +7,7 @@ This document prepares truthful program applications. It is **not a record of su
 **Profile / publisher name:** Briefly — German-language writing and documents
 **Primary website:** https://brieflyletters.com/
 **Partnership information:** https://brieflyletters.com/kooperationen.html
+**Original practical guide for review:** https://brieflyletters.com/brief-als-pdf-speichern-versenden.html (German-language PDF preparation, sample letter, privacy checklist and cited sources)
 **Related project:** https://findkindredpeople.com/
 **Location / target geography:** Germany; educational and practical materials may reach international users.
 **Audience:** people in Germany who want help writing German-language letters, understanding official correspondence and using practical digital tools. Some guides cater to Russian- and Ukrainian-speaking readers.
@@ -25,7 +26,7 @@ I operate Briefly (https://brieflyletters.com/), a website offering practical gu
 
 I propose original, practical tutorials about editing German texts, transparent comparisons of available writing tools, and contextual recommendations where QuillBot is genuinely suitable. Any affiliate links would be clearly disclosed. Our partnership overview is at https://brieflyletters.com/kooperationen.html.
 
-We are interested in joining the affiliate program and starting with helpful content rather than paid or incentivized traffic.
+As a practical example of our editorial work, see https://brieflyletters.com/brief-als-pdf-speichern-versenden.html. We are interested in joining the affiliate program and starting with helpful content rather than paid or incentivized traffic.
 
 Thank you for considering our application.
 
@@ -39,7 +40,7 @@ I run Briefly (https://brieflyletters.com/), a Germany-focused project helping u
 
 I would like to create accurate educational content around everyday PDF workflows, such as reviewing a document, preparing a response and avoiding the accidental sharing of personal information. We would make any commercial relationship and affiliate link clear to readers. Our partnership information is at https://brieflyletters.com/kooperationen.html.
 
-I am interested in exploring an affiliate relationship with Foxit. We will not make unverified claims about audience size or conversion volume.
+I am interested in exploring an affiliate relationship with Foxit. An example of our document-focused content is https://brieflyletters.com/brief-als-pdf-speichern-versenden.html. We will not make unverified claims about audience size or conversion volume.
 
 Thank you for your consideration.
 
@@ -57,7 +58,7 @@ I would like to demonstrate realistic, permitted uses of voice tools for short l
 Thank you for reviewing my application.
 
 ## Submission checklist
-1. Confirm the public sites and partnership page are accessible.
+1. Confirm the public sites, partnership page, and new editorial PDF guide are accessible. The editor has not independently verified live deployment from this environment.
 2. Sign in to the real PartnerStack account; complete the Network Application honestly.
 3. Use the individual company's official **Apply to program** button.
 4. Enter only verified identity, website, social accounts, reach and payment information; leave unknown figures blank or say "not yet measured".
