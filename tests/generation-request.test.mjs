@@ -30,14 +30,17 @@ test("a new letter cannot inherit the previous reply instruction", () => {
   assert.equal(request.preserveDates, true);
 });
 
-test("an explanation uses its current document, without instructions from an old reply", () => {
-  const document = "Ihr Termin findet am 12.11.2026 um 10:30 Uhr statt.";
+test("an explanation preserves the document but does not inherit a reply or sender signature", () => {
+  const document = "Sehr geehrte Frau Quellname, Ihr Termin findet am 12.11.2026 um 10:30 Uhr statt. Mit freundlichen Grüßen, Beispielstelle";
   const request = buildGenerationPayload({ ...form, mode: "explain", input: document, targetLanguage: "ru" });
   assert.equal(request.text, document);
   assert.equal(request.language, "ru");
-  assert.equal(request.instruction, "");
-  assert.equal(request.replyInstruction, "");
-  assert.equal(request.intent, "");
+  assert.match(request.instruction, /without a greeting, sign-off or signature/);
+  assert.match(request.instruction, /selected target language/);
+  assert.equal(request.replyInstruction, request.instruction);
+  assert.equal(request.intent, request.instruction);
+  assert.equal(request.name, "");
+  assert.equal(form.name, "Anna Beispiel");
   assert.equal(JSON.stringify(request).includes("TEST-17"), false);
 });
 

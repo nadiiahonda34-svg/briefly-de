@@ -125,7 +125,7 @@ body{background:radial-gradient(900px 500px at 12% -8%,rgba(109,93,252,.18),tran
 .more-guides-direct a{display:inline-block;padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--accent);font-size:13px;font-weight:700;text-decoration:none}
 .more-guides-direct a:hover{border-color:#9bb0ee;box-shadow:0 6px 18px rgba(20,35,70,.06)}
 </style>
-<style>.cancel-generate{margin-top:10px;padding:10px 15px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--accent);font:inherit;font-weight:700;cursor:pointer}.cancel-generate[hidden],#generationStatus[hidden]{display:none}</style>
+<style>.cancel-generate{margin-top:10px;padding:10px 15px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--accent);font:inherit;font-weight:700;cursor:pointer}.cancel-generate[hidden],#generationStatus[hidden],#letterOptions[hidden]{display:none}</style>
 </head><body>
 <div class="wrap"><div class="top"><a class="brand brand-signature" href="#top">
   <span class="brand-name">Briefly</span>
@@ -143,7 +143,7 @@ body{background:radial-gradient(900px 500px at 12% -8%,rgba(109,93,252,.18),tran
 <div class="languages"><div><label id="sourceLabel" for="sourceLanguage">Ausgangssprache</label><select id="sourceLanguage"></select></div><div><label id="targetLabel" for="targetLanguage">Zielsprache</label><select id="targetLanguage"></select></div></div>
 <div id="recipientBlock"><label id="recipientLabel">Empfänger</label><div class="categories" role="group" aria-labelledby="recipientLabel"><button type="button" class="cat active" data-key="employer"></button><button type="button" class="cat" data-key="landlord"></button><button type="button" class="cat" data-key="authority"></button><button type="button" class="cat" data-key="insurance"></button><button type="button" class="cat" data-key="shop"></button><button type="button" class="cat" data-key="other"></button></div></div>
 <label id="textLabel" for="text">Was möchten Sie schreiben?</label><textarea id="text" dir="auto"></textarea><div id="intentBlock" class="intent" hidden><label id="intentLabel" for="replyInstruction"></label><textarea id="replyInstruction" dir="auto"></textarea></div>
-<div class="row"><div><label id="toneLabel" for="tone">Ton</label><select id="tone"></select></div><div><label id="nameLabel" for="name">Name (optional)</label><input id="name" dir="auto"></div></div><p id="signInHint" class="note">Für KI-Texte bitte mit Google anmelden. Briefvorlagen und Ratgeber sind ohne Anmeldung nutzbar.</p><button type="button" id="generate" class="generate">Text erstellen</button><p id="generationStatus" class="note" role="status" hidden></p><button type="button" id="cancelGenerate" class="cancel-generate" hidden>Abbrechen</button><div id="error" class="error" role="alert"></div><div id="result" class="result" aria-live="polite" dir="auto"></div><div class="result-actions"><button type="button" id="copy" class="copy"></button><button type="button" id="replyFromExplain" class="reply-from-explain">Antwort vorbereiten →</button></div></div><div id="note" class="note"></div>
+<div class="row" id="letterOptions"><div><label id="toneLabel" for="tone">Ton</label><select id="tone"></select></div><div><label id="nameLabel" for="name">Name (optional)</label><input id="name" dir="auto"></div></div><p id="signInHint" class="note">Für KI-Texte bitte mit Google anmelden. Briefvorlagen und Ratgeber sind ohne Anmeldung nutzbar.</p><button type="button" id="generate" class="generate">Text erstellen</button><p id="generationStatus" class="note" role="status" hidden></p><button type="button" id="cancelGenerate" class="cancel-generate" hidden>Abbrechen</button><div id="error" class="error" role="alert"></div><div id="result" class="result" aria-live="polite" dir="auto"></div><div class="result-actions"><button type="button" id="copy" class="copy"></button><button type="button" id="replyFromExplain" class="reply-from-explain">Antwort vorbereiten →</button></div></div><div id="note" class="note"></div>
 
 
 <section class="section" id="start-here">
@@ -257,6 +257,7 @@ function updateMode(clearResult=true){
   const t=T[uiLang];
   recipientBlock.hidden=mode!=="create";
   intentBlock.hidden=mode!=="reply";
+  $("letterOptions").hidden=mode==="explain";
   textLabel.textContent=t[mode+"Label"];
   text.placeholder=t[mode+"Ph"];
   generate.textContent=generate.disabled?t.wait:t[mode+"Btn"];
@@ -367,7 +368,7 @@ generate.addEventListener("click", async () => {
   const timeoutTimer=setTimeout(()=>controller.abort("timeout"),120000);
 
   try{
-    const {buildGenerationPayload}=await import("./generation-request.mjs?v=20261020-1");
+    const {buildGenerationPayload}=await import("./generation-request.mjs?v=20261020-2");
     controller.signal.throwIfAborted();
     const response=await fetch(WORKER_URL,{
       method:"POST",
