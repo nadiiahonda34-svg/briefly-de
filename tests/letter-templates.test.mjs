@@ -81,7 +81,7 @@ test('every inline homepage script parses',()=>{
     if(!/application\/ld\+json/.test(match[1]) && match[2].trim()) new vm.Script(match[2]);
   }
 });
-test('all nine UI languages keep guide titles attached to their links after card reordering',()=>{
+test('all nine UI languages keep guide titles and template navigation tied to the right links',()=>{
   const script=[...homepage.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(m=>m[1]).find(s=>s.includes('function localizeGuidesSection'));
   const translations=JSON.parse(script.match(/const CARD_I18N=(.*);/)[1]);
   const paths=['jobcenter-briefe-verstehen.html','vermieter-brief-verstehen.html','behoerdenbriefe-verstehen.html','formelle-antwort-deutsch.html','ueber-briefly.html','ratgeber.html','behoerden-deutsch-glossar.html','brief-checkliste.html'];
@@ -97,15 +97,19 @@ test('all nine UI languages keep guide titles attached to their links after card
   const startTitles=startCards.map(c=>c.parts.h3.textContent);
   const resources=guideCards.slice().reverse();
   resources.push({getAttribute:()=> 'future-guide.html',querySelector:()=>{throw new Error('Unknown cards must be left alone');}});
-  const ids=new Map(['guidesTitle','guidesIntro','guided-title','guided-description','guided-link'].map(id=>[id,node('')]));
+  const ids=new Map(['guidesTitle','guidesIntro','guided-title','guided-description','guided-link','templates-nav'].map(id=>[id,node('')]));
   const select={value:'de',addEventListener:()=>{}};
   const document={getElementById:id=>ids.get(id),documentElement:{lang:'de'},querySelector:s=>s==='select'?select:null,querySelectorAll:s=>s==='#resources .resource-card'?resources:s==='.resource-card'?[...startCards,...resources]:[]};
   const window={};const STATUS_UI=Object.fromEntries(Object.keys(translations).map(lang=>[lang,['','','','','Guides in German']]));
   vm.runInNewContext(script,{document,window,STATUS_UI,navigator:{language:'de'}});
-  for(const lang of ['de','en','ru','uk','pl','fr','es','it','ar']) {
+  const templateLabels={de:'Vorlagen',en:'Templates',ru:'Шаблоны',uk:'Шаблони',pl:'Szablony',fr:'Modèles',es:'Plantillas',it:'Modelli',ar:'القوالب'};
+  for(const [lang,label] of Object.entries(templateLabels)) {
     window.localizeGuidesSection(lang);
     for(const card of guideCards) assert.equal(card.parts.h3.textContent,translations[lang][paths.indexOf(card.href)][1],`${lang}: ${card.href}`);
     assert.deepEqual(startCards.map(c=>c.parts.h3.textContent),startTitles);
+    const templateLanguage=['de','ru','uk'].includes(lang)?lang:'de';
+    assert.equal(ids.get('templates-nav').textContent,label,lang);
+    assert.equal(ids.get('templates-nav').href,`brief-vorlagen.html?lang=${templateLanguage}`,lang);
   }
 });
 
